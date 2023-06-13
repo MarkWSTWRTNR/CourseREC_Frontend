@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from "vue-router";
 import HomeView from "../views/HomeView.vue";
-
+import CurriculumView from "../views/CurriculumView.vue";
+import CourseListViewVue from "@/views/CourseListView.vue";
 const routes = [
   {
     path: "/",
@@ -15,6 +16,16 @@ const routes = [
     // which is lazy-loaded when the route is visited.
     component: () =>
       import(/* webpackChunkName: "about" */ "../views/AboutView.vue"),
+  },
+  {
+    path: "/curriculum",
+    name: "curriculum",
+    component: CurriculumView,
+  },
+  {
+    path: "/course_list",
+    name: "courselist",
+    component: CourseListViewVue,
   },
 ];
 
