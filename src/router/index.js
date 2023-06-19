@@ -1,32 +1,56 @@
 import { createRouter, createWebHistory } from "vue-router";
-import HomeView from "../views/HomeView.vue";
 import CurriculumView from "../views/CurriculumView.vue";
-import CourseListViewVue from "@/views/CourseListView.vue";
+import CourseListView from "@/views/CourseListView.vue";
+import DashboardView from "../views/DashboardView.vue";
+import StudentStudyPlanView from "../views/StudentStudyPlanView.vue";
+import RecommendCourseView from "../views/RecommendCourseView.vue";
+import StudyGuideView from "../views/StudyGuideView.vue";
+import FinishedCourseView from "../views/FinishedCourseView.vue";
+import { ROLES } from "@/service/roles";
 const routes = [
-  {
-    path: "/",
-    name: "home",
-    component: HomeView,
-  },
-  {
-    path: "/about",
-    name: "about",
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () =>
-      import(/* webpackChunkName: "about" */ "../views/AboutView.vue"),
-  },
+
   {
     path: "/curriculum",
     name: "curriculum",
     component: CurriculumView,
+    meta: { roles: [ROLES.ADMIN, ROLES.STUDENT] }
   },
   {
     path: "/course_list",
     name: "courselist",
-    component: CourseListViewVue,
+    component: CourseListView,
+    meta: { roles: [ROLES.STUDENT] }
   },
+  {
+    path: "/dashboard",
+    name: "dashboard",
+    component: DashboardView,
+    meta: { roles: [ROLES.STUDENT] }
+  },
+  {
+    path: "/studentstudyplan",
+    name: "studentstudyplan",
+    component: StudentStudyPlanView,
+    meta: { roles: [ROLES.STUDENT] }
+  },
+  {
+    path: "/recommendcourse",
+    name: "recommendcourse",
+    component: RecommendCourseView,
+    meta: { roles: [ROLES.STUDENT] }
+  },
+  {
+    path: "/studyguide",
+    name:"studyguide",
+    component:StudyGuideView,
+    meta: {roles: [ROLES.STUDENT]}
+  },
+  {
+    path: "/finishedcourse",
+    name:"finishedcourse",
+    component:FinishedCourseView,
+    meta: {roles: [ROLES.STUDENT]}
+  }
 ];
 
 const router = createRouter({

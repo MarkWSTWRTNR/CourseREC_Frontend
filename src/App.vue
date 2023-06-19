@@ -1,17 +1,46 @@
 <template>
   <div class="container">
-    <nav>
-      <router-link to="/">Home</router-link>
-      <router-link to="/about">About</router-link>
-      <router-link to="/curriculum">Curriculum</router-link>
-      <router-link to="/course_list">Course list</router-link>
-    </nav>
-<div class="content">
+    <div v-if="userRole === ROLES.ADMIN">
+      <nav>
+        <router-link to="/curriculum">Curriculum</router-link>
+        <router-link to="/course_list">Course list</router-link>
+      </nav>
+    </div>
+
+    <div v-if="userRole === ROLES.STUDENT">
+      <nav>
+        <router-link to="/dashboard">Dashboard</router-link>
+        <router-link to="/curriculum">Curriculum</router-link>
+        <router-link to="/course_list">Course List</router-link>
+        <router-link to="/studentstudyplan">Student Study Plan</router-link>
+        <router-link to="/recommendcourse">Recommend Course</router-link>
+        <router-link to="/studyguide">Study Guide</router-link>
+        <router-link to="/finishedcourse">Finished Course</router-link>
+      </nav>
+
+    </div>
 
 
-    <router-view />
-  </div></div>
+    <div class="content">
+      <router-view />
+    </div>
+    <!-- Footer -->
+  </div>
 </template>
+
+<script>
+import { ROLES } from "../src/service/roles"
+
+export default {
+  data() {
+    return {
+      userRole: ROLES.STUDENT,
+      ROLES,
+    }
+  }
+}
+</script>
+
 
 <style>
 #app {
@@ -29,6 +58,7 @@ nav {
   align-items: flex-start;
   padding: 30px;
   background-color: #010508;
+  text-align: left;
 }
 
 nav a {
@@ -40,11 +70,13 @@ nav a {
 nav a.router-link-exact-active {
   color: #42b983;
 }
-.container{
+
+.container {
   display: grid;
-  grid-template-columns: 200px 1fr;
+  grid-template-columns: 210px 1fr;
   height: 100vh;
 }
+
 .content {
   padding: 30px;
 
