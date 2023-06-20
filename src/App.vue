@@ -35,7 +35,7 @@ import { ROLES } from "../src/service/roles"
 export default {
   data() {
     return {
-      userRole: ROLES.STUDENT,
+      userRole: ROLES.ADMIN,
       ROLES,
     }
   }
@@ -70,16 +70,5 @@ nav a {
 
 nav a.router-link-exact-active {
   color: #42b983;
-}
-
-.container {
-  display: grid;
-  grid-template-columns: 210px 1fr;
-  height: 100vh;
-}
-
-.content {
-  padding: 30px;
-
 }
 </style>
