@@ -19,10 +19,12 @@
                         <td>{{ record.credit }}</td>
                         <td>{{ record.gradingtype }}</td>
                         <td>{{ record.prereq }}</td>
+                 
+                        
                         <td>
                             <button class="btn btn-outline-danger" @click="deleteCourse(record.course_id)">Delete</button>
-                            <button class="btn btn-outline-info" @click="editCourse(record)">Edit</button>
-                            
+                            <button class="btn btn-outline-info" @click="editCourse(record)">Edit</button><br>
+                            <router-link :to="'/courses/' + record.course_id">Description</router-link>
 
                         </td>
                     </tr>
@@ -54,6 +56,10 @@
                     <label for="coursePrerequisite">Course Prerequisite</label>
                     <input type="text" class="form-control" id="coursePrerequisite" v-model="prereq" required>
                 </div>
+                <div class="form-group">
+                    <label for="description">Description</label>
+                    <input type="text" class="form-control" id="description" v-model="description" required>
+                </div>
                 <button type="submit" class="btn btn-primary">Create</button>
                 <button class="btn btn-outline-success" @click="updateCourse">Update</button>
             </form>
@@ -73,6 +79,7 @@ export default {
             credit: '',
             gradingtype: '',
             prereq: '',
+            description: '',
             selectedCourse: null
         };
     },
@@ -95,7 +102,8 @@ export default {
                 coursename: this.coursename,
                 credit: this.credit,
                 gradingtype: this.gradingtype,
-                prereq: this.prereq
+                prereq: this.prereq,
+                description: this.description
             };
 
             axios.post('http://localhost:5000/api/courses', course)
@@ -106,6 +114,7 @@ export default {
                     this.credit = '';
                     this.gradingtype = '';
                     this.prereq = '';
+                    this.description = '';
                 })
                 .catch(error => {
                     console.log(error);
@@ -127,6 +136,7 @@ export default {
             this.credit = course.credit;
             this.gradingtype = course.gradingtype;
             this.prereq = course.prereq;
+            this.description = course.description
         },
         updateCourse() {
     if (!this.selectedCourse) {
@@ -138,7 +148,8 @@ export default {
         coursename: this.coursename,
         credit: this.credit,
         gradingtype: this.gradingtype,
-        prereq: this.prereq
+        prereq: this.prereq,
+        description: this.description
     };
 
     axios.put(`http://localhost:5000/api/courses/${this.selectedCourse.course_id}`, updatedCourse)
@@ -150,6 +161,7 @@ export default {
             this.gradingtype = '';
             this.prereq = '';
             this.selectedCourse = null;
+            this.description ='';
         })
         .catch(error => {
             console.log(error);
