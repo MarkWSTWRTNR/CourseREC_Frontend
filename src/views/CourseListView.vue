@@ -22,6 +22,8 @@
                         <td>
                             <button class="btn btn-outline-danger" @click="deleteCourse(record.course_id)">Delete</button>
                             <button class="btn btn-outline-info" @click="editCourse(record)">Edit</button>
+                            
+
                         </td>
                     </tr>
                 </tbody>
@@ -53,6 +55,7 @@
                     <input type="text" class="form-control" id="coursePrerequisite" v-model="prereq" required>
                 </div>
                 <button type="submit" class="btn btn-primary">Create</button>
+                <button class="btn btn-outline-success" @click="updateCourse">Update</button>
             </form>
         </div>
     </div>
@@ -69,7 +72,8 @@ export default {
             coursename: '',
             credit: '',
             gradingtype: '',
-            prereq: ''
+            prereq: '',
+            selectedCourse: null
         };
     },
     mounted() {
@@ -117,13 +121,42 @@ export default {
                 });
         },
         editCourse(course) {
-            // Handle edit functionality
+            this.selectedCourse = course;
             this.course_id = course.course_id;
             this.coursename = course.coursename;
             this.credit = course.credit;
             this.gradingtype = course.gradingtype;
             this.prereq = course.prereq;
-        }
+        },
+        updateCourse() {
+    if (!this.selectedCourse) {
+        return;
+    }
+
+    const updatedCourse = {
+        course_id: this.course_id,
+        coursename: this.coursename,
+        credit: this.credit,
+        gradingtype: this.gradingtype,
+        prereq: this.prereq
+    };
+
+    axios.put(`http://localhost:5000/api/courses/${this.selectedCourse.course_id}`, updatedCourse)
+        .then(response => {
+            this.fetchCourses();
+            this.course_id = '';
+            this.coursename = '';
+            this.credit = '';
+            this.gradingtype = '';
+            this.prereq = '';
+            this.selectedCourse = null;
+        })
+        .catch(error => {
+            console.log(error);
+        });
+}
+
+
     }
 }
 </script>
