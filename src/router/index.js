@@ -6,6 +6,7 @@ import StudentStudyPlanView from "../views/StudentStudyPlanView.vue";
 import RecommendCourseView from "../views/RecommendCourseView.vue";
 import StudyGuideView from "../views/StudyGuideView.vue";
 import FinishedCourseView from "../views/FinishedCourseView.vue";
+import CourseDetailView from "../views/sub/CourseDetailView.vue"
 import { ROLES } from "@/service/roles";
 const routes = [
 
@@ -50,6 +51,13 @@ const routes = [
     name:"finishedcourse",
     component:FinishedCourseView,
     meta: {roles: [ROLES.STUDENT]}
+  },
+  {
+    path: '/courses/:course_id',
+    name: 'coursedetails',
+    component: CourseDetailView,
+    meta: {roles: [ROLES.STUDENT, ROLES.ADMIN]},
+    props: true
   }
 ];
 
