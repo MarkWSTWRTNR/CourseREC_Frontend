@@ -1,3 +1,4 @@
+<!-- CourseListView.vue -->
 <template>
     <div class="row">
         <div class="col-md-12">
@@ -33,13 +34,13 @@
         </div>
     </div>
     <div>
-        <button @click=" openForm ">Add courses</button>
+        <button class="btn btn-outline-primary" @click=" openForm ">Add courses</button>
         <div v-if=" showForm ">
             <div class="overlay">
                 <div class="popup">
                     <div class="row">
                         <div class="col-md-12">
-                            <h3>Add Course</h3>
+                            <h3>{{ selectedCourse ? 'Edit Course' : 'Add Course' }}</h3>
                             <form @submit.prevent=" addCourse ">
                                 <div class="form-group">
                                     <label for="courseId">Course ID</label>
@@ -82,127 +83,11 @@
 </template>
 
 <script>
-import axios from 'axios';
-export default {
+import crud from '@/components/crud';
+export default{
     name: 'courselist',
-    data() {
-        return {
-            records: [],
-            course_id: '',
-            coursename: '',
-            credit: '',
-            gradingtype: '',
-            prereq: '',
-            description: '',
-            selectedCourse: null,
-            showForm: false
-        };
-    },
-    mounted() {
-        this.fetchCourses();
-    },
-    methods: {
-        fetchCourses() {
-            axios.get('http://localhost:5000/api/courses')
-                .then(response => {
-                    this.records = response.data;
-                })
-                .catch(error => {
-                    console.log(error);
-                });
-        },
-        addCourse() {
-            const course = {
-                course_id: this.course_id,
-                coursename: this.coursename,
-                credit: this.credit,
-                gradingtype: this.gradingtype,
-                prereq: this.prereq,
-                description: this.description
-            };
+    mixins:[crud],
 
-            axios.post('http://localhost:5000/api/courses', course)
-                .then(response => {
-                    this.fetchCourses();
-                    this.course_id = '';
-                    this.coursename = '';
-                    this.credit = '';
-                    this.gradingtype = '';
-                    this.prereq = '';
-                    this.description = '';
-                })
-                .catch(error => {
-                    console.log(error);
-                });
-            this.showForm = false;
-            this.clearForm;
-        },
-        deleteCourse(courseId) {
-            axios.delete(`http://localhost:5000/api/courses/${courseId}`)
-                .then(response => {
-                    this.fetchCourses();
-                })
-                .catch(error => {
-                    console.log(error);
-                });
-        },
-        editCourse(course) {
-            this.selectedCourse = course;
-            this.course_id = course.course_id;
-            this.coursename = course.coursename;
-            this.credit = course.credit;
-            this.gradingtype = course.gradingtype;
-            this.prereq = course.prereq;
-            this.description = course.description
-            this.showForm = true;
-        },
-        updateCourse() {
-            if (!this.selectedCourse) {
-                return;
-            }
-
-            const updatedCourse = {
-                course_id: this.course_id,
-                coursename: this.coursename,
-                credit: this.credit,
-                gradingtype: this.gradingtype,
-                prereq: this.prereq,
-                description: this.description
-            };
-
-            axios.put(`http://localhost:5000/api/courses/${this.selectedCourse.course_id}`, updatedCourse)
-                .then(response => {
-                    this.fetchCourses();
-                    this.course_id = '';
-                    this.coursename = '';
-                    this.credit = '';
-                    this.gradingtype = '';
-                    this.prereq = '';
-                    this.selectedCourse = null;
-                    this.description = '';
-                })
-                .catch(error => {
-                    console.log(error);
-                });
-        },
-        openForm() {
-            this.showForm = true;
-        },
-        cancelForm() {
-            // Close the form without submitting
-            this.showForm = false;
-            this.clearForm();
-        },
-        clearForm() {
-            this.course_id = '';
-            this.coursename = '';
-            this.credit = '';
-            this.gradingtype = '';
-            this.prereq = '';
-            this.description = '';
-        },
-
-    }
 }
 </script>
 
