@@ -35,7 +35,7 @@ import { ROLES } from "../src/service/roles"
 export default {
   data() {
     return {
-      userRole: ROLES.ADMIN,
+      userRole: ROLES.STUDENT,
       ROLES,
     }
   }
