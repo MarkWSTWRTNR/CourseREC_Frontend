@@ -1,14 +1,12 @@
 <template>
-  <div class="container">
-    <div v-if="userRole === ROLES.ADMIN">
-      <nav>
+
+    
+      <nav v-if="userRole === ROLES.ADMIN">
         <router-link to="/curriculum">Curriculum</router-link>
         <router-link to="/course_list">Course list</router-link>
       </nav>
-    </div>
 
-    <div v-if="userRole === ROLES.STUDENT">
-      <nav>
+      <nav v-if="userRole === ROLES.STUDENT">
         <router-link to="/dashboard">Dashboard</router-link>
         <router-link to="/curriculum">Curriculum</router-link>
         <router-link to="/course_list">Course List</router-link>
@@ -17,15 +15,8 @@
         <router-link to="/studyguide">Study Guide</router-link>
         <router-link to="/finishedcourse">Finished Course</router-link>
       </nav>
-
-    </div>
-
-
-    <div class="content">
       <router-view />
-    </div>
     <!-- Footer -->
-  </div>
 </template>
 
 
@@ -65,7 +56,7 @@ nav {
 nav a {
   margin-bottom: 10px;
   font-weight: bold;
-  color: #2c3e50;
+  color: #ffffff;
 }
 
 nav a.router-link-exact-active {
