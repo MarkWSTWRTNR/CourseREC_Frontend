@@ -1,26 +1,73 @@
 <template>
-    <h1>Curriculum Page</h1>
-    <p>Hi, I'm {{ name }}. I'm a {{ profession }} based in {{ location }}. Welcome to my portfolio website!</p>
-</template>
-
-<script>
-import axios from 'axios';
-export default {
-    name: 'HomePage,',
+    <div>
+      <h1>Create Category</h1>
+      <form @submit="createCategory">
+        <input type="text" v-model="categoryName" placeholder="Category Name" required>
+        <button type="submit">Create</button>
+      </form>
+  
+      <h1>Add Course</h1>
+      <form @submit="addCourse">
+        <select v-model="categoryId" required>
+          <option v-for="category in categories" :value="category.id">{{ category.name }}</option>
+        </select>
+        <input type="text" v-model="courseID" placeholder="Course ID" required>
+        <button type="submit">Add</button>
+      </form>
+  
+      <h1>Categories</h1>
+      <ul>
+        <li v-for="category in categories" :key="category.id">
+          {{ category.name }}
+          <ul>
+            <li v-for="course in category.courses" :key="course.id">
+              {{ course.name }}
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </template>
+  
+  <script>
+  import axios from 'axios';
+  
+  export default {
     data() {
-        return {
-            name: '',
-            profession: '',
-            location: '',
-        };
-    }, mounted() {
-        axios.get('http://localhost:5000/api/profile')
-            .then(response => {
-                this.name = response.data.name;
-                this.profession = response.data.profession;
-                this.location = response.data.location;
-            })
-            .catch(error => console.log(error));
+      return {
+        categoryName: '',
+        categoryId: '',
+        courseID: '',
+        categories: []
+      };
+    },
+    mounted() {
+      this.fetchCategories();
+    },
+    methods: {
+      fetchCategories() {
+       //ใส่พวก axios.get('/categories').then(response => this.categories = response.data)
+      },
+      createCategory() {
+        axios.post('/create_category', { category_name: this.categoryName })
+          .then(response => {
+            console.log(response.data.message);
+            this.fetchCategories();
+            this.categoryName = '';
+          })
+          .catch(error => console.error(error));
+      },
+      addCourse() {
+        axios.post('/add_course_to_curriculum', { category_id: this.categoryId, course_name: this.courseID })
+          .then(response => {
+            console.log(response.data.message);
+            this.fetchCategories();
+            this.categoryId = '';
+            this.courseID = '';
+          })
+          .catch(error => console.error(error));
+      }
     }
-};
-</script>
+  }
+  </script>
+  

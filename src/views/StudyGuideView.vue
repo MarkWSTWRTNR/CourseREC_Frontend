@@ -1,3 +1,3 @@
 <template>
-    Study guide page
+    Study guide page by ChatGPT
 </template>
