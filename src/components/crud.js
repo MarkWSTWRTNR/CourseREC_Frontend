@@ -40,13 +40,17 @@ export default {
             }
             axios.post('http://localhost:5000/api/courses', course)
                 .then(response => {
+                    const data = response.data;
+                    if(data.error){
+                        alert(data.error);
+                    }else{
                     this.fetchCourses();
                     this.course_id = '';
                     this.coursename = '';
                     this.credit = '';
                     this.gradingtype = '';
                     this.prereq = '';
-                    this.description = '';
+                    this.description = '';}
                 })
                 .catch(error => {
                     console.log(error);
