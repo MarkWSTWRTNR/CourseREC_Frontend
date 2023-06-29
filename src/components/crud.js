@@ -121,15 +121,7 @@ export default {
             this.prereq = '';
             this.description = '';
         }, 
-        fetchCourses() {
-            axios.get('http://localhost:5000/api/courses')
-                .then(response => {
-                    this.records = response.data;
-                })
-                .catch(error => {
-                    console.log(error);
-                });
-        }
+        
 
     }
 }
