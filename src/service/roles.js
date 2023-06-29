@@ -1,4 +1,5 @@
+export const userRole = "ADMIN";
 export const ROLES = {
-    ADMIN: 'admin',
-    STUDENT: 'student',
-  };
+  ADMIN: "ADMIN",
+  STUDENT: "STUDENT",
+};

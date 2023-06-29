@@ -21,15 +21,15 @@
 
 
 <script>
-import { ROLES } from "../src/service/roles"
+import { userRole, ROLES } from "../src/service/roles"
 
 export default {
   data() {
     return {
-      userRole: ROLES.STUDENT,
-      ROLES,
-    }
-  }
+      userRole: userRole,
+      ROLES: ROLES,
+    };
+  },
 }
 </script>
 

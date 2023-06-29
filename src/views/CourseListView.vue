@@ -25,8 +25,8 @@
                         </td>
 
                         <td>
-                            <button class="btn btn-outline-danger" @click="deleteCourse(record.course_id)">Delete</button>
-                            <button class="btn btn-outline-info" @click="editCourse(record); openForm()">Edit</button><br>
+                            <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-danger" @click="deleteCourse(record.course_id)">Delete</button>
+                            <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-info" @click="editCourse(record); openForm()">Edit</button><br>
                             <router-link :to="'/courses/' + record.course_id">Description</router-link>
 
                         </td>
@@ -36,7 +36,7 @@
         </div>
     </div>
     <div>
-        <button class="btn btn-outline-primary" @click="openForm">Add courses</button>
+        <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-primary" @click="openForm">Add courses</button>
         <div v-if="showForm">
             <div class="overlay">
                 <div class="popup">
@@ -88,11 +88,17 @@
 </template>
 
 <script>
+import { userRole, ROLES } from "../service/roles"
 import crud from '@/components/crud';
 export default {
     name: 'courselist',
     mixins: [crud],
-
+    data() {
+        return {
+            userRole: userRole,
+            ROLES: ROLES,
+        };
+    },
 }
 </script>
 

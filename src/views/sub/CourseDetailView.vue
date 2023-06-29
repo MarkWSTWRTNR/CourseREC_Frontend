@@ -4,7 +4,11 @@
       <p><strong>Course ID:</strong> {{ course.course_id }}</p>
       <p><strong>Credit:</strong> {{ course.credit }}</p>
       <p><strong>Grading Type:</strong> {{ course.gradingtype }}</p>
-      <p><strong>Course Prerequisite:</strong> {{ course.prereq }}</p>
+      <p><strong>Course Prerequisite:</strong> 
+      <li v-for="prerequisite in course.prereq" :key="prerequisite.course_id">
+        {{ prerequisite.course_id }} - {{ prerequisite.coursename }}
+      </li>
+    </p>
       <p><strong>Description:</strong> {{ course.description }}</p>
     </div>
   </template>
