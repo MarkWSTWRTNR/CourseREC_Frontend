@@ -97,39 +97,20 @@
 </template>
 
 <script>
-import axios from "axios";
+
 import { userRole, ROLES } from "../service/roles"
+import searchTools from "../components/searchTools"
 import crud from '@/components/crud';
 export default {
     name: 'courselist',
-    mixins: [crud],
+    mixins: [crud, searchTools],
     data() {
         return {
             userRole: userRole,
             ROLES: ROLES,
-            searchQuery: '',
-            searchResults: [],
+
         };
-    }, computed: {
-        displayCourses() {
-            return this.searchQuery ? this.searchResults : this.records;
-        },
-    },
-    methods: {
-        searchCourses() {
-            axios.get('http://localhost:5000/api/courses/search', {
-                params: {
-                    query: this.searchQuery,
-                },
-            })
-                .then(response => {
-                    this.searchResults = response.data;
-                })
-                .catch(error => {
-                    console.error(error);
-                });
-        },
-    },
+    }
 }
 </script>
 
