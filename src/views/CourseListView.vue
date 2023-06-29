@@ -19,8 +19,10 @@
                         <td>{{ record.coursename }}</td>
                         <td>{{ record.credit }}</td>
                         <td>{{ record.gradingtype }}</td>
-                        <td>{{ record.prereq }}</td>
-
+                        <td><span v-for="prerequisite in record.prereq" :key="prerequisite.course_id">
+                                {{ prerequisite.course_id }} - {{ prerequisite.coursename }}
+                            </span>
+                        </td>
 
                         <td>
                             <button class="btn btn-outline-danger" @click="deleteCourse(record.course_id)">Delete</button>
@@ -61,9 +63,10 @@
                                 <div class="form-group">
                                     <label for="coursePrerequisite">Course Prerequisite</label>
                                     <select class="form-control" id="coursePrerequisite" v-model="prereq" required>
-                                        <option value="">Select a prerequisite course</option>
+                                        <option value="" disabled selected>Select a prerequisite course</option>
                                         <option value="null">None</option>
-                                        <option v-for="record in records" :value="record.course_id">{{ record.course_id }} {{ record.coursename }} 
+                                        <option v-for="record in records" :value="record.course_id">{{ record.course_id }}
+                                            {{ record.coursename }}
                                         </option>
                                     </select>
                                 </div>
@@ -71,7 +74,8 @@
                                     <label for="description">Description</label>
                                     <input type="text" class="form-control" id="description" v-model="description" required>
                                 </div>
-                                <button v-if="selectedCourse" class="btn btn-outline-success" @click="updateCourse">Update</button>
+                                <button v-if="selectedCourse" class="btn btn-outline-success"
+                                    @click="updateCourse">Update</button>
                                 <button v-else class="btn btn-primary" type="submit">Create</button>
                                 <button @click="cancelForm">Cancel</button>
                             </form>
