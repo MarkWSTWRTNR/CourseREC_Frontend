@@ -1,73 +1,50 @@
 <template>
-    <div>
-      <h1>Create Category</h1>
-      <form @submit="createCategory">
-        <input type="text" v-model="categoryName" placeholder="Category Name" required>
-        <button type="submit">Create</button>
-      </form>
-  
-      <h1>Add Course</h1>
-      <form @submit="addCourse">
-        <select v-model="categoryId" required>
-          <option v-for="category in categories" :value="category.id">{{ category.name }}</option>
-        </select>
-        <input type="text" v-model="courseID" placeholder="Course ID" required>
-        <button type="submit">Add</button>
-      </form>
-  
-      <h1>Categories</h1>
-      <ul>
-        <li v-for="category in categories" :key="category.id">
-          {{ category.name }}
-          <ul>
-            <li v-for="course in category.courses" :key="course.id">
-              {{ course.name }}
-            </li>
-          </ul>
-        </li>
-      </ul>
+  <div>
+    <div v-for="(item, index) in items" :key="index">
+      <div @click="toggleAccordion(index)" :class="{'active': isActive(index)}">
+        <h3>{{ item.title }}</h3>
+        <i class="fa fa-chevron-down" :class="{'fa-rotate-180': isActive(index)}"></i>
+      </div>
+      <div v-show="isActive(index)" class="content">
+        <!-- Content for each accordion item -->
+        <p>{{ item.content }}</p>
+      </div>
     </div>
-  </template>
-  
-  <script>
-  import axios from 'axios';
-  
-  export default {
-    data() {
-      return {
-        categoryName: '',
-        categoryId: '',
-        courseID: '',
-        categories: []
-      };
-    },
-    mounted() {
-      this.fetchCategories();
-    },
-    methods: {
-      fetchCategories() {
-       //ใส่พวก axios.get('/categories').then(response => this.categories = response.data)
-      },
-      createCategory() {
-        axios.post('/create_category', { category_name: this.categoryName })
-          .then(response => {
-            console.log(response.data.message);
-            this.fetchCategories();
-            this.categoryName = '';
-          })
-          .catch(error => console.error(error));
-      },
-      addCourse() {
-        axios.post('/add_course_to_curriculum', { category_id: this.categoryId, course_name: this.courseID })
-          .then(response => {
-            console.log(response.data.message);
-            this.fetchCategories();
-            this.categoryId = '';
-            this.courseID = '';
-          })
-          .catch(error => console.error(error));
+  </div>
+</template>
+
+<script>
+export default {
+  data() {
+    return {
+      items: [
+        { title: 'Curriculum structure', content: 'Content for Accordion Item 1' },
+        { title: 'Study plan', content: 'Content for Accordion Item 2' },
+      ],
+      activeIndices: []
+    };
+  },
+  methods: {
+    toggleAccordion(index) {
+      if (this.isActive(index)) {
+        this.activeIndices = this.activeIndices.filter(i => i !== index); // Remove index if already active
+      } else {
+        this.activeIndices.push(index); // Add index if not active
       }
+    },
+    isActive(index) {
+      return this.activeIndices.includes(index);
     }
   }
-  </script>
-  
+};
+</script>
+
+<style>
+.active {
+  background-color: #f0f0f0;
+}
+
+.content {
+  padding: 10px;
+}
+</style>
