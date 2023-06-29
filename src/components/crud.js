@@ -41,25 +41,30 @@ export default {
             axios.post('http://localhost:5000/api/courses', course)
                 .then(response => {
                     const data = response.data;
-                    if(data.error){
+                    if (data.error) {
                         alert(data.error);
-                    }else{
-                    this.fetchCourses();
-                    this.course_id = '';
-                    this.coursename = '';
-                    this.credit = '';
-                    this.gradingtype = '';
-                    this.prereq = '';
-                    this.description = '';}
+                    } else {
+                        this.fetchCourses();
+                        this.course_id = '';
+                        this.coursename = '';
+                        this.credit = '';
+                        this.gradingtype = '';
+                        this.prereq = '';
+                        this.description = '';
+                    }
                 })
                 .catch(error => {
                     console.log(error);
                 });
             this.showForm = false;
-            this.selectedCourse =  null
+            this.selectedCourse = null
             this.clearForm;
         },
         deleteCourse(courseId) {
+            const confirmDelete = confirm("Are you sure you want to delete this course?");
+            if (!confirmDelete) {
+                return;
+            }
             axios.delete(`http://localhost:5000/api/courses/${courseId}`)
                 .then(response => {
                     this.fetchCourses();
@@ -85,29 +90,29 @@ export default {
         },
         updateCourse() {
             if (!this.selectedCourse) {
-              return;
+                return;
             }
-            
+
             const updatedCourse = {
-              course_id: this.course_id,
-              coursename: this.coursename,
-              credit: this.credit,
-              gradingtype: this.gradingtype,
-              prereq: this.prereq,
-              description: this.description
+                course_id: this.course_id,
+                coursename: this.coursename,
+                credit: this.credit,
+                gradingtype: this.gradingtype,
+                prereq: this.prereq,
+                description: this.description
             };
-          
+
             axios.put(`http://localhost:5000/api/courses/${this.selectedCourse.course_id}`, updatedCourse)
-              .then(response => {
-                this.fetchCourses();
-                this.selectedCourse = null;
-                this.clearForm();
-              })
-              .catch(error => {
-                console.log(error);
-              });
-          },
-          
+                .then(response => {
+                    this.fetchCourses();
+                    this.selectedCourse = null;
+                    this.clearForm();
+                })
+                .catch(error => {
+                    console.log(error);
+                });
+        },
+
         openForm() {
             this.showForm = true;
         },
@@ -115,7 +120,7 @@ export default {
             // Close the form without submitting
             this.showForm = false;
             this.clearForm();
-            this.selectedCourse = null; 
+            this.selectedCourse = null;
         },
         clearForm() {
             this.course_id = '';
@@ -124,8 +129,8 @@ export default {
             this.gradingtype = '';
             this.prereq = '';
             this.description = '';
-        }, 
-        
+        },
+
 
     }
 }
