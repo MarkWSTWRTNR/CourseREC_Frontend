@@ -1,5 +1,9 @@
 <!-- CourseListView.vue -->
 <template>
+    <div>
+        <input type="text" v-model="searchQuery" placeholder="Search courses">
+        <button @click="searchCourses">Search</button>
+    </div>
     <div class="row">
         <div class="col-md-12">
             <table class="table table-striped table-bordered">
@@ -14,7 +18,10 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr v-for="record in    records   " :key="record.course_id">
+                    <tr v-if="displayCourses.length === 0">
+                        <td colspan="6" class="text-center">No courses found</td>
+                    </tr>
+                    <tr v-for="record in    displayCourses   " :key="record.course_id">
                         <td>{{ record.course_id }}</td>
                         <td>{{ record.coursename }}</td>
                         <td>{{ record.credit }}</td>
@@ -25,8 +32,10 @@
                         </td>
 
                         <td>
-                            <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-danger" @click="deleteCourse(record.course_id)">Delete</button>
-                            <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-info" @click="editCourse(record); openForm()">Edit</button><br>
+                            <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-danger"
+                                @click="deleteCourse(record.course_id)">Delete</button>
+                            <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-info"
+                                @click="editCourse(record); openForm()">Edit</button><br>
                             <router-link :to="'/courses/' + record.course_id">Description</router-link>
 
                         </td>
@@ -88,6 +97,7 @@
 </template>
 
 <script>
+import axios from "axios";
 import { userRole, ROLES } from "../service/roles"
 import crud from '@/components/crud';
 export default {
@@ -97,7 +107,28 @@ export default {
         return {
             userRole: userRole,
             ROLES: ROLES,
+            searchQuery: '',
+            searchResults: [],
         };
+    }, computed: {
+        displayCourses() {
+            return this.searchQuery ? this.searchResults : this.records;
+        },
+    },
+    methods: {
+        searchCourses() {
+            axios.get('http://localhost:5000/api/courses/search', {
+                params: {
+                    query: this.searchQuery,
+                },
+            })
+                .then(response => {
+                    this.searchResults = response.data;
+                })
+                .catch(error => {
+                    console.error(error);
+                });
+        },
     },
 }
 </script>
