@@ -7,7 +7,7 @@ export default {
             coursename: '',
             credit: '',
             gradingtype: '',
-            prereq: '',
+            prereq: [],
             description: '',
             selectedCourse: null,
             showForm: false

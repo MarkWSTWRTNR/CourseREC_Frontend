@@ -26,9 +26,9 @@
                         <td>{{ record.coursename }}</td>
                         <td>{{ record.credit }}</td>
                         <td>{{ record.gradingtype }}</td>
-                        <td><span v-for="prerequisite in record.prereq" :key="prerequisite.course_id">
+                        <td><li v-for="prerequisite in record.prereq" :key="prerequisite.course_id">
                                 {{ prerequisite.course_id }} - {{ prerequisite.coursename }}
-                            </span>
+                        </li>
                         </td>
 
                         <td>
@@ -71,12 +71,10 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="coursePrerequisite">Course Prerequisite</label>
-                                    <select class="form-control" id="coursePrerequisite" v-model="prereq" required>
+                                    <select class="form-control" id="coursePrerequisite" v-model="prereq" multiple required>
                                         <option value="" disabled selected>Select a prerequisite course</option>
                                         <option value="null">None</option>
-                                        <option v-for="record in records" :value="record.course_id">{{ record.course_id }}
-                                            {{ record.coursename }}
-                                        </option>
+                                        <option v-for="record in records" :value="record.course_id">{{ record.course_id }} {{ record.coursename }}</option>
                                     </select>
                                 </div>
                                 <div class="form-group">
