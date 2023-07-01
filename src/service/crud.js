@@ -58,6 +58,7 @@ export default {
             }
             axios.post('http://localhost:5000/api/courses', course)
                 .then(response => {
+                    alert('Course created successfully');
                     const data = response.data;
                     if (data.error) {
                         alert(data.error);
@@ -85,6 +86,7 @@ export default {
             }
             axios.delete(`http://localhost:5000/api/courses/${courseId}`)
                 .then(response => {
+                    alert('Course deleted successfully');
                     this.fetchCourses();
                 })
                 .catch(error => {
@@ -106,7 +108,7 @@ export default {
                 this.description = course.description;
                 this.showForm = true;
             } else {
-                console.log('Invalid course object:', course);
+                alert('Invalid course object:', course);
             }
         },
         updateCourse() {
@@ -125,12 +127,13 @@ export default {
 
             axios.put(`http://localhost:5000/api/courses/${this.selectedCourse.course_id}`, updatedCourse)
                 .then(response => {
+                    alert('Course updated successfully');
                     this.fetchCourses();
                     this.selectedCourse = null;
                     this.clearForm();
                 })
                 .catch(error => {
-                    console.log(error);
+                    alert('Error updating course:', error);
                 });
         },
 

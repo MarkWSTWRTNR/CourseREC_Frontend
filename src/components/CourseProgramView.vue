@@ -5,14 +5,14 @@
         <table class="table table-striped table-bordered">
           <thead>
             <tr>
-              
+
               <th>Program</th>
               <th>Action</th>
             </tr>
           </thead>
           <tbody>
             <tr v-for="record in displayProgram" :key="record.program_id">
-              
+
               <td>{{ record.program_name }}</td>
               <td>
                 <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-danger"
@@ -77,7 +77,7 @@ export default {
           this.displayProgram = response.data;
         })
         .catch(error => {
-          console.log('Error fetching programs:', error);
+          alert('Error fetching programs:', error);
         });
     },
     // Adds a new program
@@ -86,24 +86,27 @@ export default {
         name: this.program_name
       })
         .then(response => {
-          console.log('Program created successfully');
+          alert('Program created successfully');
           this.fetchPrograms();
           this.cancelForm();
         })
         .catch(error => {
-          console.log('Error creating program:', error);
+          alert('Error creating program:', error);
         });
     },
     // Deletes a program
     deleteProgram(programId) {
-      axios.delete(`http://localhost:5000/api/programs/${programId}`)
-        .then(response => {
-          console.log('Program deleted successfully');
-          this.fetchPrograms();
-        })
-        .catch(error => {
-          console.log('Error deleting program:', error);
-        });
+      const confirmed = confirm('Are you sure you want to delete this program?');
+      if (confirmed) {
+        axios.delete(`http://localhost:5000/api/programs/${programId}`)
+          .then(response => {
+            alert('Program deleted successfully');
+            this.fetchPrograms();
+          })
+          .catch(error => {
+            alert('Error deleting program:', error);
+          });
+      }
     },
     editProgram(program) {
       if (program && program.program_id) {
@@ -111,7 +114,7 @@ export default {
         this.program_name = program.program_name;
         this.showForm = true;
       } else {
-        console.log('Invalid program select:', program);
+        alert('Invalid program select:', program);
       }
     },
     updateProgram() {
@@ -123,12 +126,12 @@ export default {
       };
       axios.put(`http://localhost:5000/api/programs/${this.selectedProgram.program_id}`, updatedProgram)
         .then(response => {
-          console.log('Program updated successfully');
+          alert('Program updated successfully');
           this.fetchPrograms();
           this.cancelForm();
         })
         .catch(error => {
-          console.log('Error updating program:', error);
+          alert('Error updating program:', error);
         });
     },
 
