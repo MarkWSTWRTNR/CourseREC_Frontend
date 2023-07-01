@@ -99,8 +99,8 @@
 <script>
 
 import { userRole, ROLES } from "../service/roles"
-import searchTools from "../components/searchTools"
-import crud from '@/components/crud';
+import searchTools from "../service/searchTools"
+import crud from '@/service/crud';
 export default {
     name: 'courselist',
     mixins: [crud, searchTools],
