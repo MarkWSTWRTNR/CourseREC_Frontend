@@ -3,9 +3,10 @@ import axios from 'axios';
 import vSelect from 'vue-select';
 
 export default {
-    components: {
+     components: {
         'v-select': vSelect,
-    },
+
+     },
     data() {
         return {
             records: [],
