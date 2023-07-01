@@ -6,8 +6,9 @@ import StudentStudyPlanView from "../views/StudentStudyPlanView.vue";
 import RecommendCourseView from "../views/RecommendCourseView.vue";
 import StudyGuideView from "../views/StudyGuideView.vue";
 import FinishedCourseView from "../views/FinishedCourseView.vue";
-import CourseDetailView from "../views/sub/CourseDetailView.vue"
-import FacultyView from "../views/sub/FacultyView.vue";
+import CourseDetailView from "../components/CourseDetailView.vue"
+import FacultyView from "../components/FacultyView.vue";
+import CourseProgramView from "../components/CourseProgramView.vue"
 import { ROLES } from "@/service/roles";
 const routes = [
 
@@ -64,6 +65,12 @@ const routes = [
     name: 'faculty',
     component: FacultyView,
     meta: {roles: [ROLES.STUDENT, ROLES.ADMIN]}
+  },
+  {
+    path:'/courseprogram',
+    name: 'courseprogramview',
+    component: CourseProgramView,
+    meta:{roles: [ROLES.ADMIN]}
   }
     
 ];
