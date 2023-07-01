@@ -14,7 +14,9 @@
     "core-js": "^3.8.3",
     "usemodal-vue3": "^0.3.7",
     "vue": "^3.3.4",
+    "vue-multiselect": "^2.1.7",
     "vue-router": "^4.0.3",
+    "vue-select": "^4.0.0-beta.6",
     "vuex": "^4.0.0"
   },
   "devDependencies": {

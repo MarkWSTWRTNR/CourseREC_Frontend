@@ -1,5 +1,11 @@
+// crud.js
 import axios from 'axios';
+import vSelect from 'vue-select';
+
 export default {
+    components: {
+        'v-select': vSelect,
+    },
     data() {
         return {
             records: [],
@@ -20,12 +26,24 @@ export default {
         fetchCourses() {
             axios.get('http://localhost:5000/api/courses')
                 .then(response => {
-                    this.records = response.data;
+                    this.records = response.data.map(course => ({
+                        course_id: course.course_id,
+                        coursename: course.coursename,
+                        credit: course.credit,
+                        gradingtype: course.gradingtype,
+                        prereq: course.prereq.map(prerequisite => ({
+                            course_id: prerequisite.course_id,
+                            coursename: prerequisite.coursename
+                        })),
+                        description: course.description,
+                        label: `${course.course_id} - ${course.coursename}`
+                    }));
                 })
                 .catch(error => {
                     console.log(error);
                 });
         },
+
         addCourse() {
             const course = {
                 course_id: this.course_id,
@@ -80,10 +98,13 @@ export default {
                 this.coursename = course.coursename;
                 this.credit = course.credit;
                 this.gradingtype = course.gradingtype;
-                this.prereq = course.prereq;
-                this.description = course.description
+                this.prereq = course.prereq.map(prerequisite => ({
+                    course_id: prerequisite.course_id,
+                    coursename: prerequisite.coursename,
+                    label: `${prerequisite.course_id} - ${prerequisite.coursename}`
+                }));
+                this.description = course.description;
                 this.showForm = true;
-
             } else {
                 console.log('Invalid course object:', course);
             }

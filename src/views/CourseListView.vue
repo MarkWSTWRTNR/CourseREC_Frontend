@@ -26,9 +26,11 @@
                         <td>{{ record.coursename }}</td>
                         <td>{{ record.credit }}</td>
                         <td>{{ record.gradingtype }}</td>
-                        <td><li v-for="prerequisite in record.prereq" :key="prerequisite.course_id">
+                        <td>
+                            <li style="text-align: left;" v-for="prerequisite in record.prereq"
+                                :key="prerequisite.course_id">
                                 {{ prerequisite.course_id }} - {{ prerequisite.coursename }}
-                        </li>
+                            </li>
                         </td>
 
                         <td>
@@ -71,11 +73,11 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="coursePrerequisite">Course Prerequisite</label>
-                                    <select class="form-control" id="coursePrerequisite" v-model="prereq" multiple required>
-                                        <option value="" disabled selected>Select a prerequisite course</option>
-                                        <option value="null">None</option>
-                                        <option v-for="record in records" :value="record.course_id">{{ record.course_id }} {{ record.coursename }}</option>
-                                    </select>
+                                    <v-select class="form-control left-align" id="coursePrerequisite" v-model="prereq"
+                                        :options="records.map(record => ({ label: record.course_id + ' - ' + record.coursename, value: record.course_id }))"
+                                        multiple :reduce="option => option.value"
+                                        :placeholder="'Select prerequisite courses'" >
+                                    </v-select>
                                 </div>
                                 <div class="form-group">
                                     <label for="description">Description</label>
