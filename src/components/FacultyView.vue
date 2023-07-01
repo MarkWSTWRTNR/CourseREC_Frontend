@@ -1,26 +1,22 @@
 <template>
-    <div>
-      <input type="text" v-model="searchQuery" placeholder="Search Faculty">
-      <button @click="searchCourses">Search</button>
-    </div>
+  <div>
     <div class="row">
       <div class="col-md-12">
         <table class="table table-striped table-bordered">
           <thead>
             <tr>
               <th>Faculty ID</th>
-              <th>Faculty</th>
-              <th>Program</th>
+              <th>Faculty Name</th>
+              <th>Action</th>
             </tr>
           </thead>
           <tbody>
             <tr v-for="record in displayFaculty" :key="record.faculty_id">
               <td>{{ record.faculty_id }}</td>
               <td>{{ record.faculty_name }}</td>
-              <td>{{ record.program_name }}</td>
               <td>
                 <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-danger" @click="deleteFaculty(record.faculty_id)">Delete</button>
-                <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-info" @click="editFaculty(record); openForm()">Edit</button>
+                <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-info" @click="editFaculty(record)">Edit</button>
               </td>
             </tr>
           </tbody>
@@ -34,14 +30,12 @@
           <div class="popup">
             <div class="row">
               <div class="col-md-12">
-                <h3>Create Faculty</h3>
-                <form @submit.prevent="addFaculty">
-                  <input type="text" v-model="newFaculty.name" placeholder="Faculty Name" required>
-                  <select v-model="newFaculty.program_id" required>
-                    <option value="">Select Program</option>
-                    <option v-for="program in programs" :value="program.id">{{ program.name }}</option>
-                  </select>
-                  <button class="btn btn-primary" type="submit">Create</button>
+                <h3>{{ selectedFaculty ? 'Edit Faculty' : 'Create Faculty' }}</h3>
+                <form @submit.prevent="selectedFaculty ? updateFaculty() : addFaculty()">
+                  <input type="text" v-model="newFaculty.faculty_id" placeholder="Faculty ID" required>
+                  <input type="text" v-model="newFaculty.name" placeholder="Faculty Name" required> <br>
+                  <button v-if="selectedFaculty" class="btn btn-outline-success" @click="updateFaculty">Update</button>
+                  <button v-else class="btn btn-primary" type="submit">Create</button>
                   <button @click="cancelForm">Cancel</button>
                 </form>
               </div>
@@ -50,107 +44,102 @@
         </div>
       </div>
     </div>
-  </template>
-  
-  <script>
-  import axios from 'axios';
-  import { userRole, ROLES } from '@/service/roles';
-  
-  export default {
-    name: 'faculty',
-    data() {
-      return {
-        userRole: userRole,
-        ROLES: ROLES,
-        faculties: [],
-        programs: [],
-        searchQuery: '',
-        displayFaculty: [],
-        showForm: false,
-        newFaculty: {
-          name: '',
-          program_id: ''
-        }
-      };
-    },
-    methods: {
-      fetchFaculties() {
-        axios
-          .get('http://localhost:5000/api/faculties')
-          .then(response => {
-            this.faculties = response.data;
-            this.filterFaculty();
-          })
-          .catch(error => {
-            console.error(error);
-          });
-      },
-      fetchPrograms() {
-        axios
-          .get('http://localhost:5000/api/programs')
-          .then(response => {
-            this.programs = response.data;
-          })
-          .catch(error => {
-            console.error(error);
-          });
-      },
-      filterFaculty() {
-        if (this.searchQuery) {
-          this.displayFaculty = this.faculties.filter(faculty => {
-            return faculty.faculty_name.toLowerCase().includes(this.searchQuery.toLowerCase());
-          });
-        } else {
+  </div>
+</template>
+
+<script>
+import axios from 'axios';
+import { userRole, ROLES } from '@/service/roles';
+
+export default {
+  name: 'faculty',
+  data() {
+    return {
+      userRole: userRole,
+      ROLES: ROLES,
+      faculties: [],
+      displayFaculty: [],
+      showForm: false,
+      selectedFaculty: null,
+      newFaculty: {
+        faculty_id: '',
+        name: ''
+      }
+    };
+  },
+  methods: {
+    fetchFaculties() {
+      axios
+        .get('http://localhost:5000/api/faculties')
+        .then(response => {
+          this.faculties = response.data;
           this.displayFaculty = this.faculties;
-        }
-      },
-      addFaculty() {
-        axios
-          .post('http://localhost:5000/api/faculties', {
-            name: this.newFaculty.name,
-            program_id: this.newFaculty.program_id
-          })
-          .then(response => {
-            console.log(response.data);
-            this.fetchFaculties();
-            this.cancelForm();
-          })
-          .catch(error => {
-            console.error(error);
-          });
-      },
-      deleteFaculty(facultyId) {
-        axios
-          .delete(`http://localhost:5000/api/faculties/${facultyId}`)
-          .then(response => {
-            console.log(response.data);
-            this.fetchFaculties();
-          })
-          .catch(error => {
-            console.error(error);
-          });
-      },
-      editFaculty(record) {
-        // Add the logic to edit the faculty record here
-      },
-      openForm() {
-        this.showForm = true;
-      },
-      cancelForm() {
-        this.showForm = false;
-        this.newFaculty.name = '';
-        this.newFaculty.program_id = '';
-      }
+        })
+        .catch(error => {
+          console.error(error);
+        });
     },
-    created() {
-      this.fetchFaculties();
-      this.fetchPrograms();
+    addFaculty() {
+      axios
+        .post('http://localhost:5000/api/faculties', {
+          faculty_id: this.newFaculty.faculty_id,
+          name: this.newFaculty.name
+        })
+        .then(response => {
+          console.log(response.data);
+          this.fetchFaculties();
+          this.cancelForm();
+        })
+        .catch(error => {
+          console.error(error);
+        });
     },
-    watch: {
-      searchQuery() {
-        this.filterFaculty();
-      }
+    deleteFaculty(facultyId) {
+      axios
+        .delete(`http://localhost:5000/api/faculties/${facultyId}`)
+        .then(response => {
+          console.log(response.data);
+          this.fetchFaculties();
+        })
+        .catch(error => {
+          console.error(error);
+        });
+    },
+    editFaculty(record) {
+      this.selectedFaculty = record;
+      this.newFaculty.faculty_id = record.faculty_id;
+      this.newFaculty.name = record.faculty_name;
+      this.showForm = true;
+    },
+    updateFaculty() {
+      axios
+        .put(`http://localhost:5000/api/faculties/${this.selectedFaculty.faculty_id}`, {
+          name: this.newFaculty.name
+        })
+        .then(response => {
+          console.log(response.data);
+          this.fetchFaculties();
+          this.cancelForm();
+        })
+        .catch(error => {
+          console.error(error);
+        });
+    },
+    openForm() {
+      this.selectedFaculty = null;
+      this.newFaculty.faculty_id = '';
+      this.newFaculty.name = '';
+      this.showForm = true;
+    },
+    cancelForm() {
+      this.showForm = false;
+      this.selectedFaculty = null;
+      this.newFaculty.faculty_id = '';
+      this.newFaculty.name = '';
     }
-  };
-  </script>
-  
+  },
+  created() {
+    this.fetchFaculties();
+  }
+};
+</script>
