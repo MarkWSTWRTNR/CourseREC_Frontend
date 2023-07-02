@@ -28,8 +28,37 @@
             <i class="fa fa-chevron-down" :class="{ 'fa-rotate-180': isActive(index) }"></i>
           </div>
           <div v-show="isActive(index)" class="content">
-            <!-- Content for each accordion item -->
-            <p>{{ item.content }}</p>
+            <h4>1. General Education</h4>
+            <h4>Required courses</h4>
+            <h4>1.1 Learner Pereson</h4>
+            <div class="row">
+              <div class="col-md-12">
+                <table class="table table-striped tanle-bordered">
+                  <thead>
+                    <tr>
+                      <th>Course ID</th>
+                      <th>Course Name</th>
+                      <th>Credit</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr v-for="record in    displayCourses   " :key="record.course_id">
+                      <td>{{ record.course_id }}</td>
+                      <td>{{ record.coursename }}</td>
+                      <td>{{ record.credit }}</td>
+                      <td><button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-danger"
+                          @click="deleteCourse(record.course_id)">Delete</button>
+                        <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-info"
+                          @click="editCourse(record); openForm()">Edit</button><br>
+                        <router-link :to="'/courses/' + record.course_id">Description</router-link>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-primary" @click="openForm">Add courses</button>
+            <h2></h2>
           </div>
         </div>
       </div>
@@ -39,18 +68,15 @@
 
 <script>
 import axios from 'axios';
-
+import { userRole, ROLES } from '@/service/roles';
 export default {
   data() {
     return {
+      userRole: userRole,
+      ROLES: ROLES,
       items: [
         {
           title: 'Curriculum structure',
-          content: 'Content for Accordion Item 1',
-        },
-        {
-          title: 'Study plan',
-          content: 'Content for Accordion Item 2',
         },
       ],
       faculties: [],
