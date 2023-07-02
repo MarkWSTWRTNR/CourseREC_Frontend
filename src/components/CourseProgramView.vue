@@ -188,20 +188,7 @@ export default {
       this.selectedFaculty = '';
       this.selectedProgram = null;
     },
-    searchProgram() {
-      axios
-        .get('http://localhost:5000/api/programs/search', {
-          params: {
-            query: this.searchQuery
-          }
-        })
-        .then(response => {
-          this.programs = response.data;
-        })
-        .catch(error => {
-          console.error(error);
-        });
-    }
+   
   },
   mounted() {
     this.fetchData();

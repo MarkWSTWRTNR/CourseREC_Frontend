@@ -4,8 +4,6 @@
       <nav v-if="userRole === ROLES.ADMIN">
         <router-link to="/curriculum">Curriculum</router-link>
         <router-link to="/course_list">Course list</router-link>
-        <router-link to="/faculty">Faculty</router-link>
-        <router-link to="/courseprogram">Course program</router-link>
       </nav>
 
       <nav v-if="userRole === ROLES.STUDENT">
