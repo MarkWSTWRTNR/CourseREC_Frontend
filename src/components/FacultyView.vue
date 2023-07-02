@@ -1,43 +1,49 @@
 <template>
   <div>
-    <div class="row">
-      <div class="col-md-12">
-        <table class="table table-striped table-bordered">
-          <thead>
-            <tr>
-              <th>Faculty ID</th>
-              <th>Faculty Name</th>
-              <th>Action</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="record in displayFaculty" :key="record.faculty_id">
-              <td>{{ record.faculty_id }}</td>
-              <td>{{ record.faculty_name }}</td>
-              <td>
-                <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-danger" @click="deleteFaculty(record.faculty_id)">Delete</button>
-                <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-info" @click="editFaculty(record)">Edit</button>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+    <div>
+      <input type="text" v-model="searchQuery" placeholder="Search Faculty">
+      <button @click="searchFaculty">Search</button>
     </div>
     <div>
-      <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-primary" @click="openForm">Add Faculty</button>
-      <div v-if="showForm">
-        <div class="overlay">
-          <div class="popup">
-            <div class="row">
-              <div class="col-md-12">
-                <h3>{{ selectedFaculty ? 'Edit Faculty' : 'Create Faculty' }}</h3>
-                <form @submit.prevent="selectedFaculty ? updateFaculty() : addFaculty()">
-                  <input type="text" v-model="newFaculty.faculty_id" placeholder="Faculty ID" required>
-                  <input type="text" v-model="newFaculty.name" placeholder="Faculty Name" required> <br>
-                  <button v-if="selectedFaculty" class="btn btn-outline-success" @click="updateFaculty">Update</button>
-                  <button v-else class="btn btn-primary" type="submit">Create</button>
-                  <button @click="cancelForm">Cancel</button>
-                </form>
+      <div class="row">
+        <div class="col-md-12">
+          <table class="table table-striped table-bordered">
+            <thead>
+              <tr>
+                <th>Faculty ID</th>
+                <th>Faculty Name</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="record in filteredFaculty" :key="record.faculty_id">
+                <td>{{ record.faculty_id }}</td>
+                <td>{{ record.faculty_name }}</td>
+                <td>
+                  <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-danger" @click="deleteFaculty(record.faculty_id)">Delete</button>
+                  <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-info" @click="editFaculty(record)">Edit</button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div>
+        <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-primary" @click="openForm">Add Faculty</button>
+        <div v-if="showForm">
+          <div class="overlay">
+            <div class="popup">
+              <div class="row">
+                <div class="col-md-12">
+                  <h3>{{ selectedFaculty ? 'Edit Faculty' : 'Create Faculty' }}</h3>
+                  <form @submit.prevent="selectedFaculty ? updateFaculty() : addFaculty()">
+                    <input type="text" v-model="newFaculty.faculty_id" placeholder="Faculty ID" required>
+                    <input type="text" v-model="newFaculty.name" placeholder="Faculty Name" required> <br>
+                    <button v-if="selectedFaculty" class="btn btn-outline-success" @click="updateFaculty">Update</button>
+                    <button v-else class="btn btn-primary" type="submit">Create</button>
+                    <button @click="cancelForm">Cancel</button>
+                  </form>
+                </div>
               </div>
             </div>
           </div>
@@ -50,15 +56,16 @@
 <script>
 import axios from 'axios';
 import { userRole, ROLES } from '@/service/roles';
+import searchTools from '@/service/searchTools';
 
 export default {
   name: 'faculty',
+  mixins: [searchTools],
   data() {
     return {
       userRole: userRole,
       ROLES: ROLES,
       faculties: [],
-      displayFaculty: [],
       showForm: false,
       selectedFaculty: null,
       newFaculty: {
@@ -73,7 +80,6 @@ export default {
         .get('http://localhost:5000/api/faculties')
         .then(response => {
           this.faculties = response.data;
-          this.displayFaculty = this.faculties;
         })
         .catch(error => {
           console.error(error);
@@ -136,7 +142,7 @@ export default {
       this.selectedFaculty = null;
       this.newFaculty.faculty_id = '';
       this.newFaculty.name = '';
-    }
+    },
   },
   created() {
     this.fetchFaculties();
