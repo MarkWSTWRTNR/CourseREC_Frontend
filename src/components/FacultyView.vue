@@ -12,7 +12,7 @@
               <tr>
                 <th>Faculty ID</th>
                 <th>Faculty Name</th>
-                <th>Action</th>
+                <th v-if="userRole === ROLES.ADMIN">Action</th>
               </tr>
             </thead>
             <tbody>

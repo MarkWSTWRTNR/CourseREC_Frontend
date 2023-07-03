@@ -22,215 +22,448 @@
       </select>
 
       <div v-if="selectedProgram">
-        <div v-for="(item, index) in items" :key="index">
-          <div @click="toggleAccordion(index)" :class="{ 'accordion': true, 'active': isActive(index) }">
+        <!-- First Accordion -->
+        <div v-for="(item, index) in items1" :key="index">
+          <div @click="toggleAccordion(1, index)" :class="{ 'accordion': true, 'active': isActive(1, index) }">
             <h3>{{ item.title }}</h3>
-            <i class="fa fa-chevron-down" :class="{ 'fa-rotate-180': isActive(index) }"></i>
-        </div>
+            <i class="fa fa-chevron-down" :class="{ 'fa-rotate-180': isActive(1, index) }"></i>
+          </div>
 
-        <div v-show="isActive(index)" class="content">
-          <h4>1. General Education</h4>
-          <h4>1.1Required courses</h4>
-          <h4>1.1.1 Learner Pereson</h4>
-          <div class="row">
-            <div class="col-md-12">
-              <table class="table table-striped tanle-bordered">
-                <thead>
-                  <tr>
-                    <th>Course ID</th>
-                    <th>Course Name</th>
-                    <th>Credit</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr v-for="record in    displayCourses   " :key="record.course_id">
-                    <td>{{ record.course_id }}</td>
-                    <td>{{ record.coursename }}</td>
-                    <td>{{ record.credit }}</td>
-                    <td><button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-danger"
-                        @click="deleteCourse(record.course_id)">Delete</button>
-                      <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-info"
-                        @click="editCourse(record); openForm()">Edit</button><br>
-                      <router-link :to="'/courses/' + record.course_id">Description</router-link>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
+          <div v-show="isActive(1, index)" class="content">
+            <h4>1. General Education</h4>
+            <h4>1.1Required courses</h4>
+            <h4>1.1.1 Learner Pereson</h4>
+            <div class="row">
+              <div class="col-md-12">
+                <table class="table table-striped tanle-bordered">
+                  <thead>
+                    <tr>
+                      <th>Course ID</th>
+                      <th>Course Name</th>
+                      <th>Credit</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr v-for="record in    displayCourses   " :key="record.course_id">
+                      <td>{{ record.course_id }}</td>
+                      <td>{{ record.coursename }}</td>
+                      <td>{{ record.credit }}</td>
+                      <td><button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-danger"
+                          @click="deleteCourse(record.course_id)">Delete</button>
+                        <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-info"
+                          @click="editCourse(record); openForm()">Edit</button><br>
+                        <router-link :to="'/courses/' + record.course_id">Description</router-link>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
             </div>
-          </div>
-          <h4>1.1.2 Innovative Co-creator</h4>
-          <div class="row">
-            <div class="col-md-12">
-              <table class="table table-striped tanle-bordered">
-                <thead>
-                  <tr>
-                    <th>Course ID</th>
-                    <th>Course Name</th>
-                    <th>Credit</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr v-for="record in    displayCourses   " :key="record.course_id">
-                    <td>{{ record.course_id }}</td>
-                    <td>{{ record.coursename }}</td>
-                    <td>{{ record.credit }}</td>
-                    <td><button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-danger"
-                        @click="deleteCourse(record.course_id)">Delete</button>
-                      <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-info"
-                        @click="editCourse(record); openForm()">Edit</button><br>
-                      <router-link :to="'/courses/' + record.course_id">Description</router-link>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
+            <h4>1.1.2 Innovative Co-creator</h4>
+            <div class="row">
+              <div class="col-md-12">
+                <table class="table table-striped tanle-bordered">
+                  <thead>
+                    <tr>
+                      <th>Course ID</th>
+                      <th>Course Name</th>
+                      <th>Credit</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr v-for="record in    displayCourses   " :key="record.course_id">
+                      <td>{{ record.course_id }}</td>
+                      <td>{{ record.coursename }}</td>
+                      <td>{{ record.credit }}</td>
+                      <td><button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-danger"
+                          @click="deleteCourse(record.course_id)">Delete</button>
+                        <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-info"
+                          @click="editCourse(record); openForm()">Edit</button><br>
+                        <router-link :to="'/courses/' + record.course_id">Description</router-link>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
             </div>
-          </div>
-          <h4>1.1.3 Active Citizen</h4>
-          <div class="row">
-            <div class="col-md-12">
-              <table class="table table-striped tanle-bordered">
-                <thead>
-                  <tr>
-                    <th>Course ID</th>
-                    <th>Course Name</th>
-                    <th>Credit</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr v-for="record in    displayCourses   " :key="record.course_id">
-                    <td>{{ record.course_id }}</td>
-                    <td>{{ record.coursename }}</td>
-                    <td>{{ record.credit }}</td>
-                    <td><button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-danger"
-                        @click="deleteCourse(record.course_id)">Delete</button>
-                      <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-info"
-                        @click="editCourse(record); openForm()">Edit</button><br>
-                      <router-link :to="'/courses/' + record.course_id">Description</router-link>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
+            <h4>1.1.3 Active Citizen</h4>
+            <div class="row">
+              <div class="col-md-12">
+                <table class="table table-striped tanle-bordered">
+                  <thead>
+                    <tr>
+                      <th>Course ID</th>
+                      <th>Course Name</th>
+                      <th>Credit</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr v-for="record in    displayCourses   " :key="record.course_id">
+                      <td>{{ record.course_id }}</td>
+                      <td>{{ record.coursename }}</td>
+                      <td>{{ record.credit }}</td>
+                      <td><button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-danger"
+                          @click="deleteCourse(record.course_id)">Delete</button>
+                        <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-info"
+                          @click="editCourse(record); openForm()">Edit</button><br>
+                        <router-link :to="'/courses/' + record.course_id">Description</router-link>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
             </div>
-          </div>
-          <h4>1.2 Elective courses</h4>
-          <div class="row">
-            <div class="col-md-12">
-              <table class="table table-striped tanle-bordered">
-                <thead>
-                  <tr>
-                    <th>Course ID</th>
-                    <th>Course Name</th>
-                    <th>Credit</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr v-for="record in    displayCourses   " :key="record.course_id">
-                    <td>{{ record.course_id }}</td>
-                    <td>{{ record.coursename }}</td>
-                    <td>{{ record.credit }}</td>
-                    <td><button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-danger"
-                        @click="deleteCourse(record.course_id)">Delete</button>
-                      <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-info"
-                        @click="editCourse(record); openForm()">Edit</button><br>
-                      <router-link :to="'/courses/' + record.course_id">Description</router-link>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
+            <h4>1.2 Elective courses</h4>
+            <div class="row">
+              <div class="col-md-12">
+                <table class="table table-striped tanle-bordered">
+                  <thead>
+                    <tr>
+                      <th>Course ID</th>
+                      <th>Course Name</th>
+                      <th>Credit</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr v-for="record in    displayCourses   " :key="record.course_id">
+                      <td>{{ record.course_id }}</td>
+                      <td>{{ record.coursename }}</td>
+                      <td>{{ record.credit }}</td>
+                      <td><button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-danger"
+                          @click="deleteCourse(record.course_id)">Delete</button>
+                        <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-info"
+                          @click="editCourse(record); openForm()">Edit</button><br>
+                        <router-link :to="'/courses/' + record.course_id">Description</router-link>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
             </div>
-          </div>
-          <h4>2. Feild of Specialization</h4>
-          <h4>2.1 Core Courses</h4>
-          <div class="row">
-            <div class="col-md-12">
-              <table class="table table-striped tanle-bordered">
-                <thead>
-                  <tr>
-                    <th>Course ID</th>
-                    <th>Course Name</th>
-                    <th>Credit</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr v-for="record in    displayCourses   " :key="record.course_id">
-                    <td>{{ record.course_id }}</td>
-                    <td>{{ record.coursename }}</td>
-                    <td>{{ record.credit }}</td>
-                    <td><button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-danger"
-                        @click="deleteCourse(record.course_id)">Delete</button>
-                      <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-info"
-                        @click="editCourse(record); openForm()">Edit</button><br>
-                      <router-link :to="'/courses/' + record.course_id">Description</router-link>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
+            <h4>2. Feild of Specialization</h4>
+            <h4>2.1 Core Courses</h4>
+            <div class="row">
+              <div class="col-md-12">
+                <table class="table table-striped tanle-bordered">
+                  <thead>
+                    <tr>
+                      <th>Course ID</th>
+                      <th>Course Name</th>
+                      <th>Credit</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr v-for="record in    displayCourses   " :key="record.course_id">
+                      <td>{{ record.course_id }}</td>
+                      <td>{{ record.coursename }}</td>
+                      <td>{{ record.credit }}</td>
+                      <td><button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-danger"
+                          @click="deleteCourse(record.course_id)">Delete</button>
+                        <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-info"
+                          @click="editCourse(record); openForm()">Edit</button><br>
+                        <router-link :to="'/courses/' + record.course_id">Description</router-link>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
             </div>
-          </div>
-          <h4>2.2 Major Courses</h4>
-          <h4>2.2.1 Required Courses</h4>
-          <div class="row">
-            <div class="col-md-12">
-              <table class="table table-striped tanle-bordered">
-                <thead>
-                  <tr>
-                    <th>Course ID</th>
-                    <th>Course Name</th>
-                    <th>Credit</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr v-for="record in    displayCourses   " :key="record.course_id">
-                    <td>{{ record.course_id }}</td>
-                    <td>{{ record.coursename }}</td>
-                    <td>{{ record.credit }}</td>
-                    <td><button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-danger"
-                        @click="deleteCourse(record.course_id)">Delete</button>
-                      <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-info"
-                        @click="editCourse(record); openForm()">Edit</button><br>
-                      <router-link :to="'/courses/' + record.course_id">Description</router-link>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
+            <h4>2.2 Major Courses</h4>
+            <h4>2.2.1 Required Courses</h4>
+            <div class="row">
+              <div class="col-md-12">
+                <table class="table table-striped tanle-bordered">
+                  <thead>
+                    <tr>
+                      <th>Course ID</th>
+                      <th>Course Name</th>
+                      <th>Credit</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr v-for="record in    displayCourses   " :key="record.course_id">
+                      <td>{{ record.course_id }}</td>
+                      <td>{{ record.coursename }}</td>
+                      <td>{{ record.credit }}</td>
+                      <td><button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-danger"
+                          @click="deleteCourse(record.course_id)">Delete</button>
+                        <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-info"
+                          @click="editCourse(record); openForm()">Edit</button><br>
+                        <router-link :to="'/courses/' + record.course_id">Description</router-link>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
             </div>
-          </div>
-          <h4>2.2.2 Major Elective</h4>
-          <div class="row">
-            <div class="col-md-12">
-              <table class="table table-striped tanle-bordered">
-                <thead>
-                  <tr>
-                    <th>Course ID</th>
-                    <th>Course Name</th>
-                    <th>Credit</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr v-for="record in    displayCourses   " :key="record.course_id">
-                    <td>{{ record.course_id }}</td>
-                    <td>{{ record.coursename }}</td>
-                    <td>{{ record.credit }}</td>
-                    <td><button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-danger"
-                        @click="deleteCourse(record.course_id)">Delete</button>
-                      <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-info"
-                        @click="editCourse(record); openForm()">Edit</button><br>
-                      <router-link :to="'/courses/' + record.course_id">Description</router-link>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
+            <h4>2.2.2 Major Elective</h4>
+            <div class="row">
+              <div class="col-md-12">
+                <table class="table table-striped tanle-bordered">
+                  <thead>
+                    <tr>
+                      <th>Course ID</th>
+                      <th>Course Name</th>
+                      <th>Credit</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr v-for="record in    displayCourses   " :key="record.course_id">
+                      <td>{{ record.course_id }}</td>
+                      <td>{{ record.coursename }}</td>
+                      <td>{{ record.credit }}</td>
+                      <td><button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-danger"
+                          @click="deleteCourse(record.course_id)">Delete</button>
+                        <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-info"
+                          @click="editCourse(record); openForm()">Edit</button><br>
+                        <router-link :to="'/courses/' + record.course_id">Description</router-link>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
             </div>
+            <h4>3. Free Elective</h4>
+            <h5>Text</h5>
+            <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-primary" @click="openForm">Add courses</button>
           </div>
-          <h4>3. Free Elective</h4>
-          <h5>Text</h5>
-          <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-primary" @click="openForm">Add courses</button>
-          <h2></h2>
+        </div>
+        <!-- Study Plan -->
+        <!-- Second Accordion -->
+        <div v-for="(item, index) in items2" :key="index">
+          <div @click="toggleAccordion(2, index)" :class="{ 'accordion': true, 'active': isActive(2, index) }">
+            <h3>{{ item.title }}</h3>
+            <i class="fa fa-chevron-down" :class="{ 'fa-rotate-180': isActive(2, index) }"></i>
+          </div>
+
+          <div v-show="isActive(2, index)" class="content">
+            <h3>First Year</h3>
+            <h4>First Semester</h4>
+            <div class="row">
+              <div class="col-md-12">
+                <table class="table table-striped tanle-bordered">
+                  <thead>
+                    <tr>
+                      <th>Course ID</th>
+                      <th>Course Name</th>
+                      <th>Credit</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr v-for="record in    displayCourses   " :key="record.course_id">
+                      <td>{{ record.course_id }}</td>
+                      <td>{{ record.coursename }}</td>
+                      <td>{{ record.credit }}</td>
+                      <td><button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-danger"
+                          @click="deleteCourse(record.course_id)">Delete</button>
+                        <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-info"
+                          @click="editCourse(record); openForm()">Edit</button><br>
+                        <router-link :to="'/courses/' + record.course_id">Description</router-link>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <h4>Secound Semester</h4>
+            <div class="row">
+              <div class="col-md-12">
+                <table class="table table-striped tanle-bordered">
+                  <thead>
+                    <tr>
+                      <th>Course ID</th>
+                      <th>Course Name</th>
+                      <th>Credit</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr v-for="record in    displayCourses   " :key="record.course_id">
+                      <td>{{ record.course_id }}</td>
+                      <td>{{ record.coursename }}</td>
+                      <td>{{ record.credit }}</td>
+                      <td><button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-danger"
+                          @click="deleteCourse(record.course_id)">Delete</button>
+                        <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-info"
+                          @click="editCourse(record); openForm()">Edit</button><br>
+                        <router-link :to="'/courses/' + record.course_id">Description</router-link>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <h5>Second Year</h5>
+            <h4>First Semester </h4>
+            <div class="row">
+              <div class="col-md-12">
+                <table class="table table-striped tanle-bordered">
+                  <thead>
+                    <tr>
+                      <th>Course ID</th>
+                      <th>Course Name</th>
+                      <th>Credit</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr v-for="record in    displayCourses   " :key="record.course_id">
+                      <td>{{ record.course_id }}</td>
+                      <td>{{ record.coursename }}</td>
+                      <td>{{ record.credit }}</td>
+                      <td><button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-danger"
+                          @click="deleteCourse(record.course_id)">Delete</button>
+                        <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-info"
+                          @click="editCourse(record); openForm()">Edit</button><br>
+                        <router-link :to="'/courses/' + record.course_id">Description</router-link>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <h4>Secound Semester</h4>
+            <div class="row">
+              <div class="col-md-12">
+                <table class="table table-striped tanle-bordered">
+                  <thead>
+                    <tr>
+                      <th>Course ID</th>
+                      <th>Course Name</th>
+                      <th>Credit</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr v-for="record in    displayCourses   " :key="record.course_id">
+                      <td>{{ record.course_id }}</td>
+                      <td>{{ record.coursename }}</td>
+                      <td>{{ record.credit }}</td>
+                      <td><button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-danger"
+                          @click="deleteCourse(record.course_id)">Delete</button>
+                        <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-info"
+                          @click="editCourse(record); openForm()">Edit</button><br>
+                        <router-link :to="'/courses/' + record.course_id">Description</router-link>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <h5>Third Year</h5>
+            <h4>First Semester </h4>
+            <div class="row">
+              <div class="col-md-12">
+                <table class="table table-striped tanle-bordered">
+                  <thead>
+                    <tr>
+                      <th>Course ID</th>
+                      <th>Course Name</th>
+                      <th>Credit</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr v-for="record in    displayCourses   " :key="record.course_id">
+                      <td>{{ record.course_id }}</td>
+                      <td>{{ record.coursename }}</td>
+                      <td>{{ record.credit }}</td>
+                      <td><button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-danger"
+                          @click="deleteCourse(record.course_id)">Delete</button>
+                        <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-info"
+                          @click="editCourse(record); openForm()">Edit</button><br>
+                        <router-link :to="'/courses/' + record.course_id">Description</router-link>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <h4>Secound Semester</h4>
+            <div class="row">
+              <div class="col-md-12">
+                <table class="table table-striped tanle-bordered">
+                  <thead>
+                    <tr>
+                      <th>Course ID</th>
+                      <th>Course Name</th>
+                      <th>Credit</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr v-for="record in    displayCourses   " :key="record.course_id">
+                      <td>{{ record.course_id }}</td>
+                      <td>{{ record.coursename }}</td>
+                      <td>{{ record.credit }}</td>
+                      <td><button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-danger"
+                          @click="deleteCourse(record.course_id)">Delete</button>
+                        <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-info"
+                          @click="editCourse(record); openForm()">Edit</button><br>
+                        <router-link :to="'/courses/' + record.course_id">Description</router-link>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <h5>Fourth Year</h5>
+            <h4>First Semester </h4>
+            <div class="row">
+              <div class="col-md-12">
+                <table class="table table-striped tanle-bordered">
+                  <thead>
+                    <tr>
+                      <th>Course ID</th>
+                      <th>Course Name</th>
+                      <th>Credit</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr v-for="record in    displayCourses   " :key="record.course_id">
+                      <td>{{ record.course_id }}</td>
+                      <td>{{ record.coursename }}</td>
+                      <td>{{ record.credit }}</td>
+                      <td><button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-danger"
+                          @click="deleteCourse(record.course_id)">Delete</button>
+                        <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-info"
+                          @click="editCourse(record); openForm()">Edit</button><br>
+                        <router-link :to="'/courses/' + record.course_id">Description</router-link>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <h4>Secound Semester</h4>
+            <div class="row">
+              <div class="col-md-12">
+                <table class="table table-striped tanle-bordered">
+                  <thead>
+                    <tr>
+                      <th>Course ID</th>
+                      <th>Course Name</th>
+                      <th>Credit</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr v-for="record in    displayCourses   " :key="record.course_id">
+                      <td>{{ record.course_id }}</td>
+                      <td>{{ record.coursename }}</td>
+                      <td>{{ record.credit }}</td>
+                      <td><button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-danger"
+                          @click="deleteCourse(record.course_id)">Delete</button>
+                        <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-info"
+                          @click="editCourse(record); openForm()">Edit</button><br>
+                        <router-link :to="'/courses/' + record.course_id">Description</router-link>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-primary" @click="openForm">Add courses</button>
+          </div>
         </div>
       </div>
     </div>
   </div>
-</div></template>
+</template>
 
 <script>
 import axios from 'axios';
@@ -240,16 +473,21 @@ export default {
     return {
       userRole: userRole,
       ROLES: ROLES,
-      items: [
+      items1: [
         {
           title: 'Curriculum structure',
         },
+      ],
+      items2: [
+        { title: 'Study Plan' },
       ],
       faculties: [],
       programs: [],
       selectedFaculty: '',
       selectedProgram: '',
       activeIndices: [],
+      activeAccordionIndices1: [], // Initialize with an empty array
+      activeAccordionIndices2: [] // Initialize with an empty array
     };
   },
   methods: {
@@ -272,16 +510,31 @@ export default {
         console.error(error);
       }
     },
-    toggleAccordion(index) {
-      if (this.isActive(index)) {
-        this.activeIndices = this.activeIndices.filter(i => i !== index);
-      } else {
-        this.activeIndices.push(index);
+    toggleAccordion(accordionNumber, index) {
+      if (accordionNumber === 1) {
+        const isActive = this.isActive(1, index);
+        if (isActive) {
+          this.activeAccordionIndices1 = this.activeAccordionIndices1.filter(i => i !== index);
+        } else {
+          this.activeAccordionIndices1.push(index);
+        }
+      } else if (accordionNumber === 2) {
+        const isActive = this.isActive(2, index);
+        if (isActive) {
+          this.activeAccordionIndices2 = this.activeAccordionIndices2.filter(i => i !== index);
+        } else {
+          this.activeAccordionIndices2.push(index);
+        }
       }
     },
-    isActive(index) {
-      return this.activeIndices.includes(index);
-    },
+    isActive(accordionNumber, index) {
+      if (accordionNumber === 1) {
+        return this.activeAccordionIndices1 && this.activeAccordionIndices1.includes(index);
+      } else if (accordionNumber === 2) {
+        return this.activeAccordionIndices2 && this.activeAccordionIndices2.includes(index);
+      }
+      return false;
+    }
   },
   watch: {
     selectedFaculty() {
