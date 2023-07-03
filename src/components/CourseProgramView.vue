@@ -4,6 +4,7 @@
       <input type="text" v-model="searchQuery" placeholder="Search program">
       <button @click="searchProgram">Search</button>
     </div>
+    
     <div>
       <div class="row">
         <div class="col-md-12">
@@ -13,7 +14,7 @@
                 <th>Program ID</th>
                 <th>Program</th>
                 <th>Faculty</th>
-                <th>Action</th>
+                <th v-if="userRole === ROLES.ADMIN ">Action</th>
               </tr>
             </thead>
             <tbody>
