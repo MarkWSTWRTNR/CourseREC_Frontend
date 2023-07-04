@@ -45,14 +45,15 @@
                     <select v-model="courseType" id="courseType">
                       <option value="">-- Select Course Type --</option>
                       <option value="geRcLearnerPerson">General Education | Required courses | Learner Pereson</option>
-                      <option value="geRcInnovativeCoCreator">General Education | Required courses | Innovative Co-creator</option>
+                      <option value="geRcInnovativeCoCreator">General Education | Required courses | Innovative Co-creator
+                      </option>
                       <option value="geRcActiveCitizen">General Education | Required courses | Active Citizen</option>
                       <option value="geElective courses">General Education | Elective courses</option>
                       <option value="fosCoreCourse">Feild of Specialization| Core Courses</option>
                       <option value="fosMajorCourseRc">Feild of Specialization | Major Courses | Required Courses</option>
                       <option value="fosMajorElective">Feild of Specialization | Major Elective</option>
                     </select>
-                    <h5>Free Elective</h5>
+
                     <button @submit="submitForm" type="submit">Submit</button>
                     <button @click="cancelForm"> Cancel</button>
                   </div>
@@ -93,6 +94,7 @@
                 </table>
               </div>
             </div>
+            <h5>Free Elective</h5>
             <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-primary" @click="openForm">Add courses</button>
           </div>
         </div>
