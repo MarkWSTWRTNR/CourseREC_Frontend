@@ -82,7 +82,7 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <tr v-for="record in    displayCourses   " :key="record.course_id">
+                    <tr v-for="record in filteredCourses('geRcLearnerPerson')" :key="record.course_id">
                       <td>{{ record.course_id }}</td>
                       <td>{{ record.coursename }}</td>
                       <td>{{ record.credit }}</td>
@@ -311,29 +311,4 @@ export default {
 }
 </style>
 
-<style>
-.accordion {
-  border: 1px solid #ccc;
-  margin-bottom: 10px;
-  cursor: pointer;
-  padding: 10px;
-  background-color: #a297c0;
-}
 
-.accordion.active {
-  background-color: #a890e0;
-}
-
-.accordion h3 {
-  margin: 0;
-}
-
-.accordion i {
-  float: right;
-  transition: transform 0.3s;
-}
-
-.accordion i.fa-rotate-180 {
-  transform: rotate(180deg);
-}
-</style>
