@@ -36,7 +36,7 @@
                     <div class="col-md-12">
                       <label for="courseId">Course</label>
                       <select v-model="selectedCourse" required>
-                        <option value="">-- Select Course Type --</option>
+                        <option value="">-- Select Course --</option>
                         <option v-for="course in records" :key="course.course_id" :value="course.course_id">
                           {{ course.course_id }} {{ course.coursename }}
                         </option>
@@ -67,34 +67,35 @@
           </div>
 
           <div v-show="isActive(1, index)" class="content">
-            <h5>1. General Education</h5>
-            <h5>1.1Required courses</h5>
-            <h5>1.1.1 Learner Pereson</h5>
-            <div class="row">
-              <div class="col-md-12">
-                <table class="table table-striped tanle-bordered">
-                  <thead>
-                    <tr>
-                      <th>Course ID</th>
-                      <th>Course Name</th>
-                      <th>Credit</th>
-                      <th v-if="userRole === ROLES.ADMIN">Action</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr v-for="record in filteredCourses('geRcLearnerPerson')" :key="record.course_id">
-                      <td>{{ record.course_id }}</td>
-                      <td>{{ record.coursename }}</td>
-                      <td>{{ record.credit }}</td>
-                      <td><button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-danger"
-                          @click="deleteCourse(record.course_id)">Delete</button>
-                        <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-info"
-                          @click="editCourse(record); openForm()">Edit</button><br>
-                        <router-link :to="'/courses/' + record.course_id">Description</router-link>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
+            <div v-for="courseType in courseTypes" :key="courseType.name">
+              <h5>{{ courseType.name }}</h5>
+              <div class="row">
+                <div class="col-md-12">
+                  <table class="table table-striped table-bordered">
+                    <thead>
+                      <tr>
+                        <th>Course ID</th>
+                        <th>Course Name</th>
+                        <th>Credit</th>
+                        <th v-if="userRole === ROLES.ADMIN">Action</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr v-for="course in filteredCourses(courseType.value)" :key="course.course_id">
+                        <td>{{ course.course_id }}</td>
+                        <td>{{ course.coursename }}</td>
+                        <td>{{ course.credit }}</td>
+                        <td>
+                          <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-danger"
+                            @click="deleteCourse(course.course_id)">Delete</button>
+                          <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-info"
+                            @click="editCourse(course); openForm()">Edit</button>
+                          <router-link :to="'/courses/' + course.course_id">Description</router-link>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
               </div>
             </div>
             <h5>Free Elective</h5>
@@ -164,6 +165,14 @@ export default {
       ],
       items2: [
         { title: 'Study Plan' },
+      ], courseTypes: [
+        { name: 'General Education | Required courses | Learner Person', value: 'geRcLearnerPerson' },
+        { name: 'General Education | Required courses | Innovative Co-creator', value: 'geRcInnovativeCoCreator' },
+        { name: 'General Education | Required courses | Active Citizen', value: 'geRcActiveCitizen' },
+        { name: 'General Education | Elective courses', value: 'geElective courses' },
+        { name: 'Feild of Specialization| Core Courses', value: 'fosCoreCourse' },
+        { name: 'Feild of Specialization | Major Courses | Required Courses', value: 'fosMajorCourseRc' },
+        { name: 'Feild of Specialization | Major Elective', value: 'fosMajorElective' },
       ],
       faculties: [],
       programs: [],
@@ -176,11 +185,15 @@ export default {
       displayCourses: [],
       course_id: '',
       course_name: '',
-      courseType: '',
-      showForm: false
+      course_type: [],
+      showForm: false,
+      records: []
     };
   },
   methods: {
+    filteredCourses(courseType) {
+      return this.records.filter(course => course.course_type === courseType);
+    },
     async fetchFacultiesAndPrograms() {
       try {
         const facultiesResponse = await axios.get('http://localhost:5000/api/faculties');
@@ -213,7 +226,7 @@ export default {
           })),
           description: course.description,
           label: `${course.course_id} - ${course.coursename}`
-        }));
+        }));console.log(this.records);
       } catch (error) {
         console.log(error);
       }
