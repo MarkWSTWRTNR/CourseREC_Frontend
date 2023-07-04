@@ -44,11 +44,15 @@
                     <label for="courseType">Course Type:</label>
                     <select v-model="courseType" id="courseType">
                       <option value="">-- Select Course Type --</option>
-                      <option value="general">General</option>
-                      <option value="elective">Elective</option>
-                      <option value="core">Core</option>
-                      <!-- Add other course types as needed -->
+                      <option value="geRcLearnerPerson">General Education | Required courses | Learner Pereson</option>
+                      <option value="geRcInnovativeCoCreator">General Education | Required courses | Innovative Co-creator</option>
+                      <option value="geRcActiveCitizen">General Education | Required courses | Active Citizen</option>
+                      <option value="geElective courses">General Education | Elective courses</option>
+                      <option value="fosCoreCourse">Feild of Specialization| Core Courses</option>
+                      <option value="fosMajorCourseRc">Feild of Specialization | Major Courses | Required Courses</option>
+                      <option value="fosMajorElective">Feild of Specialization | Major Elective</option>
                     </select>
+                    <h5>Free Elective</h5>
                     <button @submit="submitForm" type="submit">Submit</button>
                     <button @click="cancelForm"> Cancel</button>
                   </div>
