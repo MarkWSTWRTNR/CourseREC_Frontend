@@ -30,17 +30,18 @@
           </div>
 
           <div v-show="isActive(1, index)" class="content">
-            <h4>1. General Education</h4>
-            <h4>1.1Required courses</h4>
-            <h4>1.1.1 Learner Pereson</h4>
+            <h5>1. General Education</h5>
+            <h5>1.1Required courses</h5>
+            <h5>1.1.1 Learner Pereson</h5>
             <div class="row">
               <div class="col-md-12">
                 <table class="table table-striped tanle-bordered">
                   <thead>
-                    <tr>
+                   <tr>
                       <th>Course ID</th>
                       <th>Course Name</th>
                       <th>Credit</th>
+                      <th v-if="userRole === ROLES.ADMIN">Action</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -59,15 +60,16 @@
                 </table>
               </div>
             </div>
-            <h4>1.1.2 Innovative Co-creator</h4>
+            <h5>1.1.2 Innovative Co-creator</h5>
             <div class="row">
               <div class="col-md-12">
                 <table class="table table-striped tanle-bordered">
                   <thead>
-                    <tr>
+                   <tr>
                       <th>Course ID</th>
                       <th>Course Name</th>
                       <th>Credit</th>
+                      <th v-if="userRole === ROLES.ADMIN">Action</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -86,15 +88,16 @@
                 </table>
               </div>
             </div>
-            <h4>1.1.3 Active Citizen</h4>
+            <h5>1.1.3 Active Citizen</h5>
             <div class="row">
               <div class="col-md-12">
                 <table class="table table-striped tanle-bordered">
                   <thead>
-                    <tr>
+                   <tr>
                       <th>Course ID</th>
                       <th>Course Name</th>
                       <th>Credit</th>
+                      <th v-if="userRole === ROLES.ADMIN">Action</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -113,15 +116,16 @@
                 </table>
               </div>
             </div>
-            <h4>1.2 Elective courses</h4>
+            <h5>1.2 Elective courses</h5>
             <div class="row">
               <div class="col-md-12">
                 <table class="table table-striped tanle-bordered">
                   <thead>
-                    <tr>
+                   <tr>
                       <th>Course ID</th>
                       <th>Course Name</th>
                       <th>Credit</th>
+                      <th v-if="userRole === ROLES.ADMIN">Action</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -140,16 +144,17 @@
                 </table>
               </div>
             </div>
-            <h4>2. Feild of Specialization</h4>
-            <h4>2.1 Core Courses</h4>
+            <h5>2. Feild of Specialization</h5>
+            <h5>2.1 Core Courses</h5>
             <div class="row">
               <div class="col-md-12">
                 <table class="table table-striped tanle-bordered">
                   <thead>
-                    <tr>
+                   <tr>
                       <th>Course ID</th>
                       <th>Course Name</th>
                       <th>Credit</th>
+                      <th v-if="userRole === ROLES.ADMIN">Action</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -168,16 +173,17 @@
                 </table>
               </div>
             </div>
-            <h4>2.2 Major Courses</h4>
-            <h4>2.2.1 Required Courses</h4>
+            <h5>2.2 Major Courses</h5>
+            <h5>2.2.1 Required Courses</h5>
             <div class="row">
               <div class="col-md-12">
                 <table class="table table-striped tanle-bordered">
                   <thead>
-                    <tr>
+                   <tr>
                       <th>Course ID</th>
                       <th>Course Name</th>
                       <th>Credit</th>
+                      <th v-if="userRole === ROLES.ADMIN">Action</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -196,15 +202,16 @@
                 </table>
               </div>
             </div>
-            <h4>2.2.2 Major Elective</h4>
+            <h5>2.2.2 Major Elective</h5>
             <div class="row">
               <div class="col-md-12">
                 <table class="table table-striped tanle-bordered">
                   <thead>
-                    <tr>
+                   <tr>
                       <th>Course ID</th>
                       <th>Course Name</th>
                       <th>Credit</th>
+                      <th v-if="userRole === ROLES.ADMIN">Action</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -223,8 +230,8 @@
                 </table>
               </div>
             </div>
-            <h4>3. Free Elective</h4>
-            <h5>Text</h5>
+            <h5>3. Free Elective</h5>
+            <h3>Text</h3>
             <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-primary" @click="openForm">Add courses</button>
           </div>
         </div>
@@ -238,15 +245,16 @@
 
           <div v-show="isActive(2, index)" class="content">
             <h3>First Year</h3>
-            <h4>First Semester</h4>
+            <h5>First Semester</h5>
             <div class="row">
               <div class="col-md-12">
                 <table class="table table-striped tanle-bordered">
                   <thead>
-                    <tr>
+                   <tr>
                       <th>Course ID</th>
                       <th>Course Name</th>
                       <th>Credit</th>
+                      <th v-if="userRole === ROLES.ADMIN">Action</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -265,15 +273,16 @@
                 </table>
               </div>
             </div>
-            <h4>Secound Semester</h4>
+            <h5>Secound Semester</h5>
             <div class="row">
               <div class="col-md-12">
                 <table class="table table-striped tanle-bordered">
                   <thead>
-                    <tr>
+                   <tr>
                       <th>Course ID</th>
                       <th>Course Name</th>
                       <th>Credit</th>
+                      <th v-if="userRole === ROLES.ADMIN">Action</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -292,16 +301,17 @@
                 </table>
               </div>
             </div>
-            <h5>Second Year</h5>
-            <h4>First Semester </h4>
+            <h3>Second Year</h3>
+            <h5>First Semester </h5>
             <div class="row">
               <div class="col-md-12">
                 <table class="table table-striped tanle-bordered">
                   <thead>
-                    <tr>
+                   <tr>
                       <th>Course ID</th>
                       <th>Course Name</th>
                       <th>Credit</th>
+                      <th v-if="userRole === ROLES.ADMIN">Action</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -320,15 +330,16 @@
                 </table>
               </div>
             </div>
-            <h4>Secound Semester</h4>
+            <h5>Secound Semester</h5>
             <div class="row">
               <div class="col-md-12">
                 <table class="table table-striped tanle-bordered">
                   <thead>
-                    <tr>
+                   <tr>
                       <th>Course ID</th>
                       <th>Course Name</th>
                       <th>Credit</th>
+                      <th v-if="userRole === ROLES.ADMIN">Action</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -347,16 +358,17 @@
                 </table>
               </div>
             </div>
-            <h5>Third Year</h5>
-            <h4>First Semester </h4>
+            <h3>Third Year</h3>
+            <h5>First Semester </h5>
             <div class="row">
               <div class="col-md-12">
                 <table class="table table-striped tanle-bordered">
                   <thead>
-                    <tr>
+                   <tr>
                       <th>Course ID</th>
                       <th>Course Name</th>
                       <th>Credit</th>
+                      <th v-if="userRole === ROLES.ADMIN">Action</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -375,15 +387,16 @@
                 </table>
               </div>
             </div>
-            <h4>Secound Semester</h4>
+            <h5>Secound Semester</h5>
             <div class="row">
               <div class="col-md-12">
                 <table class="table table-striped tanle-bordered">
                   <thead>
-                    <tr>
+                   <tr>
                       <th>Course ID</th>
                       <th>Course Name</th>
                       <th>Credit</th>
+                      <th v-if="userRole === ROLES.ADMIN">Action</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -402,16 +415,17 @@
                 </table>
               </div>
             </div>
-            <h5>Fourth Year</h5>
-            <h4>First Semester </h4>
+            <h3>Fourth Year</h3>
+            <h5>First Semester </h5>
             <div class="row">
               <div class="col-md-12">
                 <table class="table table-striped tanle-bordered">
                   <thead>
-                    <tr>
+                   <tr>
                       <th>Course ID</th>
                       <th>Course Name</th>
                       <th>Credit</th>
+                      <th v-if="userRole === ROLES.ADMIN">Action</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -430,15 +444,16 @@
                 </table>
               </div>
             </div>
-            <h4>Secound Semester</h4>
+            <h5>Secound Semester</h5>
             <div class="row">
               <div class="col-md-12">
                 <table class="table table-striped tanle-bordered">
                   <thead>
-                    <tr>
+                   <tr>
                       <th>Course ID</th>
                       <th>Course Name</th>
                       <th>Credit</th>
+                      <th v-if="userRole === ROLES.ADMIN">Action</th>
                     </tr>
                   </thead>
                   <tbody>
