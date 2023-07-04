@@ -73,17 +73,17 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="coursePrerequisite">Course Prerequisite</label>
-                                    <!-- <v-select class="form-control left-align" id="coursePrerequisite" v-model="prereq"
+                                    <v-select class="form-control left-align" id="coursePrerequisite" v-model="prereq"
                                         :options="records.map(record => ({ label: record.course_id + ' - ' + record.coursename, value: record.course_id }))"
                                         multiple :reduce="option => option.value"
                                         :placeholder="'Select prerequisite courses'" >
-                                    </v-select> -->
-                                    <select class="form-control select" multiple data-mdb-filter="true"
+                                    </v-select>
+                                    <!-- <select class="form-control select" multiple data-mdb-filter="true"
                                         id="coursePrerequisite" v-model="prereq">
                                         <option value="" disabled>Select a prerequisite course</option>
                                         <option v-for="record in records" :value="record.course_id">{{ record.course_id }}
                                             {{ record.coursename }}</option>
-                                    </select>
+                                    </select> -->
 
 
                                 </div>
