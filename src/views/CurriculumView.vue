@@ -28,6 +28,35 @@
             <h3>{{ item.title }}</h3>
             <i class="fa fa-chevron-down" :class="{ 'fa-rotate-180': isActive(1, index) }"></i>
           </div>
+          <div v-if="showForm">
+            <div class="overlay">
+              <div class="popup">
+                <div class="row">
+                  <div class="col-md-12">
+                    <label for="courseId">Course</label>
+                    <select v-model="selectedCourse" required>
+                      <option value="">-- Select Course Type --</option>
+                      <option v-for="course in records" :key="course.course_id" :value="course.course_id">
+                        {{ course.coursename }}
+                      </option>
+
+                    </select>
+                    <label for="courseType">Course Type:</label>
+                    <select v-model="courseType" id="courseType">
+                      <option value="">-- Select Course Type --</option>
+                      <option value="general">General</option>
+                      <option value="elective">Elective</option>
+                      <option value="core">Core</option>
+                      <!-- Add other course types as needed -->
+                    </select>
+                    <button @submit="submitForm" type="submit">Submit</button>
+                    <button @click="cancelForm"> Cancel</button>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
 
           <div v-show="isActive(1, index)" class="content">
             <h5>1. General Education</h5>
@@ -37,7 +66,7 @@
               <div class="col-md-12">
                 <table class="table table-striped tanle-bordered">
                   <thead>
-                   <tr>
+                    <tr>
                       <th>Course ID</th>
                       <th>Course Name</th>
                       <th>Credit</th>
@@ -78,7 +107,7 @@
               <div class="col-md-12">
                 <table class="table table-striped tanle-bordered">
                   <thead>
-                   <tr>
+                    <tr>
                       <th>Course ID</th>
                       <th>Course Name</th>
                       <th>Credit</th>
@@ -101,6 +130,7 @@
                 </table>
               </div>
             </div>
+
             <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-primary" @click="openForm">Add courses</button>
           </div>
         </div>
@@ -108,6 +138,7 @@
     </div>
   </div>
 </template>
+
 
 <script>
 import axios from 'axios';
@@ -131,7 +162,13 @@ export default {
       selectedProgram: '',
       activeIndices: [],
       activeAccordionIndices1: [], // Initialize with an empty array
-      activeAccordionIndices2: [] // Initialize with an empty array
+      activeAccordionIndices2: [], // Initialize with an empty array
+      selectedCourse: '',
+      displayCourses: [],
+      course_id: '',
+      course_name: '',
+      courseType: '',
+      showForm: false
     };
   },
   methods: {
@@ -153,6 +190,39 @@ export default {
       } catch (error) {
         console.error(error);
       }
+    }, async fetchCourses() {
+      try {
+        const response = await axios.get('http://localhost:5000/api/courses');
+        this.records = response.data.map(course => ({
+          course_id: course.course_id,
+          coursename: course.coursename,
+          credit: course.credit,
+          gradingtype: course.gradingtype,
+          prereq: course.prereq.map(prerequisite => ({
+            course_id: prerequisite.course_id,
+            coursename: prerequisite.coursename
+          })),
+          description: course.description,
+          label: `${course.course_id} - ${course.coursename}`
+        }));
+      } catch (error) {
+        console.log(error);
+      }
+    },
+
+    openForm() {
+      this.showForm = true
+    }, submitForm() {
+
+      this.showForm = false
+    }, cancelForm() {
+      this.showForm = false;
+      this.clearForm();
+    },
+
+    clearForm() {
+      this.selectedCourse = '';
+      this.courseType = '';
     },
     toggleAccordion(accordionNumber, index) {
       if (accordionNumber === 1) {
@@ -187,9 +257,37 @@ export default {
   },
   mounted() {
     this.fetchFacultiesAndPrograms();
+    this.fetchCourses();
   },
 };
 </script>
+
+<style>
+.accordion {
+  border: 1px solid #ccc;
+  margin-bottom: 10px;
+  cursor: pointer;
+  padding: 10px;
+  background-color: #a297c0;
+}
+
+.accordion.active {
+  background-color: #a890e0;
+}
+
+.accordion h3 {
+  margin: 0;
+}
+
+.accordion i {
+  float: right;
+  transition: transform 0.3s;
+}
+
+.accordion i.fa-rotate-180 {
+  transform: rotate(180deg);
+}
+</style>
 
 <style>
 .accordion {
