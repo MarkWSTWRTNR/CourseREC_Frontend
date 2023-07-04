@@ -38,7 +38,7 @@
                       <select v-model="selectedCourse" required>
                         <option value="">-- Select Course Type --</option>
                         <option v-for="course in records" :key="course.course_id" :value="course.course_id">
-                          {{ course.coursename }}
+                          {{ course.course_id }} {{ course.coursename }}
                         </option>
 
                       </select>
@@ -219,6 +219,7 @@ export default {
       }
     },
 
+
     openForm() {
       this.showForm = true
     }, // ...
@@ -237,7 +238,10 @@ export default {
       })();
       this.showForm = false;
     },
-    // ...
+    cancelForm() {
+      this.showForm = false;
+      this.clearForm();
+    },
     clearForm() {
       this.selectedCourse = '';
       this.courseType = '';
