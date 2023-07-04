@@ -31,35 +31,38 @@
           <div v-if="showForm">
             <div class="overlay">
               <div class="popup">
-                <div class="row">
-                  <div class="col-md-12">
-                    <label for="courseId">Course</label>
-                    <select v-model="selectedCourse" required>
-                      <option value="">-- Select Course Type --</option>
-                      <option v-for="course in records" :key="course.course_id" :value="course.course_id">
-                        {{ course.coursename }}
-                      </option>
+                <form @submit.prevent="submitForm">
+                  <div class="row">
+                    <div class="col-md-12">
+                      <label for="courseId">Course</label>
+                      <select v-model="selectedCourse" required>
+                        <option value="">-- Select Course Type --</option>
+                        <option v-for="course in records" :key="course.course_id" :value="course.course_id">
+                          {{ course.coursename }}
+                        </option>
 
-                    </select>
-                    <label for="courseType">Course Type:</label>
-                    <select v-model="courseType" id="courseType">
-                      <option value="">-- Select Course Type --</option>
-                      <option value="geRcLearnerPerson">General Education | Required courses | Learner Pereson</option>
-                      <option value="geRcInnovativeCoCreator">General Education | Required courses | Innovative Co-creator
-                      </option>
-                      <option value="geRcActiveCitizen">General Education | Required courses | Active Citizen</option>
-                      <option value="geElective courses">General Education | Elective courses</option>
-                      <option value="fosCoreCourse">Feild of Specialization| Core Courses</option>
-                      <option value="fosMajorCourseRc">Feild of Specialization | Major Courses | Required Courses</option>
-                      <option value="fosMajorElective">Feild of Specialization | Major Elective</option>
-                    </select>
+                      </select>
+                      <label for="courseType">Course Type:</label>
+                      <select v-model="courseType" id="courseType">
+                        <option value="">-- Select Course Type --</option>
+                        <option value="geRcLearnerPerson">General Education | Required courses | Learner Pereson</option>
+                        <option value="geRcInnovativeCoCreator">General Education | Required courses | Innovative
+                          Co-creator
+                        </option>
+                        <option value="geRcActiveCitizen">General Education | Required courses | Active Citizen</option>
+                        <option value="geElective courses">General Education | Elective courses</option>
+                        <option value="fosCoreCourse">Feild of Specialization| Core Courses</option>
+                        <option value="fosMajorCourseRc">Feild of Specialization | Major Courses | Required Courses
+                        </option>
+                        <option value="fosMajorElective">Feild of Specialization | Major Elective</option>
+                      </select>
 
-                    <button @submit="submitForm" type="submit">Submit</button>
-                    <button @click="cancelForm"> Cancel</button>
+                      <button class="btn btn-primary" type="submit">Submit</button>
+                      <button @click="cancelForm"> Cancel</button>
+                    </div>
                   </div>
-                </div>
+                </form>
               </div>
-
             </div>
           </div>
 
@@ -218,14 +221,23 @@ export default {
 
     openForm() {
       this.showForm = true
-    }, submitForm() {
-
-      this.showForm = false
-    }, cancelForm() {
+    }, // ...
+    submitForm() {
+      (async () => {
+        try {
+          const response = await axios.post('http://localhost:5000/api/coursetypes', {
+            course_id: this.selectedCourse,
+            course_type: this.courseType
+          });
+          console.log(response.data);
+          this.showForm = false;
+        } catch (error) {
+          console.error(error);
+        }
+      })();
       this.showForm = false;
-      this.clearForm();
     },
-
+    // ...
     clearForm() {
       this.selectedCourse = '';
       this.courseType = '';
