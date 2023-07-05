@@ -47,6 +47,7 @@
                     <input type="text" v-model="program_id" placeholder="Program ID" required>
                     <input type="text" v-model="program_name" placeholder="Program Name" required>
                     <select v-model="selectedFaculty" required>
+                      <option value="">-- Select Faculty</option>
                       <option v-for="faculty in faculties" :key="faculty.faculty_id" :value="faculty.faculty_id">
                         {{ faculty.faculty_name }}
                       </option>

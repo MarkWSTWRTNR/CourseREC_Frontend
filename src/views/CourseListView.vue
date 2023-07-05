@@ -84,13 +84,12 @@
                                         <option v-for="record in records" :value="record.course_id">{{ record.course_id }}
                                             {{ record.coursename }}</option>
                                     </select> -->
-
-
                                 </div>
                                 <div class="form-group">
                                     <label for="description">Description</label>
                                     <input type="text" class="form-control" id="description" v-model="description" required>
                                 </div>
+                                
                                 <button v-if="selectedCourse" class="btn btn-outline-success"
                                     @click="updateCourse">Update</button>
                                 <button v-else class="btn btn-primary" type="submit">Create</button>

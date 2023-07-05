@@ -31,40 +31,41 @@
           <div v-if="showForm">
             <div class="overlay">
               <div class="popup">
-                <form @submit.prevent="submitForm">
-                  <div class="row">
-                    <div class="col-md-12">
+                <div class="row">
+                  <div class="col-md-12">
+                    <h3>{{ selectedCourse ? 'Edit Course Type' : 'Add Course Type' }}</h3>
+                    <form @submit.prevent="submitForm">
                       <label for="courseId">Course</label>
-                      <select v-model="selectedCourse" required>
+                      <select v-model="selectedCourse" required v-if="!selectedCourse">
                         <option value="">-- Select Course --</option>
                         <option v-for="course in records" :key="course.course_id" :value="course.course_id">
                           {{ course.course_id }} {{ course.coursename }}
                         </option>
-
                       </select>
-                      <label for="courseType">Course Type:</label>
-                      <select v-model="courseType" id="courseType">
+                      <label for="coursetype">Course Type:</label>
+                      <select v-model="coursetype" id="courseType">
                         <option value="">-- Select Course Type --</option>
-                        <option value="geRcLearnerPerson">General Education | Required courses | Learner Pereson</option>
+                        <option value="geRcLearnerPerson">General Education | Required courses | Learner Person</option>
                         <option value="geRcInnovativeCoCreator">General Education | Required courses | Innovative
-                          Co-creator
-                        </option>
+                          Co-creator</option>
                         <option value="geRcActiveCitizen">General Education | Required courses | Active Citizen</option>
                         <option value="geElective courses">General Education | Elective courses</option>
-                        <option value="fosCoreCourse">Feild of Specialization| Core Courses</option>
-                        <option value="fosMajorCourseRc">Feild of Specialization | Major Courses | Required Courses
+                        <option value="fosCoreCourse">Field of Specialization | Core Courses</option>
+                        <option value="fosMajorCourseRc">Field of Specialization | Major Courses | Required Courses
                         </option>
-                        <option value="fosMajorElective">Feild of Specialization | Major Elective</option>
+                        <option value="fosMajorElective">Field of Specialization | Major Elective</option>
                       </select>
 
-                      <button class="btn btn-primary" type="submit">Submit</button>
-                      <button @click="cancelForm"> Cancel</button>
-                    </div>
+                      <button v-if="selectedCourse" class="btn btn-outline-success" @click="updateCourse">Update</button>
+                      <button v-else class="btn btn-primary" @click="updateCourse">Submit</button>
+                      <button @click="cancelForm">Cancel</button>
+                    </form>
                   </div>
-                </form>
+                </div>
               </div>
             </div>
           </div>
+
 
           <div v-show="isActive(1, index)" class="content">
             <div v-for="courseType in courseTypes" :key="courseType.name">
@@ -99,7 +100,8 @@
               </div>
             </div>
             <h5>Free Elective</h5>
-            <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-primary" @click="openForm">Add courses</button>
+            <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-primary" @click="openForm">Add courses type to
+              course</button>
           </div>
         </div>
         <!-- Study Plan -->
@@ -153,7 +155,10 @@
 <script>
 import axios from 'axios';
 import { userRole, ROLES } from '@/service/roles';
+import crud from '@/service/crud';
 export default {
+  name: 'curriculum',
+  mixins: [crud],
   data() {
     return {
       userRole: userRole,
@@ -174,7 +179,6 @@ export default {
         { name: 'Feild of Specialization | Major Courses | Required Courses', value: 'fosMajorCourseRc' },
         { name: 'Feild of Specialization | Major Elective', value: 'fosMajorElective' },
       ],
-      courseType: [],
       faculties: [],
       programs: [],
       selectedFaculty: '',
@@ -182,40 +186,10 @@ export default {
       activeIndices: [],
       activeAccordionIndices1: [], // Initialize with an empty array
       activeAccordionIndices2: [], // Initialize with an empty array
-      selectedCourse: '',
-      displayCourses: [],
-      course_id: '',
-      course_name: '',
-      course_type: [],
-      showForm: false,
-      records: []
+
     };
   },
   methods: {
-    async fetchCourseTypes() {
-      try {
-        const response = await axios.get('http://localhost:5000/api/coursetypes');
-        // console.log('get data coursetype: ',response.data); // Log the response data to check its structure and contents
-        this.courseType = response.data;
-        console.log('get this.course type',this.courseType)
-      } catch (error) {
-        console.log(error);
-      }
-    },
-
-    filteredCourses(courseType) {
-      if (!courseType) {
-        return [];
-      }
-      return this.records.filter(course => {
-        return (
-          course.course_type === courseType.value &&  // Update the comparison
-          course.coursename.toLowerCase().includes(this.course_name.toLowerCase())
-        );
-      });
-    },
-
-
     async fetchFacultiesAndPrograms() {
       try {
         const facultiesResponse = await axios.get('http://localhost:5000/api/faculties');
@@ -234,52 +208,6 @@ export default {
       } catch (error) {
         console.error(error);
       }
-    }, async fetchCourses() {
-      try {
-        const response = await axios.get('http://localhost:5000/api/courses');
-        this.records = response.data.map(course => ({
-          course_id: course.course_id,
-          coursename: course.coursename,
-          credit: course.credit,
-          gradingtype: course.gradingtype,
-          prereq: course.prereq.map(prerequisite => ({
-            course_id: prerequisite.course_id,
-            coursename: prerequisite.coursename
-          })),
-          description: course.description,
-          label: `${course.course_id} - ${course.coursename}`
-        })); console.log('get data courses: ', this.records);
-      } catch (error) {
-        console.log(error);
-      }
-    },
-
-
-    openForm() {
-      this.showForm = true
-    }, // ...
-    submitForm() {
-      (async () => {
-        try {
-          const response = await axios.post('http://localhost:5000/api/coursetypes', {
-            course_id: this.selectedCourse,
-            course_type: this.courseType
-          });
-          console.log(response.data);
-          this.showForm = false;
-        } catch (error) {
-          console.error(error);
-        }
-      })();
-      this.showForm = false;
-    },
-    cancelForm() {
-      this.showForm = false;
-      this.clearForm();
-    },
-    clearForm() {
-      this.selectedCourse = '';
-      this.courseType = '';
     },
     toggleAccordion(accordionNumber, index) {
       if (accordionNumber === 1) {
@@ -314,18 +242,7 @@ export default {
   },
   mounted() {
     this.fetchFacultiesAndPrograms();
-    this.fetchCourses();
-    this.fetchCourseTypes();
-  }, computed: {
-    groupedCourses() {
-      const grouped = {};
-      for (const courseType of this.courseTypes) {
-        grouped[courseType.value] = this.filteredCourses(courseType.value);
-      }
-      return grouped;
-    },
   },
-
 };
 </script>
 

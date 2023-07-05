@@ -16,8 +16,10 @@ export default {
             gradingtype: '',
             prereq: [],
             description: '',
+            coursetype:'',
             selectedCourse: null,
             showForm: false
+            
         };
     },
     mounted() {
@@ -32,6 +34,7 @@ export default {
                         coursename: course.coursename,
                         credit: course.credit,
                         gradingtype: course.gradingtype,
+                        coursetype: course.coursetype,
                         prereq: course.prereq.map(prerequisite => ({
                             course_id: prerequisite.course_id,
                             coursename: prerequisite.coursename
@@ -52,7 +55,8 @@ export default {
                 credit: this.credit,
                 gradingtype: this.gradingtype,
                 prereq: this.prereq,
-                description: this.description
+                description: this.description,
+                coursetype:this.coursetype
             };
             if (this.prereq === "null") {
                 this.prereq = null;
@@ -71,6 +75,7 @@ export default {
                         this.gradingtype = '';
                         this.prereq = '';
                         this.description = '';
+                        this.coursetype = '';
                     }
                 })
                 .catch(error => {
@@ -107,6 +112,7 @@ export default {
                     label: `${prerequisite.course_id} - ${prerequisite.coursename}`
                 }));
                 this.description = course.description;
+                this.coursetype = course.coursetype;
                 this.showForm = true;
             } else {
                 alert('Invalid course object:', course);
@@ -123,7 +129,8 @@ export default {
                 credit: this.credit,
                 gradingtype: this.gradingtype,
                 prereq: this.prereq,
-                description: this.description
+                description: this.description,
+                coursetype: this.coursetype
             };
 
             axios.put(`http://localhost:5000/api/courses/${this.selectedCourse.course_id}`, updatedCourse)
@@ -132,6 +139,7 @@ export default {
                     this.fetchCourses();
                     this.selectedCourse = null;
                     this.clearForm();
+                    this.closeForm();
                 })
                 .catch(error => {
                     alert('Error updating course:', error);
@@ -140,6 +148,9 @@ export default {
 
         openForm() {
             this.showForm = true;
+        },
+        closeForm(){
+            this.showForm = false
         },
         cancelForm() {
             // Close the form without submitting
@@ -154,6 +165,7 @@ export default {
             this.gradingtype = '';
             this.prereq = '';
             this.description = '';
+            this.coursetype='';
         },
 
 
