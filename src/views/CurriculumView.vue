@@ -81,7 +81,7 @@
                       </tr>
                     </thead>
                     <tbody>
-                      <tr v-for="course in records" :key="course.course_id">
+                      <tr v-for="course in courseType.courses" :key="course.course_id">
                         <td>{{ course.course_id }}</td>
                         <td>{{ course.coursename }}</td>
                         <td>{{ course.credit }}</td>
@@ -197,23 +197,28 @@ export default {
         const response = await axios.get('http://localhost:5000/api/coursetypes');
         // console.log('get data coursetype: ',response.data); // Log the response data to check its structure and contents
         this.courseType = response.data;
-        console.log('get this.course type',this.courseType)
+        console.log('get this.course type', this.courseType)
       } catch (error) {
         console.log(error);
       }
     },
 
     filteredCourses(courseType) {
-      if (!courseType) {
+      if (!courseType || !this.selectedProgram) {
         return [];
       }
-      return this.records.filter(course => {
+      const programCourses = this.programs.find(program => program.program_id === this.selectedProgram)?.courses;
+      if (!programCourses) {
+        return [];
+      }
+      return programCourses.filter(course => {
         return (
-          course.course_type === courseType.value &&  // Update the comparison
+          course.course_type === courseType.name &&  // Updated comparison to use courseType.name
           course.coursename.toLowerCase().includes(this.course_name.toLowerCase())
         );
       });
     },
+
 
 
     async fetchFacultiesAndPrograms() {
@@ -320,11 +325,12 @@ export default {
     groupedCourses() {
       const grouped = {};
       for (const courseType of this.courseTypes) {
-        grouped[courseType.value] = this.filteredCourses(courseType.value);
+        grouped[courseType.name] = this.filteredCourses(courseType);
       }
       return grouped;
     },
   },
+
 
 };
 </script>
