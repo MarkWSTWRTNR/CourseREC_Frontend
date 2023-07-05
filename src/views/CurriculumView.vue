@@ -81,7 +81,7 @@
                       </tr>
                     </thead>
                     <tbody>
-                      <tr v-for="course in filteredCourses(courseType.value)" :key="course.course_id">
+                      <tr v-for="course in groupedCourses[courseType.value]" :key="course.course_id">
                         <td>{{ course.course_id }}</td>
                         <td>{{ course.coursename }}</td>
                         <td>{{ course.credit }}</td>
@@ -174,6 +174,7 @@ export default {
         { name: 'Feild of Specialization | Major Courses | Required Courses', value: 'fosMajorCourseRc' },
         { name: 'Feild of Specialization | Major Elective', value: 'fosMajorElective' },
       ],
+      courseType: [],
       faculties: [],
       programs: [],
       selectedFaculty: '',
@@ -191,14 +192,48 @@ export default {
     };
   },
   methods: {
-    filteredCourses(courseType) {
-      return this.records.filter(course => course.course_type === courseType);
+    async fetchCourseTypes() {
+      try {
+        const response = await axios.get('http://localhost:5000/api/coursetypes');
+        console.log('get data coursetype: ',response.data); // Log the response data to check its structure and contents
+
+        // Mapping the course types
+        this.courseTypes = response.data.map(courseType => {
+          console.log('get data coursetype: ',courseType); // Check the courseType object
+          return {
+            name: courseType.name,
+            value: courseType.value
+          };
+        });
+        console.log('get data coursetype: ', this.courseTypes); // Check if the course types are mapped correctly
+      } catch (error) {
+        console.log(error);
+      }
     },
+
+    filteredCourses(courseType) {
+      if (!courseType) {
+        return [];
+      }
+      return this.records.filter(course => {
+        return (
+          course.course_type === courseType &&
+          course.coursename.toLowerCase().includes(this.course_name.toLowerCase())
+        );
+      });
+    },groupedCourses() {
+    const grouped = {};
+    for (const courseType of this.courseTypes) {
+      grouped[courseType.value] = this.filteredCourses(courseType.value);
+    }
+    return grouped;
+  },
+
     async fetchFacultiesAndPrograms() {
       try {
         const facultiesResponse = await axios.get('http://localhost:5000/api/faculties');
         this.faculties = facultiesResponse.data;
-        console.log(this.faculties);
+        console.log('get data faculty: ',this.faculties);
 
         if (this.selectedFaculty) {
           const programsResponse = await axios.get('http://localhost:5000/api/programs', {
@@ -207,7 +242,7 @@ export default {
             },
           });
           this.programs = programsResponse.data;
-          console.log(this.programs);
+          console.log('get data program: ',this.programs);
         }
       } catch (error) {
         console.error(error);
@@ -226,7 +261,7 @@ export default {
           })),
           description: course.description,
           label: `${course.course_id} - ${course.coursename}`
-        }));console.log(this.records);
+        })); console.log('get data courses: ',this.records);
       } catch (error) {
         console.log(error);
       }
@@ -293,7 +328,17 @@ export default {
   mounted() {
     this.fetchFacultiesAndPrograms();
     this.fetchCourses();
+    this.fetchCourseTypes();
+  },computed: {
+  groupedCourses() {
+    const grouped = {};
+    for (const courseType of this.courseTypes) {
+      grouped[courseType.value] = this.filteredCourses(courseType.value);
+    }
+    return grouped;
   },
+},
+
 };
 </script>
 
