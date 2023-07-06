@@ -38,7 +38,7 @@
                       <select v-model="selectedCourse" required>
                         <option value="">-- Select Course --</option>
                         <option v-for="course in records" :key="course.course_id" :value="course.course_id">
-                          {{ course.course_id }} {{ course.coursename }}
+                          {{ course.course_id }} {{ course.course_name }}
                         </option>
 
                       </select>
@@ -67,7 +67,7 @@
           </div>
 
           <div v-show="isActive(1, index)" class="content">
-            <div v-for="courseType in courseTypes" :key="courseType.name">
+            <div v-for="courseType in courseType" :key="courseType.name">
               <h5>{{ courseType.name }}</h5>
               <div class="row">
                 <div class="col-md-12">
@@ -81,7 +81,7 @@
                       </tr>
                     </thead>
                     <tbody>
-                      <tr v-for="course in courseType.courses" :key="course.course_id">
+                      <tr v-for="course in courseTypes" :key="course.course_id">
                         <td>{{ course.course_id }}</td>
                         <td>{{ course.coursename }}</td>
                         <td>{{ course.credit }}</td>
@@ -127,7 +127,7 @@
                   <tbody>
                     <tr v-for="record in    displayCourses   " :key="record.course_id">
                       <td>{{ record.course_id }}</td>
-                      <td>{{ record.coursename }}</td>
+                      <td>{{ record.course_name }}</td>
                       <td>{{ record.credit }}</td>
                       <td><button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-danger"
                           @click="deleteCourse(record.course_id)">Delete</button>
@@ -165,16 +165,15 @@ export default {
       ],
       items2: [
         { title: 'Study Plan' },
-      ], courseTypes: [
-        { name: 'General Education | Required courses | Learner Person', value: 'geRcLearnerPerson' },
-        { name: 'General Education | Required courses | Innovative Co-creator', value: 'geRcInnovativeCoCreator' },
-        { name: 'General Education | Required courses | Active Citizen', value: 'geRcActiveCitizen' },
-        { name: 'General Education | Elective courses', value: 'geElective courses' },
-        { name: 'Feild of Specialization| Core Courses', value: 'fosCoreCourse' },
-        { name: 'Feild of Specialization | Major Courses | Required Courses', value: 'fosMajorCourseRc' },
-        { name: 'Feild of Specialization | Major Elective', value: 'fosMajorElective' },
-      ],
-      courseType: [],
+      ], 
+      courseTypes: [],
+      courseType: [{ name: 'General Education | Required courses | Learner Person', value: 'geRcLearnerPerson' },
+      { name: 'General Education | Required courses | Innovative Co-creator', value: 'geRcInnovativeCoCreator' },
+      { name: 'General Education | Required courses | Active Citizen', value: 'geRcActiveCitizen' },
+      { name: 'General Education | Elective courses', value: 'geElective courses' },
+      { name: 'Feild of Specialization| Core Courses', value: 'fosCoreCourse' },
+      { name: 'Feild of Specialization | Major Courses | Required Courses', value: 'fosMajorCourseRc' },
+      { name: 'Feild of Specialization | Major Elective', value: 'fosMajorElective' }],
       faculties: [],
       programs: [],
       selectedFaculty: '',
@@ -186,7 +185,7 @@ export default {
       displayCourses: [],
       course_id: '',
       course_name: '',
-      course_type: [],
+      coursetype: [],
       showForm: false,
       records: []
     };
@@ -196,28 +195,26 @@ export default {
       try {
         const response = await axios.get('http://localhost:5000/api/coursetypes');
         // console.log('get data coursetype: ',response.data); // Log the response data to check its structure and contents
-        this.courseType = response.data;
-        console.log('get this.course type', this.courseType)
+        this.courseTypes = response.data;
+        console.log('get this.course type', this.courseTypes);
       } catch (error) {
         console.log(error);
       }
     },
 
     filteredCourses(courseType) {
-      if (!courseType || !this.selectedProgram) {
-        return [];
-      }
-      const programCourses = this.programs.find(program => program.program_id === this.selectedProgram)?.courses;
-      if (!programCourses) {
-        return [];
-      }
-      return programCourses.filter(course => {
-        return (
-          course.course_type === courseType.name &&  // Updated comparison to use courseType.name
-          course.coursename.toLowerCase().includes(this.course_name.toLowerCase())
-        );
-      });
-    },
+  if (!courseType || !this.selectedProgram) {
+    return [];
+  }
+  const programCourses = this.programs.find(program => program.program_id === this.selectedProgram)?.courses;
+  if (!programCourses) {
+    this.displayCourses = [];
+  } else {
+    // Filter the program courses based on the selected course type
+    this.displayCourses = programCourses.filter(course => course.coursetype === courseType);
+  }
+},
+
 
 
 
@@ -244,15 +241,15 @@ export default {
         const response = await axios.get('http://localhost:5000/api/courses');
         this.records = response.data.map(course => ({
           course_id: course.course_id,
-          coursename: course.coursename,
+          course_name: course.course_name,
           credit: course.credit,
           gradingtype: course.gradingtype,
           prereq: course.prereq.map(prerequisite => ({
             course_id: prerequisite.course_id,
-            coursename: prerequisite.coursename
+            course_name: prerequisite.course_name
           })),
           description: course.description,
-          label: `${course.course_id} - ${course.coursename}`
+          label: `${course.course_id} - ${course.course_name}`
         })); console.log('get data courses: ', this.records);
       } catch (error) {
         console.log(error);
@@ -324,7 +321,7 @@ export default {
   }, computed: {
     groupedCourses() {
       const grouped = {};
-      for (const courseType of this.courseTypes) {
+      for (this.courseType of this.courseTypes) {
         grouped[courseType.name] = this.filteredCourses(courseType);
       }
       return grouped;
