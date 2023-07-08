@@ -1,9 +1,9 @@
 <!-- CourseListView.vue -->
 <template>
-    <div>
-        <input type="text" v-model="searchQuery" placeholder="Search courses">
-        <button @click="searchCourses">Search</button>
-    </div>
+  <div>
+    <input type="text" v-model="searchQuery" placeholder="Search courses">
+    <button @click="searchCourses">Search</button>
+  </div>
     <div class="row">
         <div class="col-md-12">
             <table class="table table-striped table-bordered">
@@ -21,7 +21,7 @@
                     <tr v-if="displayCourses.length === 0">
                         <td colspan="6" class="text-center">No courses found</td>
                     </tr>
-                    <tr v-for="record in    displayCourses   " :key="record.course_id">
+                    <tr v-for="record in displayCourses" :key="record.course_id">
                         <td>{{ record.course_id }}</td>
                         <td>{{ record.coursename }}</td>
                         <td>{{ record.credit }}</td>
@@ -32,14 +32,12 @@
                                 {{ prerequisite.course_id }} - {{ prerequisite.coursename }}
                             </li>
                         </td>
-
                         <td>
                             <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-danger"
                                 @click="deleteCourse(record.course_id)">Delete</button>
                             <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-info"
                                 @click="editCourse(record); openForm()">Edit</button><br>
                             <router-link :to="'/courses/' + record.course_id">Description</router-link>
-
                         </td>
                     </tr>
                 </tbody>
@@ -76,16 +74,8 @@
                                     <v-select class="form-control left-align" id="coursePrerequisite" v-model="prereq"
                                         :options="records.map(record => ({ label: record.course_id + ' - ' + record.coursename, value: record.course_id }))"
                                         multiple :reduce="option => option.value"
-                                        :placeholder="'Select prerequisite courses'" >
+                                        :placeholder="'Select prerequisite courses'">
                                     </v-select>
-                                    <!-- <select class="form-control select" multiple data-mdb-filter="true"
-                                        id="coursePrerequisite" v-model="prereq">
-                                        <option value="" disabled>Select a prerequisite course</option>
-                                        <option v-for="record in records" :value="record.course_id">{{ record.course_id }}
-                                            {{ record.coursename }}</option>
-                                    </select> -->
-
-
                                 </div>
                                 <div class="form-group">
                                     <label for="description">Description</label>
@@ -103,12 +93,12 @@
         </div>
     </div>
 </template>
-
+  
 <script>
-
 import { userRole, ROLES } from "../service/roles"
 import searchTools from "../service/searchTools"
 import crud from '@/service/crud';
+
 export default {
     name: 'courselist',
     mixins: [crud, searchTools],
@@ -116,12 +106,11 @@ export default {
         return {
             userRole: userRole,
             ROLES: ROLES,
-
         };
     }
 }
 </script>
-
+  
 <style>
 .overlay {
     position: fixed;

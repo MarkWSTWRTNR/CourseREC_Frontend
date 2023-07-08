@@ -3,10 +3,10 @@ import axios from 'axios';
 import vSelect from 'vue-select';
 
 export default {
-     components: {
+    components: {
         'v-select': vSelect,
 
-     },
+    },
     data() {
         return {
             records: [],
@@ -25,17 +25,18 @@ export default {
     },
     methods: {
         fetchCourses() {
-            axios.get('http://localhost:5000/api/courses')
+            axios.get('http://localhost:8080/courses')
                 .then(response => {
                     this.records = response.data.map(course => ({
-                        course_id: course.course_id,
-                        coursename: course.coursename,
+                        course_id: course.courseId,
+                        coursename: course.name,
                         credit: course.credit,
                         gradingtype: course.gradingtype,
-                        prereq: course.prereq.map(prerequisite => ({
-                            course_id: prerequisite.course_id,
-                            coursename: prerequisite.coursename
-                        })),
+                        // prereq: course.prereq.map(prerequisite => ({
+                        //     course_id: prerequisite.course_id,
+                        //     coursename: prerequisite.coursename,
+                        //     label: `${prerequisite.course_id} - ${prerequisite.coursename}`
+                        // })),
                         description: course.description,
                         label: `${course.course_id} - ${course.coursename}`
                     }));
@@ -51,13 +52,13 @@ export default {
                 coursename: this.coursename,
                 credit: this.credit,
                 gradingtype: this.gradingtype,
-                prereq: this.prereq,
+                // prereq: this.prereq,
                 description: this.description
             };
             if (this.prereq === "null") {
                 this.prereq = null;
             }
-            axios.post('http://localhost:5000/api/courses', course)
+            axios.post('http://localhost:8080/addCourse', course)
                 .then(response => {
                     alert('Course created successfully');
                     const data = response.data;
@@ -85,7 +86,7 @@ export default {
             if (!confirmDelete) {
                 return;
             }
-            axios.delete(`http://localhost:5000/api/courses/${courseId}`)
+            axios.delete(`http://localhost:8080/delete/${courseId}`)
                 .then(response => {
                     alert('Course deleted successfully');
                     this.fetchCourses();
@@ -122,11 +123,11 @@ export default {
                 coursename: this.coursename,
                 credit: this.credit,
                 gradingtype: this.gradingtype,
-                prereq: this.prereq,
+                // prereq: this.prereq,
                 description: this.description
             };
 
-            axios.put(`http://localhost:5000/api/courses/${this.selectedCourse.course_id}`, updatedCourse)
+            axios.put(`http://localhost:8080/updateCourse/${this.selectedCourse.course_id}`, updatedCourse)
                 .then(response => {
                     alert('Course updated successfully');
                     this.fetchCourses();
@@ -152,7 +153,7 @@ export default {
             this.coursename = '';
             this.credit = '';
             this.gradingtype = '';
-            this.prereq = '';
+            // this.prereq = '';
             this.description = '';
         },
 

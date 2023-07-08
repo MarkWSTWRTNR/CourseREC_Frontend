@@ -170,7 +170,7 @@ export default {
       courseType: [{ name: 'General Education | Required courses | Learner Person', value: 'geRcLearnerPerson' },
       { name: 'General Education | Required courses | Innovative Co-creator', value: 'geRcInnovativeCoCreator' },
       { name: 'General Education | Required courses | Active Citizen', value: 'geRcActiveCitizen' },
-      { name: 'General Education | Elective courses', value: 'geElective courses' },
+      { name: 'General Education | Elective courses', value: 'geElectiveCourses' },
       { name: 'Feild of Specialization| Core Courses', value: 'fosCoreCourse' },
       { name: 'Feild of Specialization | Major Courses | Required Courses', value: 'fosMajorCourseRc' },
       { name: 'Feild of Specialization | Major Elective', value: 'fosMajorElective' }],
@@ -193,7 +193,7 @@ export default {
   methods: {
     async fetchCourseTypes() {
       try {
-        const response = await axios.get('http://localhost:5000/api/coursetypes');
+        const response = await axios.get('http://localhost:8080/api/coursetypes');
         // console.log('get data coursetype: ',response.data); // Log the response data to check its structure and contents
         this.courseTypes = response.data;
         console.log('get this.course type', this.courseTypes);
