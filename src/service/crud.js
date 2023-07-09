@@ -1,6 +1,6 @@
 // crud.js
-import axios from 'axios';
 import vSelect from 'vue-select';
+import apiClient from './AxiosClient';
 
 export default {
     components: {
@@ -10,11 +10,11 @@ export default {
     data() {
         return {
             records: [],
-            course_id: '',
-            coursename: '',
+            courseId: '',
+            name: '',
             credit: '',
             gradingtype: '',
-            prereq: [],
+            // prereq: [],
             description: '',
             selectedCourse: null,
             showForm: false
@@ -25,20 +25,20 @@ export default {
     },
     methods: {
         fetchCourses() {
-            axios.get('http://localhost:8080/courses')
+            apiClient.get('http://localhost:8080/courses')
                 .then(response => {
                     this.records = response.data.map(course => ({
-                        course_id: course.courseId,
-                        coursename: course.name,
+                        courseId: course.courseId,
+                        name: course.name,
                         credit: course.credit,
                         gradingtype: course.gradingtype,
                         // prereq: course.prereq.map(prerequisite => ({
-                        //     course_id: prerequisite.course_id,
-                        //     coursename: prerequisite.coursename,
-                        //     label: `${prerequisite.course_id} - ${prerequisite.coursename}`
+                        //     courseId: prerequisite.courseId,
+                        //     name: prerequisite.name,
+                        //     label: `${prerequisite.courseId} - ${prerequisite.name}`
                         // })),
                         description: course.description,
-                        label: `${course.course_id} - ${course.coursename}`
+                        label: `${course.courseId} - ${course.name}`
                     }));
                 })
                 .catch(error => {
@@ -48,8 +48,8 @@ export default {
 
         addCourse() {
             const course = {
-                course_id: this.course_id,
-                coursename: this.coursename,
+                courseId: this.courseId,
+                name: this.name,
                 credit: this.credit,
                 gradingtype: this.gradingtype,
                 // prereq: this.prereq,
@@ -58,7 +58,7 @@ export default {
             if (this.prereq === "null") {
                 this.prereq = null;
             }
-            axios.post('http://localhost:8080/addCourse', course)
+            apiClient.post('http://localhost:8080/addCourses', [course])
                 .then(response => {
                     alert('Course created successfully');
                     const data = response.data;
@@ -66,8 +66,8 @@ export default {
                         alert(data.error);
                     } else {
                         this.fetchCourses();
-                        this.course_id = '';
-                        this.coursename = '';
+                        this.courseId = '';
+                        this.name = '';
                         this.credit = '';
                         this.gradingtype = '';
                         this.prereq = '';
@@ -86,7 +86,7 @@ export default {
             if (!confirmDelete) {
                 return;
             }
-            axios.delete(`http://localhost:8080/delete/${courseId}`)
+            apiClient.delete(`http://localhost:8080/delete/${courseId}`)
                 .then(response => {
                     alert('Course deleted successfully');
                     this.fetchCourses();
@@ -96,17 +96,17 @@ export default {
                 });
         },
         editCourse(course) {
-            if (course && course.course_id) {
+            if (course && course.courseId) {
                 this.selectedCourse = course;
-                this.course_id = course.course_id;
-                this.coursename = course.coursename;
+                this.courseId = course.courseId;
+                this.name = course.name;
                 this.credit = course.credit;
                 this.gradingtype = course.gradingtype;
-                this.prereq = course.prereq.map(prerequisite => ({
-                    course_id: prerequisite.course_id,
-                    coursename: prerequisite.coursename,
-                    label: `${prerequisite.course_id} - ${prerequisite.coursename}`
-                }));
+                // this.prereq = course.prereq.map(prerequisite => ({
+                //     courseId: prerequisite.courseId,
+                //     name: prerequisite.name,
+                //     label: `${prerequisite.courseId} - ${prerequisite.name}`
+                // }));
                 this.description = course.description;
                 this.showForm = true;
             } else {
@@ -119,15 +119,15 @@ export default {
             }
 
             const updatedCourse = {
-                course_id: this.course_id,
+                courseId: this.selectedCourse.courseId,
                 coursename: this.coursename,
                 credit: this.credit,
                 gradingtype: this.gradingtype,
-                // prereq: this.prereq,
+                prereq: this.prereq,
                 description: this.description
             };
 
-            axios.put(`http://localhost:8080/updateCourse/${this.selectedCourse.course_id}`, updatedCourse)
+            apiClient.put(`http://localhost:8080/updateCourse`, updatedCourse)
                 .then(response => {
                     alert('Course updated successfully');
                     this.fetchCourses();
@@ -149,8 +149,8 @@ export default {
             this.selectedCourse = null;
         },
         clearForm() {
-            this.course_id = '';
-            this.coursename = '';
+            this.courseId = '';
+            this.name = '';
             this.credit = '';
             this.gradingtype = '';
             // this.prereq = '';

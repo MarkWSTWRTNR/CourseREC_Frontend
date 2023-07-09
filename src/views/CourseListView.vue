@@ -21,23 +21,23 @@
                     <tr v-if="displayCourses.length === 0">
                         <td colspan="6" class="text-center">No courses found</td>
                     </tr>
-                    <tr v-for="record in displayCourses" :key="record.course_id">
-                        <td>{{ record.course_id }}</td>
-                        <td>{{ record.coursename }}</td>
+                    <tr v-for="record in displayCourses" :key="record.courseId">
+                        <td>{{ record.courseId }}</td>
+                        <td>{{ record.name }}</td>
                         <td>{{ record.credit }}</td>
                         <td>{{ record.gradingtype }}</td>
                         <td>
                             <li style="text-align: left;" v-for="prerequisite in record.prereq"
-                                :key="prerequisite.course_id">
-                                {{ prerequisite.course_id }} - {{ prerequisite.coursename }}
+                                :key="prerequisite.courseId">
+                                {{ prerequisite.courseId }} - {{ prerequisite.name }}
                             </li>
                         </td>
                         <td>
                             <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-danger"
-                                @click="deleteCourse(record.course_id)">Delete</button>
+                                @click="deleteCourse(record.courseId)">Delete</button>
                             <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-info"
                                 @click="editCourse(record); openForm()">Edit</button><br>
-                            <router-link :to="'/courses/' + record.course_id">Description</router-link>
+                            <router-link :to="'/courses/' + record.courseId">Description</router-link>
                         </td>
                     </tr>
                 </tbody>
@@ -55,11 +55,11 @@
                             <form @submit.prevent="addCourse">
                                 <div class="form-group">
                                     <label for="courseId">Course ID</label>
-                                    <input type="text" class="form-control" id="courseId" v-model="course_id" required>
+                                    <input type="text" class="form-control" id="courseId" v-model="courseId" required>
                                 </div>
                                 <div class="form-group">
                                     <label for="courseName">Course Name</label>
-                                    <input type="text" class="form-control" id="courseName" v-model="coursename" required>
+                                    <input type="text" class="form-control" id="courseName" v-model="name" required>
                                 </div>
                                 <div class="form-group">
                                     <label for="courseCredit">Course Credit</label>
@@ -69,14 +69,14 @@
                                     <label for="gradingType">Grading Type</label>
                                     <input type="text" class="form-control" id="gradingType" v-model="gradingtype" required>
                                 </div>
-                                <div class="form-group">
+                                <!-- <div class="form-group">
                                     <label for="coursePrerequisite">Course Prerequisite</label>
                                     <v-select class="form-control left-align" id="coursePrerequisite" v-model="prereq"
-                                        :options="records.map(record => ({ label: record.course_id + ' - ' + record.coursename, value: record.course_id }))"
+                                        :options="records.map(record => ({ label: record.courseId + ' - ' + record.name, value: record.courseId }))"
                                         multiple :reduce="option => option.value"
                                         :placeholder="'Select prerequisite courses'">
                                     </v-select>
-                                </div>
+                                </div> -->
                                 <div class="form-group">
                                     <label for="description">Description</label>
                                     <input type="text" class="form-control" id="description" v-model="description" required>
