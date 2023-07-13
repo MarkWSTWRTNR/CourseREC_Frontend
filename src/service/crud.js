@@ -10,11 +10,12 @@ export default {
     data() {
         return {
             records: [],
+            id: '',
             courseId: '',
             name: '',
             credit: '',
             gradingtype: '',
-            // prereq: [],
+            prerequisite: '',
             description: '',
             selectedCourse: null,
             showForm: false
@@ -28,15 +29,16 @@ export default {
             apiClient.get('http://localhost:8080/courses')
                 .then(response => {
                     this.records = response.data.map(course => ({
+                        id: course.id,
                         courseId: course.courseId,
                         name: course.name,
                         credit: course.credit,
                         gradingtype: course.gradingtype,
-                        // prereq: course.prereq.map(prerequisite => ({
-                        //     courseId: prerequisite.courseId,
-                        //     name: prerequisite.name,
-                        //     label: `${prerequisite.courseId} - ${prerequisite.name}`
-                        // })),
+                        prerequisite: course.prerequisite.map(prerequisite => ({
+                            courseId: prerequisite.courseId,
+                            name: prerequisite.name,
+                            label: `${prerequisite.courseId} - ${prerequisite.name}`
+                        })),
                         description: course.description,
                         label: `${course.courseId} - ${course.name}`
                     }));
@@ -52,13 +54,13 @@ export default {
                 name: this.name,
                 credit: this.credit,
                 gradingtype: this.gradingtype,
-                // prereq: this.prereq,
+                prerequisite: this.prerequisite,
                 description: this.description
             };
-            if (this.prereq === "null") {
-                this.prereq = null;
+            if (this.prerequisite === "null") {
+                course.prerequisite = null;
             }
-            apiClient.post('http://localhost:8080/addCourses', [course])
+            apiClient.post('http://localhost:8080/addCourse', [course])
                 .then(response => {
                     alert('Course created successfully');
                     const data = response.data;
@@ -70,9 +72,10 @@ export default {
                         this.name = '';
                         this.credit = '';
                         this.gradingtype = '';
-                        this.prereq = '';
+                        this.prerequisite = '';
                         this.description = '';
                     }
+                    console.log([course])
                 })
                 .catch(error => {
                     console.log(error);
@@ -81,12 +84,12 @@ export default {
             this.selectedCourse = null
             this.clearForm;
         },
-        deleteCourse(courseId) {
+        deleteCourse(id) {
             const confirmDelete = confirm("Are you sure you want to delete this course?");
             if (!confirmDelete) {
                 return;
             }
-            apiClient.delete(`http://localhost:8080/delete/${courseId}`)
+            apiClient.delete(`http://localhost:8080/deleteCourse/${id}`)
                 .then(response => {
                     alert('Course deleted successfully');
                     this.fetchCourses();
@@ -102,11 +105,11 @@ export default {
                 this.name = course.name;
                 this.credit = course.credit;
                 this.gradingtype = course.gradingtype;
-                // this.prereq = course.prereq.map(prerequisite => ({
-                //     courseId: prerequisite.courseId,
-                //     name: prerequisite.name,
-                //     label: `${prerequisite.courseId} - ${prerequisite.name}`
-                // }));
+                this.prerequisite = course.prerequisite.map(prerequisite => ({
+                    courseId: prerequisite.courseId,
+                    name: prerequisite.name,
+                    label: `${prerequisite.courseId} - ${prerequisite.name}`
+                }));
                 this.description = course.description;
                 this.showForm = true;
             } else {
@@ -123,11 +126,11 @@ export default {
                 coursename: this.coursename,
                 credit: this.credit,
                 gradingtype: this.gradingtype,
-                prereq: this.prereq,
+                prerequisite: this.prerequisite,
                 description: this.description
             };
 
-            apiClient.put(`http://localhost:8080/updateCourse`, updatedCourse)
+            apiClient.put(`http://localhost:8080/updateCourse/${this.selectedCourse.course_id}`, updatedCourse)
                 .then(response => {
                     alert('Course updated successfully');
                     this.fetchCourses();
@@ -153,7 +156,7 @@ export default {
             this.name = '';
             this.credit = '';
             this.gradingtype = '';
-            // this.prereq = '';
+            this.prerequisite = '';
             this.description = '';
         },
 

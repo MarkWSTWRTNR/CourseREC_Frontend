@@ -27,14 +27,14 @@
                         <td>{{ record.credit }}</td>
                         <td>{{ record.gradingtype }}</td>
                         <td>
-                            <li style="text-align: left;" v-for="prerequisite in record.prereq"
+                            <li style="text-align: left;" v-for="prerequisite in record.prerequisite"
                                 :key="prerequisite.courseId">
                                 {{ prerequisite.courseId }} - {{ prerequisite.name }}
                             </li>
                         </td>
                         <td>
                             <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-danger"
-                                @click="deleteCourse(record.courseId)">Delete</button>
+                                @click="deleteCourse(record.id)">Delete</button>
                             <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-info"
                                 @click="editCourse(record); openForm()">Edit</button><br>
                             <router-link :to="'/courses/' + record.courseId">Description</router-link>
@@ -69,14 +69,14 @@
                                     <label for="gradingType">Grading Type</label>
                                     <input type="text" class="form-control" id="gradingType" v-model="gradingtype" required>
                                 </div>
-                                <!-- <div class="form-group">
+                                <div class="form-group">
                                     <label for="coursePrerequisite">Course Prerequisite</label>
-                                    <v-select class="form-control left-align" id="coursePrerequisite" v-model="prereq"
+                                    <v-select class="form-control left-align" id="coursePrerequisite" v-model="prerequisite"
                                         :options="records.map(record => ({ label: record.courseId + ' - ' + record.name, value: record.courseId }))"
                                         multiple :reduce="option => option.value"
                                         :placeholder="'Select prerequisite courses'">
                                     </v-select>
-                                </div> -->
+                                </div>
                                 <div class="form-group">
                                     <label for="description">Description</label>
                                     <input type="text" class="form-control" id="description" v-model="description" required>
