@@ -68,12 +68,7 @@ export default {
                         alert(data.error);
                     } else {
                         this.fetchCourses();
-                        this.courseId = '';
-                        this.name = '';
-                        this.credit = '';
-                        this.gradingtype = '';
-                        this.prerequisite = [];
-                        this.description = '';
+                        this.clearForm();
                     }
                     console.log([course])
                 })
