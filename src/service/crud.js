@@ -13,9 +13,9 @@ export default {
             id: '',
             courseId: '',
             name: '',
-            credit: '',
+            credit: 0,
             gradingtype: '',
-            prerequisite: '',
+            prerequisite: [],
             description: '',
             selectedCourse: null,
             showForm: false
@@ -72,7 +72,7 @@ export default {
                         this.name = '';
                         this.credit = '';
                         this.gradingtype = '';
-                        this.prerequisite = '';
+                        this.prerequisite = [];
                         this.description = '';
                     }
                     console.log([course])
@@ -156,7 +156,7 @@ export default {
             this.name = '';
             this.credit = '';
             this.gradingtype = '';
-            this.prerequisite = '';
+            this.prerequisite = [];
             this.description = '';
         },
 
