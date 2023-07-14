@@ -122,8 +122,8 @@ export default {
                 prerequisite: this.prerequisite,
                 description: this.description
             };
-
-            apiClient.put(`http://localhost:8080/updateCourse/${this.selectedCourse.courseId}`, updatedCourse)
+            console.log('upate click')
+            apiClient.put(`http://localhost:8080/updateCourse`, updatedCourse)
                 .then(response => {
                     alert('Course updated successfully');
                     this.fetchCourses();
