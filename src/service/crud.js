@@ -42,6 +42,7 @@ export default {
                         description: course.description,
                         label: `${course.courseId} - ${course.name}`
                     }));
+                    console.log(this.records)
                 })
                 .catch(error => {
                     console.log(error);
@@ -57,9 +58,6 @@ export default {
                 prerequisite: this.prerequisite,
                 description: this.description
             };
-            if (this.prerequisite === "null") {
-                course.prerequisite = null;
-            }
             apiClient.post('http://localhost:8080/addCourse', [course])
                 .then(response => {
                     alert('Course created successfully');
@@ -118,14 +116,14 @@ export default {
 
             const updatedCourse = {
                 courseId: this.selectedCourse.courseId,
-                coursename: this.coursename,
+                name: this.name,
                 credit: this.credit,
                 gradingtype: this.gradingtype,
                 prerequisite: this.prerequisite,
                 description: this.description
             };
 
-            apiClient.put(`http://localhost:8080/updateCourse/${this.selectedCourse.course_id}`, updatedCourse)
+            apiClient.put(`http://localhost:8080/updateCourse/${this.selectedCourse.courseId}`, updatedCourse)
                 .then(response => {
                     alert('Course updated successfully');
                     this.fetchCourses();
@@ -149,7 +147,7 @@ export default {
         clearForm() {
             this.courseId = '';
             this.name = '';
-            this.credit = '';
+            this.credit = 0;
             this.gradingtype = '';
             this.prerequisite = [];
             this.description = '';

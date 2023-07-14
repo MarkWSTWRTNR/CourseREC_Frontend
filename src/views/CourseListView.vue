@@ -72,7 +72,7 @@
                                 <div class="form-group">
                                     <label for="coursePrerequisite">Course Prerequisite</label>
                                     <v-select class="form-control left-align" id="coursePrerequisite" v-model="prerequisite"
-                                        :options="records.map(record => ({ label: record.courseId + ' - ' + record.name, value: record.courseId }))"
+                                        :options="records.map(record => ({ label: record.courseId + ' - ' + record.name, value: {courseId : record.courseId }}))"
                                         multiple :reduce="option => option.value"
                                         :placeholder="'Select prerequisite courses'">
                                     </v-select>
