@@ -19,9 +19,9 @@
             </thead>
             <tbody>
               <tr v-for="record in filteredPrograms" :key="record.id">
-                <td>{{ record.program_id }}</td>
-                <td>{{ record.program_name }}</td>
-                <td>{{ record.faculty }}</td>
+                <td>{{ record.programId }}</td>
+                <td>{{ record.name }}</td>
+                <td>{{  record.faculty ? record.faculty.name : 'N/A'}}</td>
                 <td>
                   <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-danger" @click="deleteProgram(record.id)">
                     Delete
@@ -44,11 +44,11 @@
                 <div class="col-md-12">
                   <h3>{{ selectedProgram ? 'Edit Program' : 'Create Program' }}</h3>
                   <form @submit.prevent="selectedProgram ? updateProgram() : addProgram()">
-                    <input type="text" v-model="program_id" placeholder="Program ID" required>
-                    <input type="text" v-model="program_name" placeholder="Program Name" required>
+                    <input type="text" v-model="programId" placeholder="Program ID" required>
+                    <input type="text" v-model="name" placeholder="Program Name" required>
                     <select v-model="selectedFaculty" required>
-                      <option v-for="faculty in faculties" :key="faculty.faculty_id" :value="faculty.faculty_id">
-                        {{ faculty.faculty_name }}
+                      <option v-for="faculty in faculties" :key="faculty.facultyId" :value="{facultyId : faculty.facultyId}">
+                        {{ faculty.name }}
                       </option>
                     </select>
                     <button v-if="selectedProgram" class="btn btn-outline-success" @click="updateProgram">Update</button>
@@ -80,8 +80,8 @@ export default {
       programs: [],
       faculties: [],
       selectedProgram: null,
-      program_id: '',
-      program_name: '',
+      programId: '',
+      name: '',
       selectedFaculty: '',
       showForm: false
     };
@@ -89,7 +89,7 @@ export default {
   methods: {
     fetchData() {
       axios
-        .get('http://localhost:5000/api/faculties')
+        .get('http://localhost:8080/facultys')
         .then(response => {
           this.faculties = response.data;
         })
@@ -98,7 +98,7 @@ export default {
         });
 
       axios
-        .get('http://localhost:5000/api/programs')
+        .get('http://localhost:8080/programs')
         .then(response => {
           this.programs = response.data;
         })
@@ -108,16 +108,16 @@ export default {
     },
     addProgram() {
       console.log('Data to send:', {
-        id: this.program_id,
-        name: this.program_name,
-        faculty_id: this.selectedFaculty
+        programId: this.programId,
+        name: this.name,
+        faculty: this.selectedFaculty
       });
 
       axios
-        .post('http://localhost:5000/api/programs', {
-          id: this.program_id,
-          name: this.program_name,
-          faculty_id: this.selectedFaculty
+        .post('http://localhost:8080/addProgram', {
+          programId: this.programId,
+          name: this.name,
+          faculty: this.selectedFaculty
         })
         .then(response => {
           console.log('Response:', response.data);
@@ -125,8 +125,8 @@ export default {
           this.fetchData();
           this.cancelForm();
           this.selectedFaculty = '';
-          this.program_id = '';
-        })
+          this.programId = '';
+        }) 
         .catch(error => {
           console.error('Error creating program:', error);
           alert('Error creating program. Please check the console for more details.');
@@ -136,7 +136,7 @@ export default {
       const confirmed = confirm('Are you sure you want to delete this program?');
       if (confirmed) {
         axios
-          .delete(`http://localhost:5000/api/programs/${programId}`)
+          .delete(`http://localhost:8080/programs/${programId}`)
           .then(response => {
             alert('Program deleted successfully');
             this.fetchData();
@@ -149,9 +149,9 @@ export default {
     editProgram(program) {
       if (program && program.id) {
         this.selectedProgram = program;
-        this.program_id = program.id;
-        this.program_name = program.name;
-        this.selectedFaculty = program.faculty_id.toString();
+        this.programId = program.id;
+        this.name = program.name;
+        this.selectedFaculty = program.facultyId.toString();
         this.showForm = true;
       } else {
         alert('Invalid program selected:', program);
@@ -162,18 +162,18 @@ export default {
         return;
       }
       const updatedProgram = {
-        id: this.program_id,
-        name: this.program_name,
-        faculty_id: this.selectedFaculty
+        programId: this.programId,
+        name: this.name,
+        facultyId: this.selectedFaculty
       };
       axios
-        .put(`http://localhost:5000/api/programs/${this.selectedProgram.id}`, updatedProgram)
+        .put(`http://localhost:8080/programs/${this.selectedProgram.id}`, updatedProgram)
         .then(response => {
           alert('Program updated successfully');
           this.fetchData();
           this.cancelForm();
           this.selectedFaculty = '';
-          this.program_id = '';
+          this.programId = '';
         })
         .catch(error => {
           alert('Error updating program:', error);
@@ -184,8 +184,8 @@ export default {
     },
     cancelForm() {
       this.showForm = false;
-      this.program_id = '';
-      this.program_name = '';
+      this.programId = '';
+      this.name = '';
       this.selectedFaculty = '';
       this.selectedProgram = null;
     },

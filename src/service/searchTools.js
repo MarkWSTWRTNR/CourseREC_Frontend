@@ -15,7 +15,7 @@ export default {
           filteredPrograms() {
             if (this.searchQuery) {
               return this.programs.filter(program =>
-                program.program_name.toLowerCase().includes(this.searchQuery.toLowerCase())
+                program.name.toLowerCase().includes(this.searchQuery.toLowerCase())
               );
             } else {
               return this.programs;
@@ -24,7 +24,7 @@ export default {
     },
     methods: {
         searchCourses() {
-            axios.get('http://localhost:5000/api/courses/search', {
+            axios.get('http://localhost:8080/courses/search', {
                 params: {
                     query: this.searchQuery,
                 },
@@ -38,7 +38,7 @@ export default {
         },
         searchProgram() {
             axios
-              .get('http://localhost:5000/api/programs/search', {
+              .get('http://localhost:8080/programs/search', {
                 params: {
                   query: this.searchQuery
                 }
@@ -51,7 +51,7 @@ export default {
               });
           },
         searchProgram() {
-            axios.get('http://localhost:5000/api/programs/search', {
+            axios.get('http://localhost:8080/programs/search', {
                 params: {
                     query: this.searchQuery
                 }

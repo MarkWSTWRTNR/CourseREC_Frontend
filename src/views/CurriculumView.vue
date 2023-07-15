@@ -8,16 +8,16 @@
       <h3>Select Faculty:</h3>
       <select v-model="selectedFaculty">
         <option value="">-- Select Faculty --</option>
-        <option v-for="faculty in faculties" :value="faculty.faculty_id" :key="faculty.faculty_id">
-          {{ faculty.faculty_name }}
+        <option v-for="faculty in faculties" :value="faculty.facultyId" :key="faculty.facultyId">
+          {{ faculty.name }}
         </option>
       </select>
 
       <h3 v-if="selectedFaculty">Select Program:</h3>
       <select v-if="selectedFaculty" v-model="selectedProgram">
         <option value="">-- Select Program --</option>
-        <option v-for="program in programs" :value="program.program_id" :key="program.program_id">
-          {{ program.program_name }}
+        <option v-for="program in programs" :value="program.programId" :key="program.programId">
+          {{ program.name }}
         </option>
       </select>
 
@@ -193,7 +193,7 @@ export default {
   methods: {
     async fetchCourseTypes() {
       try {
-        const response = await axios.get('http://localhost:8080/api/coursetypes');
+        const response = await axios.get('http://localhost:8080/coursetypes');
         // console.log('get data coursetype: ',response.data); // Log the response data to check its structure and contents
         this.courseTypes = response.data;
         console.log('get this.course type', this.courseTypes);
@@ -206,7 +206,7 @@ export default {
   if (!courseType || !this.selectedProgram) {
     return [];
   }
-  const programCourses = this.programs.find(program => program.program_id === this.selectedProgram)?.courses;
+  const programCourses = this.programs.find(program => program.programId === this.selectedProgram)?.courses;
   if (!programCourses) {
     this.displayCourses = [];
   } else {
@@ -220,14 +220,14 @@ export default {
 
     async fetchFacultiesAndPrograms() {
       try {
-        const facultiesResponse = await axios.get('http://localhost:5000/api/faculties');
+        const facultiesResponse = await axios.get('http://localhost:8080/facultys');
         this.faculties = facultiesResponse.data;
         console.log('get data faculty: ', this.faculties);
 
         if (this.selectedFaculty) {
-          const programsResponse = await axios.get('http://localhost:5000/api/programs', {
+          const programsResponse = await axios.get('http://localhost:8080/programs', {
             params: {
-              faculty_id: this.selectedFaculty,
+              facultyId: this.selectedFaculty,
             },
           });
           this.programs = programsResponse.data;
@@ -238,7 +238,7 @@ export default {
       }
     }, async fetchCourses() {
       try {
-        const response = await axios.get('http://localhost:5000/api/courses');
+        const response = await axios.get('http://localhost:8080/courses');
         this.records = response.data.map(course => ({
           course_id: course.course_id,
           course_name: course.course_name,
@@ -263,7 +263,7 @@ export default {
     submitForm() {
       (async () => {
         try {
-          const response = await axios.post('http://localhost:5000/api/coursetypes', {
+          const response = await axios.post('http://localhost:8080/coursetypes', {
             course_id: this.selectedCourse,
             course_type: this.courseType
           });

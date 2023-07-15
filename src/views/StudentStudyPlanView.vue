@@ -3,15 +3,15 @@
   <h3>Select Faculty:</h3>
   <select v-model="selectedFaculty">
     <option value="">-- Select Faculty --</option>
-    <option v-for="faculty in faculties" :value="faculty.faculty_id" :key="faculty.faculty_id">
-      {{ faculty.faculty_name }}
+    <option v-for="faculty in faculties" :value="faculty.facultyId" :key="faculty.facultyId">
+      {{ faculty.name }}
     </option>
   </select>
   <h3 v-if="selectedFaculty">Select Program:</h3>
   <select v-if="selectedFaculty" v-model="selectedProgram">
     <option value="">-- Select Program --</option>
-    <option v-for="program in programs" :value="program.program_id" :key="program.program_id">
-      {{ program.program_name }}
+    <option v-for="program in programs" :value="program.programId" :key="program.programId">
+      {{ program.name }}
     </option>
   </select>
 
@@ -93,7 +93,7 @@ export default {
         if (this.selectedFaculty) {
           const programsResponse = await axios.get('http://localhost:5000/api/programs', {
             params: {
-              faculty_id: this.selectedFaculty,
+              facultyId: this.selectedFaculty,
             },
           });
           this.programs = programsResponse.data;

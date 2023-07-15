@@ -16,11 +16,11 @@
               </tr>
             </thead>
             <tbody>
-              <tr v-for="record in filteredFaculty" :key="record.faculty_id">
-                <td>{{ record.faculty_id }}</td>
-                <td>{{ record.faculty_name }}</td>
+              <tr v-for="record in filteredFaculty" :key="record.facultyId">
+                <td>{{ record.facultyId }}</td>
+                <td>{{ record.name }}</td>
                 <td>
-                  <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-danger" @click="deleteFaculty(record.faculty_id)">Delete</button>
+                  <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-danger" @click="deleteFaculty(record.facultyId)">Delete</button>
                   <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-info" @click="editFaculty(record)">Edit</button>
                 </td>
               </tr>
@@ -37,7 +37,7 @@
                 <div class="col-md-12">
                   <h3>{{ selectedFaculty ? 'Edit Faculty' : 'Create Faculty' }}</h3>
                   <form @submit.prevent="selectedFaculty ? updateFaculty() : addFaculty()">
-                    <input type="text" v-model="newFaculty.faculty_id" placeholder="Faculty ID" required>
+                    <input type="text" v-model="newFaculty.facultyId" placeholder="Faculty ID" required>
                     <input type="text" v-model="newFaculty.name" placeholder="Faculty Name" required> <br>
                     <button v-if="selectedFaculty" class="btn btn-outline-success" @click="updateFaculty">Update</button>
                     <button v-else class="btn btn-primary" type="submit">Create</button>
@@ -69,7 +69,7 @@ export default {
       showForm: false,
       selectedFaculty: null,
       newFaculty: {
-        faculty_id: '',
+        facultyId: '',
         name: ''
       }
     };
@@ -77,7 +77,7 @@ export default {
   methods: {
     fetchFaculties() {
       axios
-        .get('http://localhost:5000/api/faculties')
+        .get('http://localhost:8080/facultys')
         .then(response => {
           this.faculties = response.data;
         })
@@ -87,8 +87,8 @@ export default {
     },
     addFaculty() {
       axios
-        .post('http://localhost:5000/api/faculties', {
-          faculty_id: this.newFaculty.faculty_id,
+        .post('http://localhost:8080/addFaculty', {
+          facultyId: this.newFaculty.facultyId,
           name: this.newFaculty.name
         })
         .then(response => {
@@ -102,7 +102,7 @@ export default {
     },
     deleteFaculty(facultyId) {
       axios
-        .delete(`http://localhost:5000/api/faculties/${facultyId}`)
+        .delete(`http://localhost:8080/faculties/${facultyId}`)
         .then(response => {
           console.log(response.data);
           this.fetchFaculties();
@@ -113,13 +113,13 @@ export default {
     },
     editFaculty(record) {
       this.selectedFaculty = record;
-      this.newFaculty.faculty_id = record.faculty_id;
-      this.newFaculty.name = record.faculty_name;
+      this.newFaculty.facultyId = record.facultyId;
+      this.newFaculty.name = record.name;
       this.showForm = true;
     },
     updateFaculty() {
       axios
-        .put(`http://localhost:5000/api/faculties/${this.selectedFaculty.faculty_id}`, {
+        .put(`http://localhost:8080/api/faculties/${this.selectedFaculty.facultyId}`, {
           name: this.newFaculty.name
         })
         .then(response => {
@@ -133,14 +133,14 @@ export default {
     },
     openForm() {
       this.selectedFaculty = null;
-      this.newFaculty.faculty_id = '';
+      this.newFaculty.facultyId = '';
       this.newFaculty.name = '';
       this.showForm = true;
     },
     cancelForm() {
       this.showForm = false;
       this.selectedFaculty = null;
-      this.newFaculty.faculty_id = '';
+      this.newFaculty.facultyId = '';
       this.newFaculty.name = '';
     },
   },
