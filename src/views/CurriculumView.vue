@@ -37,8 +37,8 @@
                       <label for="courseId">Course</label>
                       <select v-model="selectedCourse" required>
                         <option value="">-- Select Course --</option>
-                        <option v-for="course in records" :key="course.course_id" :value="course.course_id">
-                          {{ course.course_id }} {{ course.course_name }}
+                        <option v-for="course in records" :key="course.courseId" :value="course.courseId">
+                          {{ course.courseId }} {{ course.name }}
                         </option>
 
                       </select>
@@ -81,16 +81,16 @@
                       </tr>
                     </thead>
                     <tbody>
-                      <tr v-for="course in courseTypes" :key="course.course_id">
-                        <td>{{ course.course_id }}</td>
+                      <tr v-for="course in courseTypes" :key="course.courseId">
+                        <td>{{ course.courseId }}</td>
                         <td>{{ course.coursename }}</td>
                         <td>{{ course.credit }}</td>
                         <td>
                           <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-danger"
-                            @click="deleteCourse(course.course_id)">Delete</button>
+                            @click="deleteCourse(course.courseId)">Delete</button>
                           <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-info"
                             @click="editCourse(course); openForm()">Edit</button>
-                          <router-link :to="'/courses/' + course.course_id">Description</router-link>
+                          <router-link :to="'/courses/' + course.courseId">Description</router-link>
                         </td>
                       </tr>
                     </tbody>
@@ -125,15 +125,15 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <tr v-for="record in    displayCourses   " :key="record.course_id">
-                      <td>{{ record.course_id }}</td>
-                      <td>{{ record.course_name }}</td>
+                    <tr v-for="record in    displayCourses   " :key="record.courseId">
+                      <td>{{ record.courseId }}</td>
+                      <td>{{ record.name }}</td>
                       <td>{{ record.credit }}</td>
                       <td><button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-danger"
-                          @click="deleteCourse(record.course_id)">Delete</button>
+                          @click="deleteCourse(record.courseId)">Delete</button>
                         <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-info"
                           @click="editCourse(record); openForm()">Edit</button><br>
-                        <router-link :to="'/courses/' + record.course_id">Description</router-link>
+                        <router-link :to="'/courses/' + record.courseId">Description</router-link>
                       </td>
                     </tr>
                   </tbody>
@@ -183,8 +183,8 @@ export default {
       activeAccordionIndices2: [], // Initialize with an empty array
       selectedCourse: '',
       displayCourses: [],
-      course_id: '',
-      course_name: '',
+      courseId: '',
+      name: '',
       coursetype: [],
       showForm: false,
       records: []
@@ -240,16 +240,16 @@ export default {
       try {
         const response = await axios.get('http://localhost:8080/courses');
         this.records = response.data.map(course => ({
-          course_id: course.course_id,
-          course_name: course.course_name,
+          courseId: course.courseId,
+          name: course.name,
           credit: course.credit,
           gradingtype: course.gradingtype,
           prereq: course.prereq.map(prerequisite => ({
-            course_id: prerequisite.course_id,
-            course_name: prerequisite.course_name
+            courseId: prerequisite.courseId,
+            name: prerequisite.name
           })),
           description: course.description,
-          label: `${course.course_id} - ${course.course_name}`
+          label: `${course.courseId} - ${course.name}`
         })); console.log('get data courses: ', this.records);
       } catch (error) {
         console.log(error);
@@ -264,7 +264,7 @@ export default {
       (async () => {
         try {
           const response = await axios.post('http://localhost:8080/coursetypes', {
-            course_id: this.selectedCourse,
+            courseId: this.selectedCourse,
             course_type: this.courseType
           });
           console.log(response.data);

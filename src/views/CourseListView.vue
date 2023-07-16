@@ -1,9 +1,9 @@
 <!-- CourseListView.vue -->
 <template>
-  <div>
+  <!-- <div>
     <input type="text" v-model="searchQuery" placeholder="Search courses">
     <button @click="searchCourses">Search</button>
-  </div>
+  </div> -->
     <div class="row">
         <div class="col-md-12">
             <table class="table table-striped table-bordered">
@@ -18,10 +18,10 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr v-if="displayCourses.length === 0">
+                    <!-- <tr v-if="displayCourses.length === 0">
                         <td colspan="6" class="text-center">No courses found</td>
-                    </tr>
-                    <tr v-for="record in displayCourses" :key="record.courseId">
+                    </tr> -->
+                    <tr v-for="record in records" :key="record.courseId">
                         <td>{{ record.courseId }}</td>
                         <td>{{ record.name }}</td>
                         <td>{{ record.credit }}</td>

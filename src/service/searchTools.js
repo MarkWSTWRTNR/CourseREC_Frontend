@@ -24,7 +24,7 @@ export default {
     },
     methods: {
         searchCourses() {
-            axios.get('http://localhost:8080/courses/search', {
+            axios.get(`http://localhost:8080/courseByCourseId/${this.searchQuery}`, {
                 params: {
                     query: this.searchQuery,
                 },

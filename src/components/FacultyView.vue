@@ -1,9 +1,9 @@
 <template>
   <div>
-    <div>
+    <!-- <div>
       <input type="text" v-model="searchQuery" placeholder="Search Faculty">
       <button @click="searchFaculty">Search</button>
-    </div>
+    </div> -->
     <div>
       <div class="row">
         <div class="col-md-12">
@@ -16,7 +16,7 @@
               </tr>
             </thead>
             <tbody>
-              <tr v-for="record in filteredFaculty" :key="record.facultyId">
+              <tr v-for="record in faculties" :key="record.facultyId">
                 <td>{{ record.facultyId }}</td>
                 <td>{{ record.name }}</td>
                 <td>
