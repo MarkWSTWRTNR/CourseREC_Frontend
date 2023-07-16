@@ -10,7 +10,14 @@
         <input type="text" id="year" v-model="section.year" required>
         <label for="semester">Semester:</label>
         <input type="text" id="semester" v-model="section.semester" required>
+        <div v-for="(option, index) in section.options" :key="index">
+          <label :for="'option' + index">Course {{ index + 1 }}:</label>
+          <v-select :id="'option' + index" v-model="section.options[index]" label="name" :options="records" searchable
+            required></v-select>
 
+        </div>
+
+        <button @click="addOption">Add More</button>
         <div class="buttons">
           <button v-if="!isEditing" type="submit">Create</button>
           <button v-if="isEditing" type="submit">Save</button>
@@ -30,11 +37,22 @@
               <th>Course ID</th>
               <th>Course Name</th>
               <th>Course Credit</th>
-              <th>Grading Type</th>
-              <th>Course Prerequisite</th>
+              <th>Grade</th>
               <th>Action</th>
             </tr>
           </thead>
+          <tbody>
+            <tr v-for="record in records" :key="record.courseId">
+              <td>{{ record.courseId }}</td>
+              <td>{{ record.name }}</td>
+              <td>{{ record.credit }}</td>
+              <td></td>
+              <td>
+                <router-link :to="'/courses/' + record.courseId">Description</router-link>
+              </td>
+            </tr>
+          </tbody>
+
         </table>
         <button @click="editSection(index)">Edit</button>
         <hr>
@@ -44,6 +62,9 @@
 </template>
 
 <script>
+import apiClient from '@/service/AxiosClient';
+import vSelect from 'vue-select';
+
 export default {
   data() {
     return {
@@ -51,13 +72,45 @@ export default {
       isEditing: false,
       section: {
         year: '',
-        semester: ''
-      },
+        semester: '',
+        options: [],
+
+      }, records: [],
       createdSections: [],
       editIndex: null
     };
+  }, 
+  components: {
+    'v-select': vSelect,
+
+  },
+  created() {
+    this.fetchCourses();
   },
   methods: {
+    fetchCourses() {
+      apiClient.get('http://localhost:8080/courses')
+        .then(response => {
+          this.records = response.data.map(course => ({
+            id: course.id,
+            courseId: course.courseId,
+            name: course.name,
+            credit: course.credit,
+            gradingtype: course.gradingtype,
+            prerequisite: course.prerequisite.map(prerequisite => ({
+              courseId: prerequisite.courseId,
+              name: prerequisite.name,
+              label: `${prerequisite.courseId} - ${prerequisite.name}`
+            })),
+            description: course.description,
+            label: `${course.courseId} - ${course.name}`
+          }));
+          console.log(this.records)
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    },
     showForm() {
       this.isFormVisible = true;
       this.isEditing = false;
@@ -93,6 +146,16 @@ export default {
     resetSection() {
       this.section.year = '';
       this.section.semester = '';
+      this.section.options = [];
+    },
+    addOption() {
+      this.section.options.push('');
+    },
+    getOption(index) {
+      return this.section.options[index];
+    },
+    setOption(index, value) {
+      this.section.options[index] = value;
     }
   }
 };
