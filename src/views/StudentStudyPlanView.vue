@@ -86,12 +86,12 @@ export default {
   methods: {
     async fetchFacultiesAndPrograms() {
       try {
-        const facultiesResponse = await axios.get('http://localhost:5000/api/faculties');
+        const facultiesResponse = await axios.get('http://localhost:8080/facultys');
         this.faculties = facultiesResponse.data;
         console.log(this.faculties);
 
         if (this.selectedFaculty) {
-          const programsResponse = await axios.get('http://localhost:5000/api/programs', {
+          const programsResponse = await axios.get('http://localhost:8080/programs', {
             params: {
               facultyId: this.selectedFaculty,
             },

@@ -1,168 +1,107 @@
 <template>
-  <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-primary" @click="openForm">Add courses</button>
-  <div v-for="(item, index) in item1" :key="index">
-    <div @click="toggleAccordion(1, index)" :class="{ 'accordion': true, 'active': isActive(1, index) }">
-      <h3>{{ item.title }}</h3>
-      <i class="fa fa-chevron-down" :class="{ 'fa-rotate-180': isActive(1, index) }"></i>
-    </div >
-    <div v-show="isActive(1, index)" class="content">
-      <div v-for="semester in semester" :key="semester.name">
-        <h5>{{ semester.name }}</h5>
-        <div class="row">
-          <div class="col-md-12">
-            <table class="table table-striped table-bordered">
-              <thead>
-                <tr>
-                  <th>Course ID</th>
-                  <th>Course Name</th>
-                  <th>Course Credit</th>
-                  <th>Grade</th>
-                  <th>Action</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr v-for="record in records" :key="record.course_id">
-                  <td>{{ record.course_id }}</td>
-                  <td>{{ record.coursename }}</td>
-                  <td>{{ record.credit }}
-                    <!-- <select name="" id="">
-                      <option value="">-- Select Grade --</option>
-                      <option value="A"> A </option>
-                      <option value="B+"> B+</option>
-                      <option value="B">B</option>
-                      <option value="C+">C+</option>
-                      <option value="C">C</option>
-                      <option value="D+">D+</option>
-                      <option value="D">D</option>
-                      <option value="F">F</option>
-                    </select> -->
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
+  <div>
+    <button @click="showForm">Create</button>
+
+    <div v-if="isFormVisible" class="popup">
+      <h2 v-if="!isEditing">Create Section</h2>
+      <h2 v-if="isEditing">Edit Section</h2>
+      <form @submit.prevent="saveSection">
+        <label for="year">Year:</label>
+        <input type="text" id="year" v-model="section.year" required>
+        <label for="semester">Semester:</label>
+        <input type="text" id="semester" v-model="section.semester" required>
+
+        <div class="buttons">
+          <button v-if="!isEditing" type="submit">Create</button>
+          <button v-if="isEditing" type="submit">Save</button>
+          <button @click="cancelForm">Cancel</button>
         </div>
+      </form>
+    </div>
+
+    <div v-if="createdSections.length > 0">
+      <div v-for="(section, index) in createdSections" :key="index">
+        <p>Year: {{ section.year }}</p>
+        <p>Semester: {{ section.semester }}</p>
+
+        <table class="table table-striped table-bordered">
+          <thead>
+            <tr>
+              <th>Course ID</th>
+              <th>Course Name</th>
+              <th>Course Credit</th>
+              <th>Grading Type</th>
+              <th>Course Prerequisite</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+        </table>
+        <button @click="editSection(index)">Edit</button>
+        <hr>
       </div>
     </div>
   </div>
 </template>
-  
+
 <script>
-import { userRole, ROLES } from '@/service/roles';
 export default {
-  name: 'finishedCourse',
   data() {
     return {
-      item1: [
-        {
-          title: 'Year 1',
-        },
-      ],
-      semester: [
-        {
-          name: 'Semester 1'
-        }
-      ],
-      userRole: userRole,
-      ROLES: ROLES,
-      selectedGrade: "",
-      grades: [],
-      records: [],
-      activeAccordionIndices1: []
+      isFormVisible: false,
+      isEditing: false,
+      section: {
+        year: '',
+        semester: ''
+      },
+      createdSections: [],
+      editIndex: null
     };
   },
   methods: {
-    fetchCourses() {
-      axios.get('http://localhost:5000/api/courses')
-        .then(response => {
-          this.records = response.data.map(course => ({
-            course_id: course.course_id,
-            coursename: course.coursename,
-            credit: course.credit,
-            gradingtype: course.gradingtype,
-            prereq: course.prereq.map(prerequisite => ({
-              course_id: prerequisite.course_id,
-              coursename: prerequisite.coursename
-            })),
-            description: course.description,
-            label: `${course.course_id} - ${course.coursename}`
-          }));
-        })
-        .catch(error => {
-          console.log(error);
-        });
+    showForm() {
+      this.isFormVisible = true;
+      this.isEditing = false;
     },
-    addGrade() {
-      if (this.selectedGrade) {
-        this.grades.push(this.selectedGrade);
-        this.selectedGrade = "";
+    cancelForm() {
+      this.isFormVisible = false;
+      this.resetSection();
+    },
+    createSection() {
+      this.createdSections.push({ ...this.section });
+      this.isFormVisible = false;
+      this.resetSection();
+    },
+    editSection(index) {
+      this.isFormVisible = true;
+      this.isEditing = true;
+      this.editIndex = index; // Store the index of the section being edited
+      this.section = { ...this.createdSections[index] };
+    },
+    saveSection() {
+      if (this.isEditing) {
+        // Update the edited section in the createdSections array
+        Object.assign(this.createdSections[this.editIndex], this.section);
+        this.isEditing = false;
+      } else {
+        // Create a new section
+        this.createdSections.push({ ...this.section });
       }
+
+      this.isFormVisible = false;
+      this.resetSection();
     },
-    calculateGPA() {
-      const gradePoints = {
-        A: 4.0,
-        "B+": 3.5,
-        B: 3.0,
-        "C+": 2.5,
-        C: 2.0,
-        "D+": 1.5,
-        D: 1.0,
-        F: 0.0,
-      };
-
-      let totalCredits = this.grades.length;
-      let totalPoints = 0;
-
-      this.grades.forEach((grade) => {
-        totalPoints += gradePoints[grade];
-      });
-
-      return (totalPoints / totalCredits).toFixed(2);
-    },
-    toggleAccordion(accordionNumber, index) {
-      if (accordionNumber === 1) {
-        const isActive = this.isActive(1, index);
-        if (isActive) {
-          this.activeAccordionIndices1 = this.activeAccordionIndices1.filter(i => i !== index);
-        } else {
-          this.activeAccordionIndices1.push(index);
-        }
-      }
-    }, isActive(accordionNumber, index) {
-      if (accordionNumber === 1) {
-        return this.activeAccordionIndices1 && this.activeAccordionIndices1.includes(index);
-      }
-      return false;
-    },
-  },
-
+    resetSection() {
+      this.section.year = '';
+      this.section.semester = '';
+    }
+  }
 };
 </script>
-  
+
 <style scoped>
-h1 {
-  font-size: 24px;
-  margin-bottom: 16px;
-}
-
-label {
-  font-weight: bold;
-}
-
-select {
-  margin-right: 8px;
-}
-
-button {
-  margin-top: 8px;
-}
-
-ul {
-  margin-top: 8px;
-}
-
-li {
-  margin-bottom: 4px;
+.popup {
+  border: 1px solid #ccc;
+  padding: 20px;
+  margin-top: 10px;
 }
 </style>
-  
