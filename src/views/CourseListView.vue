@@ -1,6 +1,6 @@
 <!-- CourseListView.vue -->
 <template>
-  <!-- <div>
+    <!-- <div>
     <input type="text" v-model="searchQuery" placeholder="Search courses">
     <button @click="searchCourses">Search</button>
   </div> -->
@@ -71,11 +71,14 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="coursePrerequisite">Course Prerequisite</label>
-                                    <v-select class="form-control left-align" id="coursePrerequisite" v-model="prerequisite"
-                                        :options="records.map(record => ({ label: record.courseId + ' - ' + record.name, value: {courseId : record.courseId }}))"
+                                    <v-select class="form-control left-align" id="coursePrerequisite"
+                                        v-model="selectedPrerequisites"
+                                        :options="records.map(record => ({ label: record.courseId + ' - ' + record.name, value: { courseId: record.courseId } }))"
                                         multiple :reduce="option => option.value"
                                         :placeholder="'Select prerequisite courses'">
                                     </v-select>
+
+
                                 </div>
                                 <div class="form-group">
                                     <label for="description">Description</label>
@@ -96,17 +99,179 @@
   
 <script>
 import { userRole, ROLES } from "../service/roles"
-import searchTools from "../service/searchTools"
-import crud from '@/service/crud';
+import searchTools from "../service/searchTools";
+
+// crud.js
+import vSelect from 'vue-select';
+import apiClient from "@/service/AxiosClient";
 
 export default {
+    components: {
+        'v-select': vSelect,
+    },
     name: 'courselist',
-    mixins: [crud, searchTools],
+    mixins: [searchTools],
     data() {
         return {
             userRole: userRole,
             ROLES: ROLES,
+            records: [],
+            id: '',
+            courseId: '',
+            name: '',
+            credit: 0,
+            gradingtype: '',
+            prerequisite: [],
+            description: '',
+            selectedCourse: null,
+            selectedPrerequisites: [],
+            showForm: false,
+            isSubmitting: false,
         };
+    },
+    mounted() {
+        this.fetchCourses();
+    },
+    methods: {
+        fetchCourses() {
+            apiClient.get('http://localhost:8080/courses')
+                .then(response => {
+                    this.records = response.data.map(course => ({
+                        id: course.id,
+                        courseId: course.courseId,
+                        name: course.name,
+                        credit: course.credit,
+                        gradingtype: course.gradingtype,
+                        prerequisite: course.prerequisite.map(prerequisite => ({
+                            courseId: prerequisite.courseId,
+                            name: prerequisite.name,
+                            label: `${prerequisite.courseId} - ${prerequisite.name}`
+                        })),
+                        description: course.description,
+                        label: `${course.courseId} - ${course.name}`
+                    }));
+                    console.log(this.records)
+                })
+                .catch(error => {
+                    console.log(error);
+                });
+        },
+
+        addCourse() {
+            if (this.isSubmitting) return; // Prevent multiple submissions
+            this.isSubmitting = true;
+            const course = {
+                courseId: this.courseId,
+                name: this.name,
+                credit: this.credit,
+                gradingtype: this.gradingtype,
+                prerequisite: this.prerequisite,
+                description: this.description
+            };
+            apiClient.post('http://localhost:8080/addCourse', course)
+                .then(response => {
+                    alert('Course created successfully');
+                    const data = response.data;
+                    if (data.error) {
+                        alert(data.error);
+                    } else {
+                        this.fetchCourses();
+                        this.clearForm();
+                    }
+                    console.log([course])
+                })
+                .catch(error => {
+                    console.log(error);
+                }).finally(() => {
+                    this.isSubmitting = false; // Reset the submission flag
+                    this.showForm = false;
+                });
+            this.showForm = false;
+            this.selectedCourse = null
+            this.clearForm;
+        },
+        deleteCourse(id) {
+            const confirmDelete = confirm("Are you sure you want to delete this course?");
+            if (!confirmDelete) {
+                return;
+            }
+            apiClient.delete(`http://localhost:8080/deleteCourse/${id}`)
+                .then(response => {
+                    alert('Course deleted successfully');
+                    this.fetchCourses();
+                })
+                .catch(error => {
+                    console.log(error);
+                });
+        },
+        editCourse(course) {
+            if (course && course.courseId) {
+                this.selectedCourse = course;
+                this.courseId = course.courseId;
+                this.name = course.name;
+                this.credit = course.credit;
+                this.gradingtype = course.gradingtype;
+                this.prerequisite = course.prerequisite.map(prerequisite => ({
+                    courseId: prerequisite.courseId,
+                    name: prerequisite.name,
+                    label: `${prerequisite.courseId} - ${prerequisite.name}`
+                }));
+                this.description = course.description;
+                this.selectedPrerequisites = this.prerequisite.map(prerequisite => prerequisite.courseId);
+                this.showForm = true;
+            } else {
+                alert('Invalid course object:', course);
+            }
+        },
+        updateCourse() {
+            if (!this.selectedCourse || this.isSubmitting) return; // Prevent multiple submissions
+            this.isSubmitting = true;
+
+            const updatedCourse = {
+                courseId: this.selectedCourse.courseId,
+                name: this.name,
+                credit: this.credit,
+                gradingtype: this.gradingtype,
+                prerequisite: this.prerequisite,
+                description: this.description
+            };
+            console.log('upate click')
+            apiClient.put(`http://localhost:8080/updateCourse`, updatedCourse)
+                .then(response => {
+                    alert('Course updated successfully');
+                    this.fetchCourses();
+                    this.selectedCourse = null;
+                    this.clearForm();
+                })
+                .catch(error => {
+                    alert('Error updating course:', error);
+                })
+                .finally(() => {
+                    this.isSubmitting = false; // Reset the submission flag
+                    this.showForm = false;
+                });
+            console.log([updatedCourse])
+        },
+
+        openForm() {
+            this.showForm = true;
+        },
+        cancelForm() {
+            // Close the form without submitting
+            this.showForm = false;
+            this.clearForm();
+            this.selectedCourse = null;
+        },
+        clearForm() {
+            this.courseId = '';
+            this.name = '';
+            this.credit = 0;
+            this.gradingtype = '';
+            this.prerequisite = [];
+            this.description = '';
+        },
+
+
     }
 }
 </script>
