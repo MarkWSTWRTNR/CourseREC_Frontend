@@ -74,15 +74,7 @@ export default {
         options: [],
       },
       records: [],
-      id: '',
-      courseId: '',
-      name: '',
-      credit: 0,
-      gradingtype: '',
-      prerequisite: [],
-      description: '',
       createdSections: [],
-      selectedPrerequisites: [],
       editIndex: null
     };
   },
@@ -98,20 +90,10 @@ export default {
       apiClient.get('http://localhost:8080/courses')
         .then(response => {
           this.records = response.data.map(course => ({
-            id: course.id,
             courseId: course.courseId,
             name: course.name,
-            credit: course.credit,
-            gradingtype: course.gradingtype,
-            prerequisite: course.prerequisite.map(prerequisite => ({
-              courseId: prerequisite.courseId,
-              name: prerequisite.name,
-              label: `${prerequisite.courseId} - ${prerequisite.name}`
-            })),
-            description: course.description,
-            label: `${course.courseId} - ${course.name}`
+            credit: course.credit
           }));
-          console.log(this.records)
         })
         .catch(error => {
           console.log(error);
@@ -139,13 +121,7 @@ export default {
       const sectionData = {
         year: this.section.year,
         semester: this.section.semester,
-        courses: this.section.options,
-        courseId: this.courseId,
-        name: this.name,
-        credit: this.credit,
-        gradingtype: this.gradingtype,
-        prerequisite: this.prerequisite,
-        description: this.description
+        courses: this.section.options
       };
 
       // Save the section data to the backend API
