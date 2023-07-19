@@ -20,8 +20,10 @@
                 <td>{{ record.facultyId }}</td>
                 <td>{{ record.name }}</td>
                 <td>
-                  <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-danger" @click="deleteFaculty(record.facultyId)">Delete</button>
-                  <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-info" @click="editFaculty(record)">Edit</button>
+                  <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-danger"
+                    @click="deleteFaculty(record.facultyId)">Delete</button>
+                  <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-info"
+                    @click="editFaculty(record)">Edit</button>
                 </td>
               </tr>
             </tbody>
@@ -35,13 +37,15 @@
             <div class="popup">
               <div class="row">
                 <div class="col-md-12">
-                  <h3>{{ selectedFaculty ? 'Edit Faculty' : 'Create Faculty' }}</h3>
+                  <!-- Rest of the code -->
+
                   <form @submit.prevent="selectedFaculty ? updateFaculty() : addFaculty()">
+                    <!-- Rest of the code -->
                     <input type="text" v-model="newFaculty.facultyId" placeholder="Faculty ID" required>
-                    <input type="text" v-model="newFaculty.name" placeholder="Faculty Name" required> <br>
-                    <button v-if="selectedFaculty" class="btn btn-outline-success" @click="updateFaculty">Update</button>
-                    <button v-else class="btn btn-primary" type="submit">Create</button>
-                    <button @click="cancelForm">Cancel</button>
+                    <input type="text" v-model="newFaculty.name" placeholder="Faculty Name" required>
+                    <!-- Rest of the code -->
+                    <button v-if="selectedFaculty" class="btn btn-outline-success" type="submit">Update</button>
+                    <!-- Rest of the code -->
                   </form>
                 </div>
               </div>
@@ -100,9 +104,9 @@ export default {
           console.error(error);
         });
     },
-    deleteFaculty(facultyId) {
+    deleteFaculty(id) {
       axios
-        .delete(`http://localhost:8080/faculties/${facultyId}`)
+        .delete(`http://localhost:8080/deleteFaculty/${id}`)
         .then(response => {
           console.log(response.data);
           this.fetchFaculties();
@@ -119,9 +123,7 @@ export default {
     },
     updateFaculty() {
       axios
-        .put(`http://localhost:8080/api/faculties/${this.selectedFaculty.facultyId}`, {
-          name: this.newFaculty.name
-        })
+        .put(`http://localhost:8080/updateFaculty`, this.newFaculty) // Send the complete Faculty object
         .then(response => {
           console.log(response.data);
           this.fetchFaculties();
@@ -144,7 +146,7 @@ export default {
       this.newFaculty.name = '';
     },
   },
-  created() {
+  mounted() {
     this.fetchFaculties();
   }
 };

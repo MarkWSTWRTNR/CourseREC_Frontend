@@ -4,7 +4,7 @@
       <input type="text" v-model="searchQuery" placeholder="Search program">
       <button @click="searchProgram">Search</button>
     </div> -->
-    
+
     <div>
       <div class="row">
         <div class="col-md-12">
@@ -14,21 +14,23 @@
                 <th>Program ID</th>
                 <th>Program</th>
                 <th>Faculty</th>
-                <th v-if="userRole === ROLES.ADMIN ">Action</th>
+                <th v-if="userRole === ROLES.ADMIN">Action</th>
               </tr>
             </thead>
             <tbody>
               <tr v-for="record in programs" :key="record.id">
                 <td>{{ record.programId }}</td>
                 <td>{{ record.name }}</td>
-                <td>{{  record.faculty ? record.faculty.name : 'N/A'}}</td>
+                <td>{{ record.faculty ? record.faculty.name : 'N/A' }}</td>
                 <td>
-                  <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-danger" @click="deleteProgram(record.id)">
+                  <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-danger"
+                    @click="deleteProgram(record.id)">
                     Delete
                   </button>
-                  <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-info" @click="editProgram(record); openForm()">
+                  <!-- <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-info"
+                    @click="editProgram(record); openForm()">
                     Edit
-                  </button>
+                  </button> -->
                 </td>
               </tr>
             </tbody>
@@ -47,7 +49,8 @@
                     <input type="text" v-model="programId" placeholder="Program ID" required>
                     <input type="text" v-model="name" placeholder="Program Name" required>
                     <select v-model="selectedFaculty" required>
-                      <option v-for="faculty in faculties" :key="faculty.facultyId" :value="{facultyId : faculty.facultyId}">
+                      <option v-for="faculty in faculties" :key="faculty.facultyId"
+                        :value="{ facultyId: faculty.facultyId }">
                         {{ faculty.name }}
                       </option>
                     </select>
@@ -126,17 +129,17 @@ export default {
           this.cancelForm();
           this.selectedFaculty = '';
           this.programId = '';
-        }) 
+        })
         .catch(error => {
           console.error('Error creating program:', error);
           alert('Error creating program. Please check the console for more details.');
         });
     },
-    deleteProgram(programId) {
+    deleteProgram(id) {
       const confirmed = confirm('Are you sure you want to delete this program?');
       if (confirmed) {
         axios
-          .delete(`http://localhost:8080/programs/${programId}`)
+          .delete(`http://localhost:8080/deleteProgram/${id}`)
           .then(response => {
             alert('Program deleted successfully');
             this.fetchData();
@@ -146,39 +149,40 @@ export default {
           });
       }
     },
-    editProgram(program) {
-      if (program && program.id) {
-        this.selectedProgram = program;
-        this.programId = program.id;
-        this.name = program.name;
-        this.selectedFaculty = program.facultyId.toString();
-        this.showForm = true;
-      } else {
-        alert('Invalid program selected:', program);
-      }
-    },
-    updateProgram() {
-      if (!this.selectedProgram) {
-        return;
-      }
-      const updatedProgram = {
-        programId: this.programId,
-        name: this.name,
-        facultyId: this.selectedFaculty
-      };
-      axios
-        .put(`http://localhost:8080/programs/${this.selectedProgram.id}`, updatedProgram)
-        .then(response => {
-          alert('Program updated successfully');
-          this.fetchData();
-          this.cancelForm();
-          this.selectedFaculty = '';
-          this.programId = '';
-        })
-        .catch(error => {
-          alert('Error updating program:', error);
-        });
-    },
+    // editProgram(program) {
+    //   if (program && program.id) {
+    //     this.selectedProgram = program;
+    //     this.programId = program.programId; // Update this line
+    //     this.name = program.name;
+    //     this.selectedFaculty = program.facultyId ? program.facultyId.toString() : '';
+
+    //     this.showForm = true;
+    //   } else {
+    //     alert('Invalid program selected:', program);
+    //   }
+    // },
+    // updateProgram() {
+    //   if (!this.selectedProgram) {
+    //     return;
+    //   }
+    //   const updatedProgram = {
+    //     programId: this.programId,
+    //     name: this.name,
+    //     facultyId: this.selectedFaculty
+    //   };
+    //   axios
+    //     .put(`http://localhost:8080/updateProgram`, updatedProgram)
+    //     .then(response => {
+    //       alert('Program updated successfully');
+    //       this.fetchData();
+    //       this.cancelForm();
+    //       this.selectedFaculty = '';
+    //       this.programId = '';
+    //     })
+    //     .catch(error => {
+    //       alert('Error updating program:', error);
+    //     });
+    // },
     openForm() {
       this.showForm = true;
     },
@@ -189,7 +193,7 @@ export default {
       this.selectedFaculty = '';
       this.selectedProgram = null;
     },
-   
+
   },
   mounted() {
     this.fetchData();

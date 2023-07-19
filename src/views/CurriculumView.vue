@@ -15,7 +15,7 @@
   <h3 v-if="selectedFaculty">Select Program:</h3>
   <select v-if="selectedFaculty" v-model="selectedProgram">
     <option value="">-- Select Program --</option>
-    <option v-for="program in programs" :value="program.programId" :key="program.programId">
+    <option v-for="program in filteredPrograms" :value="program.programId" :key="program.programId">
       {{ program.name }}
     </option>
   </select>
@@ -189,6 +189,14 @@ export default {
         },
       ],
     }
+  },
+  computed: {
+    filteredPrograms() {
+      if (this.selectedFaculty) {
+        return this.programs.filter(program => program.facultyId === this.selectedFaculty);
+      }
+      return this.programs;
+    },
   },
   methods: {
     fetchData() {
