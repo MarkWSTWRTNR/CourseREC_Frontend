@@ -27,10 +27,10 @@
                     @click="deleteProgram(record.id)">
                     Delete
                   </button>
-                  <!-- <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-info"
+                  <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-info"
                     @click="editProgram(record); openForm()">
                     Edit
-                  </button> -->
+                  </button>
                 </td>
               </tr>
             </tbody>
@@ -45,7 +45,7 @@
               <div class="row">
                 <div class="col-md-12">
                   <h3>{{ selectedProgram ? 'Edit Program' : 'Create Program' }}</h3>
-                  <form @submit.prevent="selectedProgram ? updateProgram() : addProgram()">
+                  <form @submit.prevent="addProgram">
                     <input type="text" v-model="programId" placeholder="Program ID" required>
                     <input type="text" v-model="name" placeholder="Program Name" required>
                     <select v-model="selectedFaculty" required>
@@ -110,23 +110,22 @@ export default {
         });
     },
     addProgram() {
-      console.log('Data to send:', {
+      if (this.isSubmitting) return; // Prevent multiple submissions
+      this.isSubmitting = true;
+      const program = {
         programId: this.programId,
         name: this.name,
         faculty: this.selectedFaculty
-      });
+      }
 
       axios
-        .post('http://localhost:8080/addProgram', {
-          programId: this.programId,
-          name: this.name,
-          faculty: this.selectedFaculty
-        })
+        .post('http://localhost:8080/addProgram', program)
         .then(response => {
           console.log('Response:', response.data);
           alert('Program created successfully');
           this.fetchData();
           this.cancelForm();
+          this.clearForm();
           this.selectedFaculty = '';
           this.programId = '';
         })
@@ -149,51 +148,57 @@ export default {
           });
       }
     },
-    // editProgram(program) {
-    //   if (program && program.id) {
-    //     this.selectedProgram = program;
-    //     this.programId = program.programId; // Update this line
-    //     this.name = program.name;
-    //     this.selectedFaculty = program.facultyId ? program.facultyId.toString() : '';
+    editProgram(program) {
+      if (program && program.id) {
+        this.selectedProgram = program;
+        this.programId = program.programId; // Update this line
+        this.name = program.name;
+        this.selectedFaculty = program.facultyId ? program.facultyId.toString() : '';
 
-    //     this.showForm = true;
-    //   } else {
-    //     alert('Invalid program selected:', program);
-    //   }
-    // },
-    // updateProgram() {
-    //   if (!this.selectedProgram) {
-    //     return;
-    //   }
-    //   const updatedProgram = {
-    //     programId: this.programId,
-    //     name: this.name,
-    //     facultyId: this.selectedFaculty
-    //   };
-    //   axios
-    //     .put(`http://localhost:8080/updateProgram`, updatedProgram)
-    //     .then(response => {
-    //       alert('Program updated successfully');
-    //       this.fetchData();
-    //       this.cancelForm();
-    //       this.selectedFaculty = '';
-    //       this.programId = '';
-    //     })
-    //     .catch(error => {
-    //       alert('Error updating program:', error);
-    //     });
-    // },
+        this.showForm = true;
+      } else {
+        alert('Invalid program selected:', program);
+      }
+    },
+    updateProgram() {
+      if (!this.selectedProgram || this.isSubmitting) return; // Prevent multiple submissions
+      this.isSubmitting = true;
+
+      const updatedProgram = {
+        programId: this.programId,
+        name: this.name,
+        faculty: this.selectedFaculty
+      };
+      axios
+        .put(`http://localhost:8080/updateProgram`, updatedProgram)
+        .then(response => {
+          alert('Program updated successfully');
+          this.fetchData();
+          this.cancelForm();
+          this.clearForm();
+          this.selectedProgram = null;
+        })
+        .catch(error => {
+          alert('Error updating program:', error);
+        })
+        .finally(() => {
+          this.isSubmitting = false; // Reset the submission flag
+          this.showForm = false;
+        });
+    },
     openForm() {
       this.showForm = true;
     },
     cancelForm() {
       this.showForm = false;
+      this.clearForm();
+      this.selectedProgram = null;
+    },
+    clearForm() {
       this.programId = '';
       this.name = '';
       this.selectedFaculty = '';
-      this.selectedProgram = null;
     },
-
   },
   mounted() {
     this.fetchData();

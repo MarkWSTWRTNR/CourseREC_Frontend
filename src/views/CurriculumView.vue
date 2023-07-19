@@ -20,6 +20,7 @@
     </option>
   </select>
 
+
   <div v-if="selectedProgram">
     <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-primary" @click="openForm">Add courses</button>
     <div @click="toggleAccordion(1)" :class="{ 'accordion': true, 'active': isActive(1) }">
@@ -32,6 +33,42 @@
           :class="{ 'accordion': true, 'active': isActive(2, section.index) }">
           <h3>{{ section.title }}</h3>
           <i class="fa fa-chevron-down" :class="{ 'fa-rotate-180': isActive(2, section.index) }"></i>
+        </div>
+        <div v-if="showForm">
+          <div class="overlay">
+            <div class="popup">
+              <form @submit.prevent="addCourseToProgram">
+                <div class="row">
+                  <div class="col-md-12">
+                    <label for="courseId">Course</label>
+                    <select v-model="selectedCourse" required>
+                      <option value="">-- Select Course --</option>
+                      <option v-for="course in records" :key="course.courseId" :value="course.courseId">
+                        {{ course.courseId }} {{ course.name }}
+                      </option>
+
+                    </select>
+                    <label for="section">Course Type:</label>
+                    <select v-model="section.courses" id="section">
+                      <option value="">-- Select Course Type --</option>
+                      <option value="gerclp">General Education | Required courses | Learner Pereson</option>
+                      <option value="gercic">General Education | Required courses | Innovative
+                        Co-creator
+                      </option>
+                      <option value="gercac">General Education | Required courses | Active Citizen</option>
+                      <option value="geec">General Education | Elective courses</option>
+                      <option value="foscc">Feild of Specialization| Core Courses</option>
+                      <option value="fosmcrc">Feild of Specialization | Major Courses | Required Courses
+                      </option>
+                      <option value="fosme">Feild of Specialization | Major Elective</option>
+                    </select>
+                    <button class="btn btn-primary" type="submit">Submit</button>
+                    <button @click="cancelForm"> Cancel</button>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
         </div>
         <div v-show="isActive(2, section.index)" class="content">
           <div class="row">
@@ -64,33 +101,6 @@
           </div>
         </div>
       </div>
-    </div>
-  </div>
-
-  <div v-if="showForm" class="overlay">
-    <div class="popup">
-      <form @submit.prevent="submitForm">
-        <div class="row">
-          <div class="col-md-12">
-            <label for="courseId">Course</label>
-            <select v-model="selectedCourse" required>
-              <option value="">-- Select Course --</option>
-              <option v-for="course in records" :key="course.courseId" :value="course.courseId">
-                {{ course.courseId }} {{ course.name }}
-              </option>
-            </select>
-            <label for="courseType">Course Type:</label>
-            <select v-model="selectedCourseType" id="courseType" required>
-              <option value="">-- Select Course Type --</option>
-              <option v-for="type in courseTypes" :value="type.value" :key="type.value">
-                {{ type.label }}
-              </option>
-            </select>
-            <button class="btn btn-primary" type="submit">Submit</button>
-            <button @click="cancelForm"> Cancel</button>
-          </div>
-        </div>
-      </form>
     </div>
   </div>
 </template>
@@ -137,74 +147,43 @@ export default {
         },
         {
           type: 'foscc',
-          title: 'Field of Specialization | Core Courses',
+          title: 'Feild of Specialization| Core Courses',
           index: 5,
           courses: [], // Initialize with empty array for the type
         },
         {
           type: 'fosmcrc',
-          title: 'Field of Specialization | Major Courses | Required Courses',
+          title: 'Feild of Specialization | Major Courses | Required Courses',
           index: 6,
           courses: [], // Initialize with empty array for the type
         },
         {
           type: 'fosme',
-          title: 'Field of Specialization | Major Elective',
+          title: 'Feild of Specialization | Major Elective',
           index: 7,
           courses: [], // Initialize with empty array for the type
         },
         // Add more sections as needed...
       ],
       activeAccordionIndices: [1], // Initially set the first accordion as active
-      selectedCourse: '',
-      selectedCourseType: '',
-      courseTypes: [
-        {
-          label: 'General Education | Required courses | Learner Person',
-          value: 'gerclp',
-        },
-        {
-          label: 'General Education | Required courses | Innovative Co-creator',
-          value: 'gercic',
-        },
-        {
-          label: 'General Education | Required courses | Active Citizen',
-          value: 'gercac',
-        },
-        {
-          label: 'General Education | Elective courses',
-          value: 'geec',
-        },
-        {
-          label: 'Field of Specialization | Core Courses',
-          value: 'foscc',
-        },
-        {
-          label: 'Field of Specialization | Major Courses | Required Courses',
-          value: 'fosmcrc',
-        },
-        {
-          label: 'Field of Specialization | Major Elective',
-          value: 'fosme',
-        },
-      ],
     }
   },
   computed: {
     filteredPrograms() {
       if (this.selectedFaculty) {
-        return this.programs.filter(program => program.facultyId === this.selectedFaculty);
+        return this.programs.filter(program => program.programId === this.selectedFaculty);
       }
-      return this.programs;
-    },
+      return [];
+    }
   },
   methods: {
     fetchData() {
       apiClient
         .get('http://localhost:8080/facultys')
         .then(response => {
-          this.faculties = response.data;
+          this.faculties = response.data;console.log('f',this.faculties)
         })
+        
         .catch(error => {
           alert('Error fetching faculties:', error);
         });
@@ -212,7 +191,7 @@ export default {
       apiClient
         .get('http://localhost:8080/programs')
         .then(response => {
-          this.programs = response.data;
+          this.programs = response.data; console.log('p',this.programs)
         })
         .catch(error => {
           console.log('Error fetching programs:', error);
@@ -231,7 +210,6 @@ export default {
       const requestData = {
         programId,
         course,
-        courseType: this.selectedCourseType,
       };
 
       apiClient
@@ -278,23 +256,14 @@ export default {
         return this.activeAccordionIndices.includes(index + 2);
       }
       return false;
-    },
-    openForm() {
+    }, openForm() {
       this.showForm = true;
     },
     closeForm() {
       this.showForm = false;
     },
-    submitForm() {
-      const sectionType = this.selectedCourseType;
-      const course = this.selectedCourse;
-      this.addCourseToProgram(sectionType, course);
-      this.closeForm();
-    },
-    cancelForm() {
-      this.closeForm();
-    },
   },
+
   mounted() {
     this.fetchData();
   }

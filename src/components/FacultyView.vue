@@ -34,10 +34,10 @@
               <div class="row">
                 <div class="col-md-12">
                   <h3>{{ selectedFaculty ? 'Edit Faculty' : 'Create Faculty' }}</h3>
-                  <form @submit.prevent="selectedFaculty ? updateFaculty() : addFaculty()">
-                    <input type="text" v-model="selectedFaculty.facultyId" placeholder="Faculty ID" required>
-                    <input type="text" v-model="selectedFaculty.name" placeholder="Faculty Name" required>
-                    <button v-if="selectedFaculty" class="btn btn-outline-success" type="submit">Update</button>
+                  <form @submit.prevent="addFaculty">
+                    <input type="text" v-model="facultyId" placeholder="Faculty ID" required>
+                    <input type="text" v-model="name" placeholder="Faculty Name" required>
+                    <button v-if="selectedFaculty" class="btn btn-outline-success" @click="updateFaculty">Update</button>
                     <button v-else class="btn btn-primary" type="submit">Create</button>
                     <button @click="cancelForm">Cancel</button>
                   </form>
@@ -64,6 +64,8 @@ export default {
       userRole: userRole,
       ROLES: ROLES,
       faculties: [],
+      facultyId: '',
+      name: '',
       showForm: false,
       selectedFaculty: null,
     };
@@ -80,8 +82,14 @@ export default {
         });
     },
     addFaculty() {
+      if (this.isSubmitting) return; // Prevent multiple submissions
+      this.isSubmitting = true;
+      const faculty = {
+        facultyId: this.facultyId,
+        name: this.name
+      }
       axios
-        .post('http://localhost:8080/addFaculty', this.selectedFaculty)
+        .post('http://localhost:8080/addFaculty', faculty)
         .then(response => {
           console.log(response.data);
           this.fetchFaculties();
@@ -89,43 +97,72 @@ export default {
         })
         .catch(error => {
           console.error(error);
+        })
+        .finally(() => {
+          this.isSubmitting = false; // Reset the submission flag
+          this.showForm = false;
+          this.clearForm;
         });
+      this.showForm = false;
+      this.selectedFaculty = false;
+      this.clearForm;
     },
     deleteFaculty(id) {
       axios
         .delete(`http://localhost:8080/deleteFaculty/${id}`)
         .then(response => {
-          console.log(response.data);
+          alert('Faculty deleted successfully');
           this.fetchFaculties();
         })
         .catch(error => {
           console.error(error);
         });
     },
-    editFaculty(record) {
-      this.selectedFaculty = { ...record };
-      this.showForm = true;
+    editFaculty(faculty) {
+      if (faculty && faculty.facultyId) {
+        this.selectedFaculty = faculty;
+        this.facultyId = faculty.facultyId;
+        this.name = faculty.name;
+        this.showForm = true;
+      } else {
+        alert('Invalid course object:', faculty);
+      }
     },
     updateFaculty() {
+      if (!this.selectedFaculty || this.isSubmitting) return; // Prevent multiple submissions
+      this.isSubmitting = true;
+      const updateFaculty = {
+        facultyId: this.selectedFaculty.facultyId,
+        name: this.name
+      }
       axios
-        .put(`http://localhost:8080/updateFaculty`, this.selectedFaculty)
+        .put(`http://localhost:8080/updateFaculty`, updateFaculty)
         .then(response => {
           console.log(response.data);
           this.fetchFaculties();
+          this.selectedFaculty = null;
           this.cancelForm();
         })
         .catch(error => {
           console.error(error);
+        })
+        .finally(() => {
+          this.isSubmitting = false; // Reset the submission flag
+          this.showForm = false;
         });
     },
     openForm() {
-      this.selectedFaculty = null;
       this.showForm = true;
     },
     cancelForm() {
       this.showForm = false;
+      this.clearForm();
       this.selectedFaculty = null;
     },
+    clearForm() {
+      this.facultyId = '';
+      this.name = '';
+    }
   },
   mounted() {
     this.fetchFaculties();

@@ -183,6 +183,7 @@ export default {
                 }).finally(() => {
                     this.isSubmitting = false; // Reset the submission flag
                     this.showForm = false;
+                    this.clearForm;
                 });
             this.showForm = false;
             this.selectedCourse = null
