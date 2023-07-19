@@ -1,9 +1,5 @@
 <template>
   <div>
-    <!-- <div>
-      <input type="text" v-model="searchQuery" placeholder="Search Faculty">
-      <button @click="searchFaculty">Search</button>
-    </div> -->
     <div>
       <div class="row">
         <div class="col-md-12">
@@ -37,15 +33,13 @@
             <div class="popup">
               <div class="row">
                 <div class="col-md-12">
-                  <!-- Rest of the code -->
-
+                  <h3>{{ selectedFaculty ? 'Edit Faculty' : 'Create Faculty' }}</h3>
                   <form @submit.prevent="selectedFaculty ? updateFaculty() : addFaculty()">
-                    <!-- Rest of the code -->
-                    <input type="text" v-model="newFaculty.facultyId" placeholder="Faculty ID" required>
-                    <input type="text" v-model="newFaculty.name" placeholder="Faculty Name" required>
-                    <!-- Rest of the code -->
+                    <input type="text" v-model="selectedFaculty.facultyId" placeholder="Faculty ID" required>
+                    <input type="text" v-model="selectedFaculty.name" placeholder="Faculty Name" required>
                     <button v-if="selectedFaculty" class="btn btn-outline-success" type="submit">Update</button>
-                    <!-- Rest of the code -->
+                    <button v-else class="btn btn-primary" type="submit">Create</button>
+                    <button @click="cancelForm">Cancel</button>
                   </form>
                 </div>
               </div>
@@ -72,10 +66,6 @@ export default {
       faculties: [],
       showForm: false,
       selectedFaculty: null,
-      newFaculty: {
-        facultyId: '',
-        name: ''
-      }
     };
   },
   methods: {
@@ -91,10 +81,7 @@ export default {
     },
     addFaculty() {
       axios
-        .post('http://localhost:8080/addFaculty', {
-          facultyId: this.newFaculty.facultyId,
-          name: this.newFaculty.name
-        })
+        .post('http://localhost:8080/addFaculty', this.selectedFaculty)
         .then(response => {
           console.log(response.data);
           this.fetchFaculties();
@@ -116,14 +103,12 @@ export default {
         });
     },
     editFaculty(record) {
-      this.selectedFaculty = record;
-      this.newFaculty.facultyId = record.facultyId;
-      this.newFaculty.name = record.name;
+      this.selectedFaculty = { ...record };
       this.showForm = true;
     },
     updateFaculty() {
       axios
-        .put(`http://localhost:8080/updateFaculty`, this.newFaculty) // Send the complete Faculty object
+        .put(`http://localhost:8080/updateFaculty`, this.selectedFaculty)
         .then(response => {
           console.log(response.data);
           this.fetchFaculties();
@@ -135,15 +120,11 @@ export default {
     },
     openForm() {
       this.selectedFaculty = null;
-      this.newFaculty.facultyId = '';
-      this.newFaculty.name = '';
       this.showForm = true;
     },
     cancelForm() {
       this.showForm = false;
       this.selectedFaculty = null;
-      this.newFaculty.facultyId = '';
-      this.newFaculty.name = '';
     },
   },
   mounted() {
