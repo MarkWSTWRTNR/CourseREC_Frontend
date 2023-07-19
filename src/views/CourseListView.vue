@@ -72,13 +72,11 @@
                                 <div class="form-group">
                                     <label for="coursePrerequisite">Course Prerequisite</label>
                                     <v-select class="form-control left-align" id="coursePrerequisite"
-                                        v-model="selectedPrerequisites"
-                                        :options="records.map(record => ({ label: record.courseId + ' - ' + record.name, value: { courseId: record.courseId } }))"
-                                        multiple :reduce="option => option.value"
-                                        :placeholder="'Select prerequisite courses'">
+                                        v-model="selectedPrerequisites" :options="records.map(record => ({
+                                            label: record.courseId + ' - ' + record.name,
+                                            value: { courseId: record.courseId }
+                                        }))" multiple :reduce="option => option.value" :placeholder="'Select prerequisite courses'">
                                     </v-select>
-
-
                                 </div>
                                 <div class="form-group">
                                     <label for="description">Description</label>
@@ -165,7 +163,7 @@ export default {
                 name: this.name,
                 credit: this.credit,
                 gradingtype: this.gradingtype,
-                prerequisite: this.prerequisite,
+                prerequisite: this.selectedPrerequisites,
                 description: this.description
             };
             apiClient.post('http://localhost:8080/addCourse', course)
@@ -232,11 +230,12 @@ export default {
                 name: this.name,
                 credit: this.credit,
                 gradingtype: this.gradingtype,
-                prerequisite: this.prerequisite,
+                prerequisite: this.selectedPrerequisites, // Update prerequisite data
                 description: this.description
             };
-            console.log('upate click')
-            apiClient.put(`http://localhost:8080/updateCourse`, updatedCourse)
+
+            apiClient
+                .put(`http://localhost:8080/updateCourse`, updatedCourse)
                 .then(response => {
                     alert('Course updated successfully');
                     this.fetchCourses();
@@ -250,7 +249,6 @@ export default {
                     this.isSubmitting = false; // Reset the submission flag
                     this.showForm = false;
                 });
-            console.log([updatedCourse])
         },
 
         openForm() {
