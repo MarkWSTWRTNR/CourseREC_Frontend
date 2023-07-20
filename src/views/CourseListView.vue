@@ -37,7 +37,7 @@
                                 @click="deleteCourse(record.id)">Delete</button>
                             <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-info"
                                 @click="editCourse(record); openForm()">Edit</button><br>
-                            <router-link :to="'/courses/' + record.courseId">Description</router-link>
+                            <router-link :to="'/courseByCourseId/' + record.courseId">Description</router-link>
                         </td>
                     </tr>
                 </tbody>

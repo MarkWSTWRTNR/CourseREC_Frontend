@@ -47,7 +47,7 @@
               <td>{{ course.credit }}</td>
               <td>{{ course.grade }}</td>
               <td>
-                <router-link :to="'/courses/' + course.courseId">Description</router-link>
+                <router-link :to="'/courseByCourseId/' + course.courseId">Description</router-link>
               </td>
             </tr>
           </tbody>

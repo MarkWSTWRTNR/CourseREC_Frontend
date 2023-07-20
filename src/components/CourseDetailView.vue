@@ -1,12 +1,12 @@
 <template>
     <div>
-      <h2>{{ course.coursename }}</h2>
-      <p><strong>Course ID:</strong> {{ course.course_id }}</p>
+      <h2>{{ course.name }}</h2>
+      <p><strong>Course ID:</strong> {{ course.courseId }}</p>
       <p><strong>Credit:</strong> {{ course.credit }}</p>
       <p><strong>Grading Type:</strong> {{ course.gradingtype }}</p>
       <p><strong>Course Prerequisite:</strong> 
-      <li v-for="prerequisite in course.prereq" :key="prerequisite.course_id">
-        {{ prerequisite.course_id }} - {{ prerequisite.coursename }}
+      <li v-for="prerequisite in course.prereq" :key="prerequisite.courseId">
+        {{ prerequisite.courseId }} - {{ prerequisite.name }}
       </li>
     </p>
       <p><strong>Description:</strong> {{ course.description }}</p>
@@ -24,14 +24,15 @@
       };
     },
     mounted() {
-      const courseId = this.$route.params.course_id;
+      const courseId = this.$route.params.courseId;
       this.fetchCourse(courseId);
     },
     methods: {
       fetchCourse(courseId) {
-        axios.get(`http://localhost:5000/api/courses/${courseId}`)
+        axios.get(`http://localhost:8080/courseByCourseId/${courseId}`)
           .then(response => {
             this.course = response.data;
+            console.log(this.course);
           })
           .catch(error => {
             console.log(error);

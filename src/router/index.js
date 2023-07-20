@@ -55,7 +55,7 @@ const routes = [
     meta: {roles: [ROLES.STUDENT]}
   },
   {
-    path: '/courses/:course_id',
+    path: '/courseByCourseId/:courseId',
     name: 'coursedetails',
     component: CourseDetailView,
     meta: {roles: [ROLES.STUDENT, ROLES.ADMIN]},
