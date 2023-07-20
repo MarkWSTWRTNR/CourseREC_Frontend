@@ -23,7 +23,7 @@
 
   <div v-if="selectedProgram">
     <div>
-      
+
       <div @click="toggleAccordion(1, index)" :class="{ 'accordion': true, 'active': isActive(1, index) }">
         <h3>Curriculum</h3>
       </div>
@@ -42,16 +42,16 @@
                 </tr>
               </thead>
               <tbody>
-                <tr v-for="course in programs" :key="course.courseId">
-                  <td>{{ course.courseId }}</td>
-                  <td>{{ course.coursename }}</td>
-                  <td>{{ course.credit }}</td>
-                  <td>
-                    <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-danger"
+                <tr v-for="program in programs" :key="program.id">
+                  <td v-for="course in program.gerclp" :key="course.id">{{ course.courseId }}</td>
+                  <td v-for="course in program.gerclp" :key="course.id">{{ course.name }}</td>
+                  <td v-for="course in program.gerclp" :key="course.id">{{ course.credit }}</td>
+                  <td v-for="course in program.gerclp" :key="course.id">
+                    <!-- <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-danger"
                       @click="deleteCourse(course.courseId)">Delete</button>
                     <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-info"
                       @click="editCourse(course); openForm()">Edit</button>
-                    <router-link :to="'/courses/' + course.courseId">Description</router-link>
+                    <router-link :to="'/courses/' + course.courseId">Description</router-link> -->
                   </td>
                 </tr>
               </tbody>
@@ -71,16 +71,16 @@
                 </tr>
               </thead>
               <tbody>
-                <tr v-for="course in programs" :key="course.courseId">
-                  <td>{{ course.courseId }}</td>
-                  <td>{{ course.coursename }}</td>
-                  <td>{{ course.credit }}</td>
-                  <td>
-                    <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-danger"
+                <tr v-for="program in programs" :key="program.id">
+                  <td v-for="course in program.gercic" :key="course.id">{{ course.courseId }}</td>
+                  <td v-for="course in program.gercic" :key="course.id">{{ course.coursename }}</td>
+                  <td v-for="course in program.gercic" :key="course.id">{{ course.credit }}</td>
+                  <td v-for="course in program.gercic" :key="course.id">
+                    <!-- <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-danger"
                       @click="deleteCourse(course.courseId)">Delete</button>
                     <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-info"
                       @click="editCourse(course); openForm()">Edit</button>
-                    <router-link :to="'/courses/' + course.courseId">Description</router-link>
+                    <router-link :to="'/courses/' + course.courseId">Description</router-link> -->
                   </td>
                 </tr>
               </tbody>
@@ -101,16 +101,16 @@
               </thead>
               <tbody>
                 <!-- Add courses for Active Citizen section here -->
-                <tr v-for="course in programs" :key="course.courseId">
-                  <td>{{ course.courseId }}</td>
-                  <td>{{ course.coursename }}</td>
-                  <td>{{ course.credit }}</td>
-                  <td>
-                    <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-danger"
+                <tr v-for="program in programs" :key="program.id">
+                  <td v-for="course in program.gercac" :key="course.id">{{ course.courseId }}</td>
+                  <td v-for="course in program.gercac" :key="course.id">{{ course.coursename }}</td>
+                  <td v-for="course in program.gercac" :key="course.id">{{ course.credit }}</td>
+                  <td v-for="course in program.gercac" :key="course.id">
+                    <!-- <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-danger"
                       @click="deleteCourse(course.courseId)">Delete</button>
                     <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-info"
                       @click="editCourse(course); openForm()">Edit</button>
-                    <router-link :to="'/courses/' + course.courseId">Description</router-link>
+                    <router-link :to="'/courses/' + course.courseId">Description</router-link> -->
                   </td>
                 </tr>
               </tbody>
@@ -131,16 +131,16 @@
               </thead>
               <tbody>
                 <!-- Add courses for Elective courses section here -->
-                <tr v-for="course in programs" :key="course.courseId">
-                  <td>{{ course.courseId }}</td>
-                  <td>{{ course.coursename }}</td>
-                  <td>{{ course.credit }}</td>
-                  <td>
-                    <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-danger"
+                <tr v-for="program in programs" :key="program.id">
+                  <td v-for="course in program.geec" :key="course.id">{{ course.courseId }}</td>
+                  <td v-for="course in program.geec" :key="course.id">{{ course.coursename }}</td>
+                  <td v-for="course in program.geec" :key="course.id">{{ course.credit }}</td>
+                  <td v-for="course in program.geec" :key="course.id">
+                    <!-- <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-danger"
                       @click="deleteCourse(course.courseId)">Delete</button>
                     <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-info"
                       @click="editCourse(course); openForm()">Edit</button>
-                    <router-link :to="'/courses/' + course.courseId">Description</router-link>
+                    <router-link :to="'/courses/' + course.courseId">Description</router-link> -->
                   </td>
                 </tr>
               </tbody>
@@ -161,16 +161,16 @@
               </thead>
               <tbody>
                 <!-- Add core courses for Field of Specialization section here -->
-                <tr v-for="course in programs" :key="course.courseId">
-                  <td>{{ course.courseId }}</td>
-                  <td>{{ course.coursename }}</td>
-                  <td>{{ course.credit }}</td>
-                  <td>
-                    <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-danger"
+                <tr v-for="program in programs" :key="program.id">
+                  <td v-for="course in program.foscc" :key="course.id">{{ course.courseId }}</td>
+                  <td v-for="course in program.foscc" :key="course.id">{{ course.coursename }}</td>
+                  <td v-for="course in program.foscc" :key="course.id">{{ course.credit }}</td>
+                  <td v-for="course in program.foscc" :key="course.id">
+                    <!-- <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-danger"
                       @click="deleteCourse(course.courseId)">Delete</button>
                     <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-info"
                       @click="editCourse(course); openForm()">Edit</button>
-                    <router-link :to="'/courses/' + course.courseId">Description</router-link>
+                    <router-link :to="'/courses/' + course.courseId">Description</router-link> -->
                   </td>
                 </tr>
               </tbody>
@@ -191,16 +191,16 @@
               </thead>
               <tbody>
                 <!-- Add required courses for Major Courses in Field of Specialization section here -->
-                <tr v-for="course in programs" :key="course.courseId">
-                  <td>{{ course.courseId }}</td>
-                  <td>{{ course.coursename }}</td>
-                  <td>{{ course.credit }}</td>
-                  <td>
-                    <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-danger"
+                <tr v-for="program in programs" :key="program.id">
+                  <td v-for="course in program.fosmcrc" :key="course.id">{{ course.courseId }}</td>
+                  <td v-for="course in program.fosmcrc" :key="course.id">{{ course.coursename }}</td>
+                  <td v-for="course in program.fosmcrc" :key="course.id">{{ course.credit }}</td>
+                  <td v-for="course in program.fosmcrc" :key="course.id">
+                    <!-- <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-danger"
                       @click="deleteCourse(course.courseId)">Delete</button>
                     <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-info"
                       @click="editCourse(course); openForm()">Edit</button>
-                    <router-link :to="'/courses/' + course.courseId">Description</router-link>
+                    <router-link :to="'/courses/' + course.courseId">Description</router-link> -->
                   </td>
                 </tr>
               </tbody>
@@ -221,16 +221,16 @@
               </thead>
               <tbody>
                 <!-- Add major elective courses for Field of Specialization section here -->
-                <tr v-for="course in programs" :key="course.courseId">
-                  <td>{{ course.courseId }}</td>
-                  <td>{{ course.coursename }}</td>
-                  <td>{{ course.credit }}</td>
-                  <td>
-                    <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-danger"
+                <tr v-for="program in programs" :key="program.id">
+                  <td v-for="course in program.fosme" :key="course.id">{{ course.courseId }}</td>
+                  <td v-for="course in program.fosme" :key="course.id">{{ course.coursename }}</td>
+                  <td v-for="course in program.fosme" :key="course.id">{{ course.credit }}</td>
+                  <td v-for="course in program.fosme" :key="course.id">
+                    <!-- <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-danger"
                       @click="deleteCourse(course.courseId)">Delete</button>
                     <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-info"
                       @click="editCourse(course); openForm()">Edit</button>
-                    <router-link :to="'/courses/' + course.courseId">Description</router-link>
+                    <router-link :to="'/courses/' + course.courseId">Description</router-link> -->
                   </td>
                 </tr>
               </tbody>
@@ -257,6 +257,7 @@ export default {
       programs: [],
       records: [],
       showForm: false,
+
       activeAccordionIndices: [1], // Initially set the first accordion as active
     }
   },
@@ -333,7 +334,7 @@ export default {
       apiClient
         .get('http://localhost:8080/programs')
         .then(response => {
-          this.programs = response.data; console.log('p', this.programs)
+          this.programs = response.data; console.log('p', this.programs[0].gercac)
         })
         .catch(error => {
           console.log('Error fetching programs:', error);
