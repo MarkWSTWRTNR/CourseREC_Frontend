@@ -15,9 +15,10 @@
   <h3 v-if="selectedFaculty">Select Program:</h3>
   <select v-if="selectedFaculty" v-model="selectedProgram">
     <option value="">-- Select Program --</option>
-    <option v-for="program in filteredPrograms" :value="program.programId" :key="program.programId">
-      {{ program.name }}
-    </option>
+      <option v-for="program in programs" :value="program.programId" :key="program.programId">
+        {{ program.name }}
+      </option>
+   
   </select>
 
 
@@ -297,10 +298,23 @@ export default {
   computed: {
     filteredPrograms() {
       if (this.selectedFaculty) {
-        return this.programs.filter(program => program.programId === this.selectedFaculty);
+        const programsByGroup = this.programs.reduce((acc, program) => {
+          const programName = program.name;
+          if (!acc[programName]) {
+            acc[programName] = [];
+          }
+          acc[programName].push(program);
+          return acc;
+        }, {});
+
+        return Object.entries(programsByGroup).map(([programName, programs]) => ({
+          programName,
+          programs,
+        }));
       }
       return [];
-    }, getLearnerPersonCourses() {
+    },
+    getLearnerPersonCourses() {
       return this.filteredPrograms.find(program => program.programId === this.selectedProgram)?.gerclp || [];
     }, getInnovativeCoCreatorCourses() {
       return this.filteredPrograms.find(program => program.programId === this.selectedProgram)?.gercic || [];
