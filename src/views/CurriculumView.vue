@@ -48,10 +48,10 @@
                     <option value="gercic">General Education | Required courses | Innovative Co-creator</option>
                     <option value="gercac">General Education | Required courses | Active Citizen</option>
                   </select>
-                    <div>
-                      <label for="freeElective">Free Elective</label>
-                      <input type="text" id="gradingType" v-model="freeElective" required>
-                    </div>
+                  <div>
+                    <label for="freeElective">Free Elective</label>
+                    <input type="text" id="gradingType" v-model="freeElective" required>
+                  </div>
                   <button class="btn btn-primary" type="submit">Submit</button>
                   <button @click="closeForm">Cancel</button>
                 </div>
@@ -270,6 +270,33 @@
             </table>
           </div>
         </div>
+        <h3>Free Elective</h3>
+        <div class="row">
+          <div class="col-md-12">
+            <table class="table table-striped table-bordered">
+              <thead>
+                <tr>
+                  <th>Details</th>
+                  <th v-if="userRole === ROLES.ADMIN">Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <!-- Add major elective courses for Field of Specialization section here -->
+                <tr v-for="course in getFreeElective" :key="course.id">
+                  <td>{{ course.freeElective }}</td>
+
+                  <!-- <td v-for="course in program.fosme" :key="course.id"> -->
+                  <!-- <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-danger"
+                      @click="deleteCourse(course.courseId)">Delete</button>
+                    <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-info"
+                      @click="editCourse(course); openForm()">Edit</button>
+                    <router-link :to="'/courses/' + course.courseId">Description</router-link> -->
+                  <!-- </td> -->
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
       </div>
     </div>
     <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-primary" @click="openForm">Add courses</button>
@@ -322,6 +349,9 @@ export default {
       return this.filteredPrograms.find(program => program.programId === this.selectedProgram)?.fosmcrc || [];
     }, getMajorElectiveCourses() {
       return this.filteredPrograms.find(program => program.programId === this.selectedProgram)?.fosme || [];
+    }, getFreeElective() {
+      const selectedProgram = this.filteredPrograms.find(program => program.programId === this.selectedProgram);
+      return selectedProgram && selectedProgram.freeElective ? [{ freeElective: selectedProgram.freeElective }] : [];
     },
   },
   methods: {
