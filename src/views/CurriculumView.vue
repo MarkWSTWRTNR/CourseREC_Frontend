@@ -48,10 +48,6 @@
                     <option value="gercic">General Education | Required courses | Innovative Co-creator</option>
                     <option value="gercac">General Education | Required courses | Active Citizen</option>
                   </select>
-                  <div>
-                    <label for="freeElective">Free Elective</label>
-                    <input type="text" id="gradingType" v-model="freeElective" required>
-                  </div>
                   <button class="btn btn-primary" type="submit">Submit</button>
                   <button @click="closeForm">Cancel</button>
                 </div>
@@ -60,7 +56,34 @@
           </div>
         </div>
       </div>
-
+      <div v-if="showForm">
+        <div class="overlay">
+          <div class="popup">
+            <form @submit.prevent="addCourseToSection(courseType, selectedCourse)">
+              <div class="row">
+                <div class="col-md-12">
+                  <label for="courseId">Course</label>
+                  <select v-model="selectedCourse" required>
+                    <option value="">-- Select Course Type --</option>
+                    <option v-for="course in records" :key="course.courseId" :value="course.courseId">
+                      {{ course.name }}
+                    </option>
+                  </select>
+                  <label for="courseType">Course Type:</label>
+                  <select v-model="courseType" id="courseType">
+                    <option value="">-- Select Course Type --</option>
+                    <option value="gerclp">General Education | Required courses | Learner Pereson</option>
+                    <option value="gercic">General Education | Required courses | Innovative Co-creator</option>
+                    <option value="gercac">General Education | Required courses | Active Citizen</option>
+                  </select>
+                  <button class="btn btn-primary" type="submit">Submit</button>
+                  <button @click="closeForm">Cancel</button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
       <div v-show="isActive(1, index)" class="content">
         <h3>General Education | Required courses | Learner person</h3>
         <div class="row">
@@ -70,6 +93,7 @@
                 <tr>
                   <th>Course ID</th>
                   <th>Course Name</th>
+                  <th>Prerequisite</th>
                   <th>Credit</th>
                   <th v-if="userRole === ROLES.ADMIN">Action</th>
                 </tr>
@@ -78,6 +102,7 @@
                 <tr v-for="course in getLearnerPersonCourses" :key="course.id">
                   <td>{{ course.courseId }}</td>
                   <td>{{ course.name }}</td>
+                  <td>{{ course.preerquisite }}</td>
                   <td>{{ course.credit }}</td>
                   <!-- <td v-for="course in program.gerclp" :key="course.id"> -->
                   <!-- <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-danger"
@@ -99,6 +124,7 @@
                 <tr>
                   <th>Course ID</th>
                   <th>Course Name</th>
+                  <th>Prerequisite</th>
                   <th>Credit</th>
                   <th v-if="userRole === ROLES.ADMIN">Action</th>
                 </tr>
@@ -107,7 +133,8 @@
                 <tr v-for="course in getInnovativeCoCreatorCourses" :key="course.id">
                   <td>{{ course.courseId }}</td>
                   <td>{{ course.name }}</td>
-                  <td>{{ course.credit }}</td>
+                  <td>{{ course.prerequisite}}</td>
+                  <td>{{ course.credit}}</td>
                   <!-- <td v-for="course in program.gercic" :key="course.id"> -->
                   <!-- <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-danger"
                       @click="deleteCourse(course.courseId)">Delete</button>
@@ -128,6 +155,7 @@
                 <tr>
                   <th>Course ID</th>
                   <th>Course Name</th>
+                  <th>Prerequisite</th>
                   <th>Credit</th>
                   <th v-if="userRole === ROLES.ADMIN">Action</th>
                 </tr>
@@ -137,7 +165,8 @@
                 <tr v-for="course in getActiveCitizenCourses" :key="course.id">
                   <td>{{ course.courseId }}</td>
                   <td>{{ course.name }}</td>
-                  <td>{{ course.credit }}</td>
+                  <td>{{ course.prerequisite}}</td>
+                  <td>{{ course.credit}}</td>
                   <!-- <td v-for="course in program.gercac" :key="course.id"> -->
                   <!-- <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-danger"
                       @click="deleteCourse(course.courseId)">Delete</button>
@@ -158,6 +187,7 @@
                 <tr>
                   <th>Course ID</th>
                   <th>Course Name</th>
+                  <th>Prerequisite</th>
                   <th>Credit</th>
                   <th v-if="userRole === ROLES.ADMIN">Action</th>
                 </tr>
@@ -167,7 +197,8 @@
                 <tr v-for="course in getElectiveCourses" :key="course.id">
                   <td>{{ course.courseId }}</td>
                   <td>{{ course.name }}</td>
-                  <td>{{ course.credit }}</td>
+                  <td>{{ course.prerequisite}}</td>
+                  <td>{{ course.credit}}</td>
                   <!-- <td v-for="course in program.geec" :key="course.id"> -->
                   <!-- <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-danger"
                       @click="deleteCourse(course.courseId)">Delete</button>
@@ -188,6 +219,7 @@
                 <tr>
                   <th>Course ID</th>
                   <th>Course Name</th>
+                  <th>Prerequisite</th>
                   <th>Credit</th>
                   <th v-if="userRole === ROLES.ADMIN">Action</th>
                 </tr>
@@ -197,7 +229,8 @@
                 <tr v-for="course in getCoreCourses" :key="course.id">
                   <td>{{ course.courseId }}</td>
                   <td>{{ course.name }}</td>
-                  <td>{{ course.credit }}</td>
+                  <td>{{ course.prerequisite}}</td>
+                  <td>{{ course.credit}}</td>
                   <!-- <td v-for="course in program.foscc" :key="course.id"> -->
                   <!-- <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-danger"
                       @click="deleteCourse(course.courseId)">Delete</button>
@@ -218,6 +251,7 @@
                 <tr>
                   <th>Course ID</th>
                   <th>Course Name</th>
+                  <th>Prerequisite</th>
                   <th>Credit</th>
                   <th v-if="userRole === ROLES.ADMIN">Action</th>
                 </tr>
@@ -227,7 +261,8 @@
                 <tr v-for="course in getMajorCourses" :key="course.id">
                   <td>{{ course.courseId }}</td>
                   <td>{{ course.name }}</td>
-                  <td>{{ course.credit }}</td>
+                  <td>{{ course.prerequisite}}</td>
+                  <td>{{ course.credit}}</td>
                   <!-- <td v-for="course in program.fosmcrc" :key="course.id"> -->
                   <!-- <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-danger"
                       @click="deleteCourse(course.courseId)">Delete</button>
@@ -248,6 +283,7 @@
                 <tr>
                   <th>Course ID</th>
                   <th>Course Name</th>
+                  <th>Prerequisite</th>
                   <th>Credit</th>
                   <th v-if="userRole === ROLES.ADMIN">Action</th>
                 </tr>
@@ -257,7 +293,8 @@
                 <tr v-for="course in getMajorElectiveCourses" :key="course.id">
                   <td>{{ course.courseId }}</td>
                   <td>{{ course.name }}</td>
-                  <td>{{ course.credit }}</td>
+                  <td>{{ course.prerequisite}}</td>
+                  <td>{{ course.credit}}</td>
                   <!-- <td v-for="course in program.fosme" :key="course.id"> -->
                   <!-- <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-danger"
                       @click="deleteCourse(course.courseId)">Delete</button>
