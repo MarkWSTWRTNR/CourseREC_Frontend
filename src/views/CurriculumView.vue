@@ -48,7 +48,10 @@
                     <option value="gercic">General Education | Required courses | Innovative Co-creator</option>
                     <option value="gercac">General Education | Required courses | Active Citizen</option>
                   </select>
-
+                    <div>
+                      <label for="freeElective">Free Elective</label>
+                      <input type="text" id="gradingType" v-model="freeElective" required>
+                    </div>
                   <button class="btn btn-primary" type="submit">Submit</button>
                   <button @click="closeForm">Cancel</button>
                 </div>
@@ -359,7 +362,7 @@ export default {
       // Check if the selected program exists and if the selected course is valid
       if (selectedProgram && course) {
         // Based on the sectionType, add the course to the corresponding section
-        const courseData = [{ courseId: course }];
+        const courseData = { courseId: course };
         switch (sectionType) {
           case 'gerclp':
             selectedProgram.gerclp.push(courseData);
