@@ -22,82 +22,219 @@
 
 
   <div v-if="selectedProgram">
-    <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-primary" @click="openForm">Add courses</button>
-    <div @click="toggleAccordion(1)" :class="{ 'accordion': true, 'active': isActive(1) }">
-      <h3>Curriculum</h3>
-      <i class="fa fa-chevron-down" :class="{ 'fa-rotate-180': isActive(1) }"></i>
-    </div>
-    <div v-show="isActive(1)" class="content">
-      <div v-for="section in sections" :key="section.type">
-        <div @click="toggleAccordion(2, section.index)"
-          :class="{ 'accordion': true, 'active': isActive(2, section.index) }">
-          <h3>{{ section.title }}</h3>
-          <i class="fa fa-chevron-down" :class="{ 'fa-rotate-180': isActive(2, section.index) }"></i>
-        </div>
-        <div v-if="showForm">
-          <div class="overlay">
-            <div class="popup">
-              <form @submit.prevent="addCourseToProgram">
-                <div class="row">
-                  <div class="col-md-12">
-                    <label for="courseId">Course</label>
-                    <select v-model="selectedCourse" required>
-                      <option value="">-- Select Course --</option>
-                      <option v-for="course in records" :key="course.courseId" :value="course.courseId">
-                        {{ course.courseId }} {{ course.name }}
-                      </option>
-
-                    </select>
-                    <label for="section">Course Type:</label>
-                    <select v-model="section.courses" id="section">
-                      <option value="">-- Select Course Type --</option>
-                      <option value="gerclp">General Education | Required courses | Learner Pereson</option>
-                      <option value="gercic">General Education | Required courses | Innovative
-                        Co-creator
-                      </option>
-                      <option value="gercac">General Education | Required courses | Active Citizen</option>
-                      <option value="geec">General Education | Elective courses</option>
-                      <option value="foscc">Feild of Specialization| Core Courses</option>
-                      <option value="fosmcrc">Feild of Specialization | Major Courses | Required Courses
-                      </option>
-                      <option value="fosme">Feild of Specialization | Major Elective</option>
-                    </select>
-                    <button class="btn btn-primary" type="submit">Submit</button>
-                    <button @click="cancelForm"> Cancel</button>
-                  </div>
-                </div>
-              </form>
-            </div>
+    <div>
+      
+      <div @click="toggleAccordion(1, index)" :class="{ 'accordion': true, 'active': isActive(1, index) }">
+        <h3>Curriculum</h3>
+      </div>
+      <i class="fa fa-chevron-down" :class="{ 'fa-rotate-180': isActive(1, index) }"></i>
+      <div v-show="isActive(1, index)" class="content">
+        <h3>General Education | Required courses | Learner person</h3>
+        <div class="row">
+          <div class="col-md-12">
+            <table class="table table-striped table-bordered">
+              <thead>
+                <tr>
+                  <th>Course ID</th>
+                  <th>Course Name</th>
+                  <th>Credit</th>
+                  <th v-if="userRole === ROLES.ADMIN">Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="course in programs" :key="course.courseId">
+                  <td>{{ course.courseId }}</td>
+                  <td>{{ course.coursename }}</td>
+                  <td>{{ course.credit }}</td>
+                  <td>
+                    <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-danger"
+                      @click="deleteCourse(course.courseId)">Delete</button>
+                    <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-info"
+                      @click="editCourse(course); openForm()">Edit</button>
+                    <router-link :to="'/courses/' + course.courseId">Description</router-link>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
           </div>
         </div>
-        <div v-show="isActive(2, section.index)" class="content">
-          <div class="row">
-            <div class="col-md-12">
-              <table class="table table-striped table-bordered">
-                <thead>
-                  <tr>
-                    <th>Course ID</th>
-                    <th>Course Name</th>
-                    <th>Credit</th>
-                    <th v-if="userRole === ROLES.ADMIN">Action</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr v-for="course in section.courses" :key="course.courseId">
-                    <td>{{ course.courseId }}</td>
-                    <td>{{ course.courseName }}</td>
-                    <td>{{ course.credit }}</td>
-                    <td>
-                      <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-danger"
-                        @click="deleteCourse(course.courseId)">Delete</button>
-                      <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-info"
-                        @click="editCourse(course); openForm()">Edit</button>
-                      <router-link :to="'/courses/' + course.courseId">Description</router-link>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
+        <h3>General Education | Required courses | Innovative Co-creator</h3>
+        <div class="row">
+          <div class="col-md-12">
+            <table class="table table-striped table-bordered">
+              <thead>
+                <tr>
+                  <th>Course ID</th>
+                  <th>Course Name</th>
+                  <th>Credit</th>
+                  <th v-if="userRole === ROLES.ADMIN">Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="course in programs" :key="course.courseId">
+                  <td>{{ course.courseId }}</td>
+                  <td>{{ course.coursename }}</td>
+                  <td>{{ course.credit }}</td>
+                  <td>
+                    <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-danger"
+                      @click="deleteCourse(course.courseId)">Delete</button>
+                    <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-info"
+                      @click="editCourse(course); openForm()">Edit</button>
+                    <router-link :to="'/courses/' + course.courseId">Description</router-link>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <h3>General Education | Required courses | Active Citizen</h3>
+        <div class="row">
+          <div class="col-md-12">
+            <table class="table table-striped table-bordered">
+              <thead>
+                <tr>
+                  <th>Course ID</th>
+                  <th>Course Name</th>
+                  <th>Credit</th>
+                  <th v-if="userRole === ROLES.ADMIN">Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <!-- Add courses for Active Citizen section here -->
+                <tr v-for="course in programs" :key="course.courseId">
+                  <td>{{ course.courseId }}</td>
+                  <td>{{ course.coursename }}</td>
+                  <td>{{ course.credit }}</td>
+                  <td>
+                    <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-danger"
+                      @click="deleteCourse(course.courseId)">Delete</button>
+                    <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-info"
+                      @click="editCourse(course); openForm()">Edit</button>
+                    <router-link :to="'/courses/' + course.courseId">Description</router-link>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <h3>General Education | Elective courses</h3>
+        <div class="row">
+          <div class="col-md-12">
+            <table class="table table-striped table-bordered">
+              <thead>
+                <tr>
+                  <th>Course ID</th>
+                  <th>Course Name</th>
+                  <th>Credit</th>
+                  <th v-if="userRole === ROLES.ADMIN">Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <!-- Add courses for Elective courses section here -->
+                <tr v-for="course in programs" :key="course.courseId">
+                  <td>{{ course.courseId }}</td>
+                  <td>{{ course.coursename }}</td>
+                  <td>{{ course.credit }}</td>
+                  <td>
+                    <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-danger"
+                      @click="deleteCourse(course.courseId)">Delete</button>
+                    <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-info"
+                      @click="editCourse(course); openForm()">Edit</button>
+                    <router-link :to="'/courses/' + course.courseId">Description</router-link>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <h3>Field of Specialization | Core Courses</h3>
+        <div class="row">
+          <div class="col-md-12">
+            <table class="table table-striped table-bordered">
+              <thead>
+                <tr>
+                  <th>Course ID</th>
+                  <th>Course Name</th>
+                  <th>Credit</th>
+                  <th v-if="userRole === ROLES.ADMIN">Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <!-- Add core courses for Field of Specialization section here -->
+                <tr v-for="course in programs" :key="course.courseId">
+                  <td>{{ course.courseId }}</td>
+                  <td>{{ course.coursename }}</td>
+                  <td>{{ course.credit }}</td>
+                  <td>
+                    <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-danger"
+                      @click="deleteCourse(course.courseId)">Delete</button>
+                    <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-info"
+                      @click="editCourse(course); openForm()">Edit</button>
+                    <router-link :to="'/courses/' + course.courseId">Description</router-link>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <h3>Field of Specialization | Major Courses | Required Courses</h3>
+        <div class="row">
+          <div class="col-md-12">
+            <table class="table table-striped table-bordered">
+              <thead>
+                <tr>
+                  <th>Course ID</th>
+                  <th>Course Name</th>
+                  <th>Credit</th>
+                  <th v-if="userRole === ROLES.ADMIN">Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <!-- Add required courses for Major Courses in Field of Specialization section here -->
+                <tr v-for="course in programs" :key="course.courseId">
+                  <td>{{ course.courseId }}</td>
+                  <td>{{ course.coursename }}</td>
+                  <td>{{ course.credit }}</td>
+                  <td>
+                    <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-danger"
+                      @click="deleteCourse(course.courseId)">Delete</button>
+                    <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-info"
+                      @click="editCourse(course); openForm()">Edit</button>
+                    <router-link :to="'/courses/' + course.courseId">Description</router-link>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <h3>Field of Specialization | Major Elective</h3>
+        <div class="row">
+          <div class="col-md-12">
+            <table class="table table-striped table-bordered">
+              <thead>
+                <tr>
+                  <th>Course ID</th>
+                  <th>Course Name</th>
+                  <th>Credit</th>
+                  <th v-if="userRole === ROLES.ADMIN">Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <!-- Add major elective courses for Field of Specialization section here -->
+                <tr v-for="course in programs" :key="course.courseId">
+                  <td>{{ course.courseId }}</td>
+                  <td>{{ course.coursename }}</td>
+                  <td>{{ course.credit }}</td>
+                  <td>
+                    <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-danger"
+                      @click="deleteCourse(course.courseId)">Delete</button>
+                    <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-info"
+                      @click="editCourse(course); openForm()">Edit</button>
+                    <router-link :to="'/courses/' + course.courseId">Description</router-link>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
           </div>
         </div>
       </div>
@@ -120,51 +257,6 @@ export default {
       programs: [],
       records: [],
       showForm: false,
-      sections: [
-        {
-          type: 'gerclp',
-          title: 'General Education | Required courses | Learner',
-          index: 1,
-          courses: [], // Initialize with empty array for the type
-        },
-        {
-          type: 'gercic',
-          title: 'General Education | Required courses | Innovative Co-creator',
-          index: 2,
-          courses: [], // Initialize with empty array for the type
-        },
-        {
-          type: 'gercac',
-          title: 'General Education | Required courses | Active Citizen',
-          index: 3,
-          courses: [], // Initialize with empty array for the type
-        },
-        {
-          type: 'geec',
-          title: 'General Education | Elective courses',
-          index: 4,
-          courses: [], // Initialize with empty array for the type
-        },
-        {
-          type: 'foscc',
-          title: 'Feild of Specialization| Core Courses',
-          index: 5,
-          courses: [], // Initialize with empty array for the type
-        },
-        {
-          type: 'fosmcrc',
-          title: 'Feild of Specialization | Major Courses | Required Courses',
-          index: 6,
-          courses: [], // Initialize with empty array for the type
-        },
-        {
-          type: 'fosme',
-          title: 'Feild of Specialization | Major Elective',
-          index: 7,
-          courses: [], // Initialize with empty array for the type
-        },
-        // Add more sections as needed...
-      ],
       activeAccordionIndices: [1], // Initially set the first accordion as active
     }
   },
@@ -174,16 +266,66 @@ export default {
         return this.programs.filter(program => program.programId === this.selectedFaculty);
       }
       return [];
-    }
+    },
+    // filteredCourses() {
+    //   const filteredCourses = {
+    //     gerclp: [],
+    //     gercic: [],
+    //     gercac: [],
+    //     geec: [],
+    //     foscc: [],
+    //     fosmcrc: [],
+    //     fosme: []
+    //   };
+
+    //   // Loop through all courses and categorize them based on their category
+    //   for (const course of this.records) {
+    //     if (course.category === 'gerclp') {
+    //       filteredCourses.gerclp.push(course);
+    //     } else if (course.category === 'gercic') {
+    //       filteredCourses.gercic.push(course);
+    //     } else if (course.category === 'gercac') {
+    //       filteredCourses.gercac.push(course);
+    //     } else if (course.category === 'geec') {
+    //       filteredCourses.geec.push(course);
+    //     } else if (course.category === 'foscc') {
+    //       filteredCourses.foscc.push(course);
+    //     } else if (course.category === 'fosmcrc') {
+    //       filteredCourses.fosmcrc.push(course);
+    //     } else if (course.category === 'fosme') {
+    //       filteredCourses.fosme.push(course);
+    //     }
+    //   }
+
+    //   // Return the filtered courses based on the selected faculty and program
+    //   if (this.selectedFaculty && this.selectedProgram) {
+    //     return {
+    //       gerclp: this.filterCoursesByFacultyAndProgram(filteredCourses.gerclp),
+    //       gercic: this.filterCoursesByFacultyAndProgram(filteredCourses.gercic),
+    //       gercac: this.filterCoursesByFacultyAndProgram(filteredCourses.gercac),
+    //       geec: this.filterCoursesByFacultyAndProgram(filteredCourses.geec),
+    //       foscc: this.filterCoursesByFacultyAndProgram(filteredCourses.foscc),
+    //       fosmcrc: this.filterCoursesByFacultyAndProgram(filteredCourses.fosmcrc),
+    //       fosme: this.filterCoursesByFacultyAndProgram(filteredCourses.fosme),
+    //     };
+    //   }
+
+    //   // If no faculty and program selected, return all courses
+    //   return filteredCourses;
+    // },
   },
   methods: {
+    // filterCoursesByFacultyAndProgram(courses) {
+    //   // Replace 'facultyId' and 'programId' with the appropriate property names
+    //   return courses.filter(course => course.facultyId === this.selectedFaculty && course.programId === this.selectedProgram);
+    // },
     fetchData() {
       apiClient
         .get('http://localhost:8080/facultys')
         .then(response => {
-          this.faculties = response.data;console.log('f',this.faculties)
+          this.faculties = response.data; console.log('f', this.faculties)
         })
-        
+
         .catch(error => {
           alert('Error fetching faculties:', error);
         });
@@ -191,7 +333,7 @@ export default {
       apiClient
         .get('http://localhost:8080/programs')
         .then(response => {
-          this.programs = response.data; console.log('p',this.programs)
+          this.programs = response.data; console.log('p', this.programs)
         })
         .catch(error => {
           console.log('Error fetching programs:', error);
@@ -199,7 +341,7 @@ export default {
       apiClient
         .get('http://localhost:8080/courses')
         .then(response => {
-          this.records = response.data;
+          this.records = response.data; console.log(this.records)
         })
         .catch(error => {
           console.log('Error fetching courses:', error)
