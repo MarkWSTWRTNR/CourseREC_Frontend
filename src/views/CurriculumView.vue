@@ -1,24 +1,24 @@
 <template>
   <div>
-    <router-link to="/faculty"><button> Create Faculty</button></router-link>
+    <!-- <router-link to="/faculty"><button> Create Faculty</button></router-link> -->
     <router-link to="/courseprogram"><button> Create Program</button></router-link>
   </div>
 
-  <h3>Select Faculty:</h3>
+  <!-- <h3>Select Faculty:</h3>
   <select v-model="selectedFaculty">
     <option value="">-- Select Faculty --</option>
     <option v-for="faculty in faculties" :value="faculty.facultyId" :key="faculty.facultyId">
       {{ faculty.name }}
     </option>
-  </select>
+  </select> -->
 
-  <h3 v-if="selectedFaculty">Select Program:</h3>
-  <select v-if="selectedFaculty" v-model="selectedProgram">
+  <!-- <h3 v-if="selectedFaculty">Select Program:</h3> -->
+  <h3>Select Program:</h3>
+  <select v-model="selectedProgram">
     <option value="">-- Select Program --</option>
-      <option v-for="program in programs" :value="program.programId" :key="program.programId">
-        {{ program.name }}
-      </option>
-   
+    <option v-for="program in programs" :value="program.programId" :key="program.programId">
+      {{ program.name }}
+    </option>
   </select>
 
 
@@ -298,23 +298,10 @@ export default {
   computed: {
     filteredPrograms() {
       if (this.selectedFaculty) {
-        const programsByGroup = this.programs.reduce((acc, program) => {
-          const programName = program.name;
-          if (!acc[programName]) {
-            acc[programName] = [];
-          }
-          acc[programName].push(program);
-          return acc;
-        }, {});
-
-        return Object.entries(programsByGroup).map(([programName, programs]) => ({
-          programName,
-          programs,
-        }));
+        return this.programs.filter(program => program.programId === this.selectedFaculty);
       }
       return [];
-    },
-    getLearnerPersonCourses() {
+    }, getLearnerPersonCourses() {
       return this.filteredPrograms.find(program => program.programId === this.selectedProgram)?.gerclp || [];
     }, getInnovativeCoCreatorCourses() {
       return this.filteredPrograms.find(program => program.programId === this.selectedProgram)?.gercic || [];
@@ -368,7 +355,7 @@ export default {
       // Check if the selected program exists and if the selected course is valid
       if (selectedProgram && course) {
         // Based on the sectionType, add the course to the corresponding section
-        const courseData = { courseId: course };
+        const courseData = [{ courseId: course }];
         switch (sectionType) {
           case 'gerclp':
             selectedProgram.gerclp.push(courseData);
