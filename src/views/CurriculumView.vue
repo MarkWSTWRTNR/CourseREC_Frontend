@@ -35,13 +35,12 @@
             <form @submit.prevent="addCourseToSection(courseType, selectedCourse)">
               <div class="row">
                 <div class="col-md-12">
-                  <label for="courseId">Course</label>
-                  <v-select v-model="selectedCourse" required>
-                    <option value="">-- Select Course Type --</option>
-                    <option v-for="course in records" :key="course.courseId" :value="course.courseId">
-                      {{ course.name }}
-                    </option>
-                  </v-select>
+                      <label for="courseId">Course</label>
+                      <v-select class="form-control left-align" v-model="selectedCourse" :options="records.map(record => ({
+                        label: record.courseId + ' - ' + record.name,
+                        value: record.courseId
+                      }))" :reduce="option => option.value" :placeholder="'Select a course'">
+                      </v-select>
                   <label for="courseType">Course Type:</label>
                   <select v-model="courseType" id="courseType">
                     <option value="">-- Select Course Type --</option>
@@ -80,7 +79,7 @@
                   <td>{{ course.preerquisite }}</td>
                   <td>{{ course.credit }}</td>
                   <td>
-                  <!-- <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-danger"
+                    <!-- <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-danger"
                       @click="deleteCourse(course.courseId)">Remove</button> -->
                     <router-link :to="'/courseByCourseId/' + course.courseId">Description</router-link>
                   </td>
@@ -106,10 +105,10 @@
                 <tr v-for="course in getInnovativeCoCreatorCourses" :key="course.id">
                   <td>{{ course.courseId }}</td>
                   <td>{{ course.name }}</td>
-                  <td>{{ course.prerequisite}}</td>
-                  <td>{{ course.credit}}</td>
+                  <td>{{ course.prerequisite }}</td>
+                  <td>{{ course.credit }}</td>
                   <td>
-                  <!-- <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-danger"
+                    <!-- <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-danger"
                       @click="deleteCourse(course.courseId)">Remove</button> -->
                     <router-link :to="'/courseByCourseId/' + course.courseId">Description</router-link>
                   </td>
@@ -136,10 +135,10 @@
                 <tr v-for="course in getActiveCitizenCourses" :key="course.id">
                   <td>{{ course.courseId }}</td>
                   <td>{{ course.name }}</td>
-                  <td>{{ course.prerequisite}}</td>
-                  <td>{{ course.credit}}</td>
+                  <td>{{ course.prerequisite }}</td>
+                  <td>{{ course.credit }}</td>
                   <td>
-                  <!-- <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-danger"
+                    <!-- <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-danger"
                       @click="deleteCourse(course.courseId)">Remove</button> -->
                     <router-link :to="'/courseByCourseId/' + course.courseId">Description</router-link>
                   </td>
@@ -166,10 +165,10 @@
                 <tr v-for="course in getElectiveCourses" :key="course.id">
                   <td>{{ course.courseId }}</td>
                   <td>{{ course.name }}</td>
-                  <td>{{ course.prerequisite}}</td>
-                  <td>{{ course.credit}}</td>
+                  <td>{{ course.prerequisite }}</td>
+                  <td>{{ course.credit }}</td>
                   <td>
-                  <!-- <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-danger"
+                    <!-- <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-danger"
                       @click="deleteCourse(course.courseId)">Remove</button> -->
                     <router-link :to="'/courseByCourseId/' + course.courseId">Description</router-link>
                   </td>
@@ -196,10 +195,10 @@
                 <tr v-for="course in getCoreCourses" :key="course.id">
                   <td>{{ course.courseId }}</td>
                   <td>{{ course.name }}</td>
-                  <td>{{ course.prerequisite}}</td>
-                  <td>{{ course.credit}}</td>
+                  <td>{{ course.prerequisite }}</td>
+                  <td>{{ course.credit }}</td>
                   <td>
-                  <!-- <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-danger"
+                    <!-- <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-danger"
                       @click="deleteCourse(course.courseId)">Remove</button> -->
                     <router-link :to="'/courseByCourseId/' + course.courseId">Description</router-link>
                   </td>
@@ -226,10 +225,10 @@
                 <tr v-for="course in getMajorCourses" :key="course.id">
                   <td>{{ course.courseId }}</td>
                   <td>{{ course.name }}</td>
-                  <td>{{ course.prerequisite}}</td>
-                  <td>{{ course.credit}}</td>
+                  <td>{{ course.prerequisite }}</td>
+                  <td>{{ course.credit }}</td>
                   <td>
-                  <!-- <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-danger"
+                    <!-- <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-danger"
                       @click="deleteCourse(course.courseId)">Remove</button> -->
                     <router-link :to="'/courseByCourseId/' + course.courseId">Description</router-link>
                   </td>
@@ -256,10 +255,10 @@
                 <tr v-for="course in getMajorElectiveCourses" :key="course.id">
                   <td>{{ course.courseId }}</td>
                   <td>{{ course.name }}</td>
-                  <td>{{ course.prerequisite}}</td>
-                  <td>{{ course.credit}}</td>
+                  <td>{{ course.prerequisite }}</td>
+                  <td>{{ course.credit }}</td>
                   <td>
-                  <!-- <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-danger"
+                    <!-- <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-danger"
                       @click="deleteCourse(course.courseId)">Remove</button> -->
                     <router-link :to="'/courseByCourseId/' + course.courseId">Description</router-link>
                   </td>
@@ -305,8 +304,8 @@ import { userRole, ROLES } from '@/service/roles';
 import vSelect from 'vue-select';
 export default {
   components: {
-        'v-select': vSelect,
-    },
+    'v-select': vSelect,
+  },
   name: 'Curriculum',
   data() {
     return {
@@ -388,7 +387,6 @@ export default {
     addCourseToSection(sectionType, course) {
       // Find the selected program in the filteredPrograms array
       const selectedProgram = this.filteredPrograms.find(program => program.programId === this.selectedProgram);
-
       // Check if the selected program exists and if the selected course is valid
       if (selectedProgram && course) {
         // Based on the sectionType, add the course to the corresponding section
@@ -407,7 +405,7 @@ export default {
         }
 
         // Send the updated program data to the server using Axios
-        apiClient.put('http://localhost:8080/updateProgram', selectedProgram)
+        apiClient.put('http://localhost:8080/addCourseToProgram', selectedProgram)
           .then(response => {
             // Handle the response if needed
           })
