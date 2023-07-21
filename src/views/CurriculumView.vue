@@ -35,12 +35,12 @@
             <form @submit.prevent="addCourseToSection(courseType, selectedCourse)">
               <div class="row">
                 <div class="col-md-12">
-                      <label for="courseId">Course</label>
-                      <v-select class="form-control left-align" v-model="selectedCourse" :options="records.map(record => ({
-                        label: record.courseId + ' - ' + record.name,
-                        value: record.courseId
-                      }))" :reduce="option => option.value" :placeholder="'Select a course'">
-                      </v-select>
+                  <label for="courseId">Course</label>
+                  <v-select class="form-control left-align" v-model="selectedCourse" :options="records.map(record => ({
+                    label: record.courseId + ' - ' + record.name,
+                    value: record.courseId
+                  }))" :reduce="option => option.value" :placeholder="'Select a course'">
+                  </v-select>
                   <label for="courseType">Course Type:</label>
                   <select v-model="courseType" id="courseType">
                     <option value="">-- Select Course Type --</option>
@@ -51,7 +51,7 @@
                   <!-- <label>Free Elective: </label>
                   <input type="text" id="freeElective" placeholder="Free elective" v-model="freeElective" required> -->
                   <button class="btn btn-primary" type="submit">Submit</button>
-                  <button @click="closeForm">Cancel</button>
+                  <button @click="cancelForm">Cancel</button>
                 </div>
               </div>
             </form>
@@ -79,8 +79,8 @@
                   <td>{{ course.preerquisite }}</td>
                   <td>{{ course.credit }}</td>
                   <td>
-                    <!-- <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-danger"
-                      @click="deleteCourse(course.courseId)">Remove</button> -->
+                    <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-danger"
+                      @click="removeCourseToSection(sectionType, course.courseId)">Remove</button>
                     <router-link :to="'/courseByCourseId/' + course.courseId">Description</router-link>
                   </td>
                 </tr>
@@ -108,8 +108,8 @@
                   <td>{{ course.prerequisite }}</td>
                   <td>{{ course.credit }}</td>
                   <td>
-                    <!-- <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-danger"
-                      @click="deleteCourse(course.courseId)">Remove</button> -->
+                    <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-danger"
+                      @click="removeCourseToSection(sectionType, course.courseId)">Remove</button>
                     <router-link :to="'/courseByCourseId/' + course.courseId">Description</router-link>
                   </td>
                 </tr>
@@ -138,8 +138,8 @@
                   <td>{{ course.prerequisite }}</td>
                   <td>{{ course.credit }}</td>
                   <td>
-                    <!-- <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-danger"
-                      @click="deleteCourse(course.courseId)">Remove</button> -->
+                     <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-danger"
+                      @click="removeCourseToSection(sectionType, course.courseId)">Remove</button>
                     <router-link :to="'/courseByCourseId/' + course.courseId">Description</router-link>
                   </td>
                 </tr>
@@ -168,8 +168,8 @@
                   <td>{{ course.prerequisite }}</td>
                   <td>{{ course.credit }}</td>
                   <td>
-                    <!-- <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-danger"
-                      @click="deleteCourse(course.courseId)">Remove</button> -->
+                     <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-danger"
+                      @click="removeCourseToSection(sectionType, course.courseId)">Remove</button>
                     <router-link :to="'/courseByCourseId/' + course.courseId">Description</router-link>
                   </td>
                 </tr>
@@ -198,8 +198,8 @@
                   <td>{{ course.prerequisite }}</td>
                   <td>{{ course.credit }}</td>
                   <td>
-                    <!-- <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-danger"
-                      @click="deleteCourse(course.courseId)">Remove</button> -->
+                     <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-danger"
+                      @click="removeCourseToSection(sectionType, course.courseId)">Remove</button>
                     <router-link :to="'/courseByCourseId/' + course.courseId">Description</router-link>
                   </td>
                 </tr>
@@ -228,8 +228,8 @@
                   <td>{{ course.prerequisite }}</td>
                   <td>{{ course.credit }}</td>
                   <td>
-                    <!-- <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-danger"
-                      @click="deleteCourse(course.courseId)">Remove</button> -->
+                     <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-danger"
+                      @click="removeCourseToSection(sectionType, course.courseId)">Remove</button>
                     <router-link :to="'/courseByCourseId/' + course.courseId">Description</router-link>
                   </td>
                 </tr>
@@ -258,8 +258,8 @@
                   <td>{{ course.prerequisite }}</td>
                   <td>{{ course.credit }}</td>
                   <td>
-                    <!-- <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-danger"
-                      @click="deleteCourse(course.courseId)">Remove</button> -->
+                     <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-danger"
+                      @click="removeCourseToSection(sectionType, course.courseId)">Remove</button>
                     <router-link :to="'/courseByCourseId/' + course.courseId">Description</router-link>
                   </td>
                 </tr>
@@ -408,15 +408,41 @@ export default {
         apiClient.put('http://localhost:8080/addCourseToProgram', selectedProgram)
           .then(response => {
             // Handle the response if needed
+            this.fetchData();
           })
           .catch(error => {
             console.error('Error updating program:', error);
+          })
+          .finally(() => {
+            this.isSubmitting = false; // Reset the submission flag
+            this.showForm = false;
+            this.clearForm();
+          });
+      } else {
+        console.error("Please select a valid program and course.");
+      }
+      this.clearForm();
+      this.selectedCourse = null;
+      this.courseType = '';
+    },
+    removeCourseToSection(sectionType, course) {
+      if (this.selectedProgram && course) {console.log(course);
+        // Send the selected program ID and the course ID to the server using Axios
+        apiClient
+          .put(`http://localhost:8080/removeCourseFromProgram/${this.selectedProgram}/${course}`)
+          .then(response => {
+            // Handle the response if needed
+            // Refresh the data or perform any other necessary actions
+            this.fetchData();
+            
+          }) 
+          .catch(error => {
+            console.error('Error removing course from program:', error);
           });
       } else {
         console.error("Please select a valid program and course.");
       }
     },
-
     toggleAccordion(accordionLevel, index = null) {
       if (accordionLevel === 1) {
         // Toggle the first accordion
@@ -447,11 +473,19 @@ export default {
         return this.activeAccordionIndices.includes(index + 2);
       }
       return false;
-    }, openForm() {
+    },
+    openForm() {
       this.showForm = true;
     },
-    closeForm() {
+    cancelForm() {
+      // Close the form without submitting
       this.showForm = false;
+      this.clearForm();
+      this.selectedCourse = null;
+    },
+    clearForm() {
+      this.courseType = null;
+      this.selectedCourse = null;
     },
   },
 
