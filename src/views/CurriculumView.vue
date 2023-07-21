@@ -29,7 +29,7 @@
       <i class="fa fa-chevron-down" :class="{ 'fa-rotate-180': isActive(1, index) }"></i>
 
 
-      <div v-if="showForm">
+      <div v-if="showForm1">
         <div class="overlay">
           <div class="popup">
             <form @submit.prevent="addCourseToSection(courseType, selectedCourse)">
@@ -52,9 +52,76 @@
                     <option value="fosmcrc">Feild of Specialization | Major Courses | Required Courses</option>
                     <option value="fosme">Feild of Specialization | Major Elective</option>
                   </select>
-                  <!-- <label>Free Elective: </label>
-                  <input type="text" id="freeElective" placeholder="Free elective" v-model="freeElective" required> -->
                   <button class="btn btn-primary" type="submit">Submit</button>
+                  <button @click="cancelForm">Cancel</button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+      <div v-if="showForm2">
+        <div class="overlay">
+          <div class="popup">
+            <form @submit.prevent="updateProgramCredits">
+              <div>
+                <h3>General Education | Required courses | Learner person</h3>
+                <label for="creditGerclp">Credit Gerclp:</label>
+                <input type="number" id="creditGerclp" v-model="credits.creditGerclp">
+              </div>
+              <div>
+                <h3>General Education | Required courses | Innovative Co-creator</h3>
+                <label for="creditGercic">Credit Gercic:</label>
+                <input type="number" id="creditGercic" v-model="credits.creditGercic">
+              </div>
+              <div>
+                <h3>General Education | Required courses | Active Citizen</h3>
+                <label for="creditGercac">Credit Gercac:</label>
+                <input type="number" id="creditGercac" v-model="credits.creditGercac">
+              </div>
+              <div>
+                <h3>General Education | Elective courses</h3>
+                <label for="creditGeec">Credit Geec:</label>
+                <input type="number" id="creditGeec" v-model="credits.creditGeec">
+              </div>
+
+              <div>
+                <h3>Field of Specialization | Core Courses</h3>
+                <label for="creditFoscc">Credit Foscc:</label>
+                <input type="number" id="creditFoscc" v-model="credits.creditFoscc">
+              </div>
+
+              <div>
+                <h3>Field of Specialization | Major Courses | Required Courses</h3>
+                <label for="creditFosmcrc">Credit Fosmcrc:</label>
+                <input type="number" id="creditFosmcrc" v-model="credits.creditFosmcrc">
+              </div>
+
+              <div>
+                <h3>Field of Specialization | Major Elective</h3>
+                <label for="creditFosme">Credit Fosme:</label>
+                <input type="number" id="creditFosme" v-model="credits.creditFosme">
+              </div>
+
+              <div>
+                <h3>Free Elective</h3>
+                <label for="creditFreeElective">Credit Free Elective:</label>
+                <input type="number" id="creditFreeElective" v-model="credits.creditFreeElective">
+              </div>
+              <button class="btn btn-primary" type="submit">Submit Credits</button>
+            </form>
+          </div>
+        </div>
+      </div>
+      <div v-if="showForm3">
+        <div class="overlay">
+          <div class="popup">
+            <form @submit.prevent="addFreeElectiveSection">
+              <div class="row">
+                <div class="col-md-12">
+                  <label>Free Elective:</label>
+                  <input type="text" id="freeElective" placeholder="Free elective" v-model="freeElective">
+                  <button class="btn btn-primary" type="submit">Add Free Elective</button>
                   <button @click="cancelForm">Cancel</button>
                 </div>
               </div>
@@ -298,7 +365,11 @@
         </div>
       </div>
     </div>
-    <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-primary" @click="openForm">Add courses</button>
+    <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-primary" @click="openForm1">Add courses</button> |
+    <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-primary" @click="openForm2">Set curriculum
+      credit</button> |
+    <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-primary" @click="openForm3">Add Free Elective
+    </button>
   </div>
 </template>
 
@@ -320,10 +391,22 @@ export default {
       faculties: [],
       programs: [],
       records: [],
-      showForm: false,
+      showForm1: false,
+      showForm2: false,
+      showForm3: false,
+      freeElective: '',
       selectedCourse: '', // Add this line to define selectedCourse in the data section
       courseType: '',
-
+      credits: {
+        creditGerclp: 0,
+        creditGercic: 0,
+        creditGercac: 0,
+        creditGeec: 0,
+        creditFoscc: 0,
+        creditFosmcrc: 0,
+        creditFosme: 0,
+        // Initialize other section credits to 0
+      },
       activeAccordionIndices: [1], // Initially set the first accordion as active
     }
   },
@@ -417,7 +500,6 @@ export default {
           case 'fosme':
             selectedProgram.fosme.push(courseData);
             break;
-          // Add other cases for different section types if needed
         }
 
         // Send the updated program data to the server using Axios
@@ -431,7 +513,8 @@ export default {
           })
           .finally(() => {
             this.isSubmitting = false; // Reset the submission flag
-            this.showForm = false;
+            this.showForm1 = false;
+            this.showForm3 = false;
             this.clearForm();
           });
       } else {
@@ -459,6 +542,23 @@ export default {
       } else {
         console.error("Please select a valid program and course.");
       }
+    }, updateProgramCredits() {
+      // Send the credits object to the backend when updating the program
+      const programId = this.selectedProgram; // Assuming you have the selected program ID
+      apiClient
+        .put(`http://localhost:8080/updateProgramCredits/${programId}`, this.credits)
+        .then(response => {
+          // Handle the response if needed
+          // Refresh the data or perform any other necessary actions
+          this.fetchData();
+        })
+        .catch(error => {
+          console.error('Error updating program credits:', error);
+        }).finally(() => {
+          this.isSubmitting = false; // Reset the submission flag
+          this.showForm2 = false;
+          this.clearForm();
+        });
     },
     toggleAccordion(accordionLevel, index = null) {
       if (accordionLevel === 1) {
@@ -491,12 +591,20 @@ export default {
       }
       return false;
     },
-    openForm() {
-      this.showForm = true;
+    openForm1() {
+      this.showForm1 = true;
+    },
+    openForm2() {
+      this.showForm2 = true;
+    },
+    openForm3() {
+      this.showForm3 = true;
     },
     cancelForm() {
       // Close the form without submitting
-      this.showForm = false;
+      this.showForm1 = false;
+      this.showForm2 = false;
+      this.showForm3 = false;
       this.clearForm();
       this.selectedCourse = null;
     },
