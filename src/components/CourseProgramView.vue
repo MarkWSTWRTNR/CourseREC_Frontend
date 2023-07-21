@@ -48,7 +48,8 @@
                   <form @submit.prevent="addProgram">
                     <input type="text" v-model="programId" placeholder="Program ID" required>
                     <input type="text" v-model="name" placeholder="Program Name" required>
-                    <select v-model="selectedFaculty" required>
+                    <select v-model="selectedFaculty"  required>
+                      <option value="" disabled selected>-- Select Faculty --</option>
                       <option v-for="faculty in faculties" :key="faculty.facultyId"
                         :value="{ facultyId: faculty.facultyId }">
                         {{ faculty.name }}
