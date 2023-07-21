@@ -47,6 +47,10 @@
                     <option value="gerclp">General Education | Required courses | Learner Pereson</option>
                     <option value="gercic">General Education | Required courses | Innovative Co-creator</option>
                     <option value="gercac">General Education | Required courses | Active Citizen</option>
+                    <option value="geec">General Education | Elective courses</option>
+                    <option value="foscc">Feild of Specialization| Core Courses</option>
+                    <option value="fosmcrc">Feild of Specialization | Major Courses | Required Courses</option>
+                    <option value="fosme">Feild of Specialization | Major Elective</option>
                   </select>
                   <!-- <label>Free Elective: </label>
                   <input type="text" id="freeElective" placeholder="Free elective" v-model="freeElective" required> -->
@@ -138,7 +142,7 @@
                   <td>{{ course.prerequisite }}</td>
                   <td>{{ course.credit }}</td>
                   <td>
-                     <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-danger"
+                    <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-danger"
                       @click="removeCourseToSection(sectionType, course.courseId)">Remove</button>
                     <router-link :to="'/courseByCourseId/' + course.courseId">Description</router-link>
                   </td>
@@ -168,7 +172,7 @@
                   <td>{{ course.prerequisite }}</td>
                   <td>{{ course.credit }}</td>
                   <td>
-                     <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-danger"
+                    <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-danger"
                       @click="removeCourseToSection(sectionType, course.courseId)">Remove</button>
                     <router-link :to="'/courseByCourseId/' + course.courseId">Description</router-link>
                   </td>
@@ -198,7 +202,7 @@
                   <td>{{ course.prerequisite }}</td>
                   <td>{{ course.credit }}</td>
                   <td>
-                     <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-danger"
+                    <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-danger"
                       @click="removeCourseToSection(sectionType, course.courseId)">Remove</button>
                     <router-link :to="'/courseByCourseId/' + course.courseId">Description</router-link>
                   </td>
@@ -228,7 +232,7 @@
                   <td>{{ course.prerequisite }}</td>
                   <td>{{ course.credit }}</td>
                   <td>
-                     <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-danger"
+                    <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-danger"
                       @click="removeCourseToSection(sectionType, course.courseId)">Remove</button>
                     <router-link :to="'/courseByCourseId/' + course.courseId">Description</router-link>
                   </td>
@@ -258,7 +262,7 @@
                   <td>{{ course.prerequisite }}</td>
                   <td>{{ course.credit }}</td>
                   <td>
-                     <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-danger"
+                    <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-danger"
                       @click="removeCourseToSection(sectionType, course.courseId)">Remove</button>
                     <router-link :to="'/courseByCourseId/' + course.courseId">Description</router-link>
                   </td>
@@ -401,6 +405,18 @@ export default {
           case 'gercac':
             selectedProgram.gercac.push(courseData);
             break;
+          case 'geec':
+            selectedProgram.geec.push(courseData);
+            break;
+          case 'foscc':
+            selectedProgram.foscc.push(courseData);
+            break;
+          case 'fosmcrc':
+            selectedProgram.fosmcrc.push(courseData);
+            break;
+          case 'fosme':
+            selectedProgram.fosme.push(courseData);
+            break;
           // Add other cases for different section types if needed
         }
 
@@ -426,7 +442,8 @@ export default {
       this.courseType = '';
     },
     removeCourseToSection(sectionType, course) {
-      if (this.selectedProgram && course) {console.log(course);
+      if (this.selectedProgram && course) {
+        console.log(course);
         // Send the selected program ID and the course ID to the server using Axios
         apiClient
           .put(`http://localhost:8080/removeCourseFromProgram/${this.selectedProgram}/${course}`)
@@ -434,8 +451,8 @@ export default {
             // Handle the response if needed
             // Refresh the data or perform any other necessary actions
             this.fetchData();
-            
-          }) 
+
+          })
           .catch(error => {
             console.error('Error removing course from program:', error);
           });
