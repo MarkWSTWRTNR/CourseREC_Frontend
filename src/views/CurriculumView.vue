@@ -23,10 +23,10 @@
 
   <div v-if="selectedProgram">
     <div>
-      <div @click="toggleAccordion(1, index)" :class="{ 'accordion': true, 'active': isActive(1, index) }">
+      <div @click="toggleAccordion(1)" :class="{ 'accordion': true, 'active': isActive(1) }">
         <h3>Curriculum</h3>
       </div>
-      <i class="fa fa-chevron-down" :class="{ 'fa-rotate-180': isActive(1, index) }"></i>
+      <i class="fa fa-chevron-down" :class="{ 'fa-rotate-180': isActive(1) }"></i>
 
 
       <div v-if="showForm1">
@@ -371,13 +371,25 @@
             </table>
           </div>
         </div>
+        <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-primary" @click="openForm1">Add
+          courses</button> |
+        <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-primary" @click="openForm2">Set curriculum
+          credit</button> |
+        <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-success" @click="openForm3">Update Free Elective
+        </button>
       </div>
     </div>
-    <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-primary" @click="openForm1">Add courses</button> |
-    <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-primary" @click="openForm2">Set curriculum
-      credit</button> |
-    <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-success" @click="openForm3">Update Free Elective
-    </button>
+
+    <div>
+      <div @click="toggleAccordion(3)" :class="{ 'accordion': true, 'active': isActive(3) }">
+        <h3>Study Plan</h3>
+      </div>
+      <i class="fa fa-chevron-down" :class="{ 'fa-rotate-180': isActive(3) }"></i>
+
+      <div v-show="isActive(3)" class="content">
+        <h3>Content</h3>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -413,10 +425,11 @@ export default {
         creditFoscc: 0,
         creditFosmcrc: 0,
         creditFosme: 0,
-        creditFe:0,
+        creditFe: 0,
         // Initialize other section credits to 0
       },
-      activeAccordionIndices: [1], // Initially set the first accordion as active
+      activeAccordionIndices: [], // Initially set the first accordion as active
+
     }
   },
   computed: {
@@ -615,6 +628,15 @@ export default {
           // Second accordion is inactive, so activate it
           this.activeAccordionIndices.push(index + 2);
         }
+      } else if (accordionLevel === 3) {
+        // Check if the clicked accordion is already open
+        if (this.activeAccordionIndices.includes(3)) {
+          // If it's open, close it by removing its index from the activeAccordionIndices
+          this.activeAccordionIndices = this.activeAccordionIndices.filter(i => i !== 3);
+        } else {
+          // If it's closed, add its index to the activeAccordionIndices to open it
+          this.activeAccordionIndices.push(3);
+        }
       }
     },
     isActive(accordionLevel, index = null) {
@@ -625,6 +647,10 @@ export default {
         // Check if a second accordion within a section is active
         return this.activeAccordionIndices.includes(index + 2);
       }
+      else if (accordionLevel === 3) {
+        return this.activeAccordionIndices.includes(3);
+      }
+
       return false;
     },
     openForm1() {
@@ -666,7 +692,7 @@ export default {
 }
 
 .accordion.active {
-  background-color: #a890e0;
+  background-color: #0b6902;
 }
 
 .accordion h3 {
