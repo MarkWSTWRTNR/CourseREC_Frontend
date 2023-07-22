@@ -105,8 +105,8 @@
 
               <div>
                 <h3>Free Elective</h3>
-                <label for="creditFreeElective">Credit Free Elective:</label>
-                <input type="number" id="creditFreeElective" v-model="credits.creditFreeElective">
+                <label for="creditFe">Credit Free Elective:</label>
+                <input type="number" id="creditFe" v-model="credits.creditFe">
               </div>
               <button class="btn btn-primary" type="submit">Submit Credits</button>
             </form>
@@ -121,7 +121,7 @@
                 <div class="col-md-12">
                   <label>Free Elective:</label>
                   <input type="text" id="freeElective" placeholder="Free elective" v-model="freeElective">
-                  <button class="btn btn-primary" type="submit">Add Free Elective</button>
+                  <button class="btn btn-outline-success" type="submit">Update Free Elective</button>
                   <button @click="cancelForm">Cancel</button>
                 </div>
               </div>
@@ -131,6 +131,7 @@
       </div>
       <div v-show="isActive(1, index)" class="content">
         <h3>General Education | Required courses | Learner person</h3>
+        <h4>Minimum credit required: {{ programs.length > 0 ? programs[0].creditGerclp : '' }}</h4>
         <div class="row">
           <div class="col-md-12">
             <table class="table table-striped table-bordered">
@@ -160,6 +161,7 @@
           </div>
         </div>
         <h3>General Education | Required courses | Innovative Co-creator</h3>
+        <h4>Minimum credit required: {{ programs.length > 0 ? programs[0].creditGercic : '' }}</h4>
         <div class="row">
           <div class="col-md-12">
             <table class="table table-striped table-bordered">
@@ -189,6 +191,7 @@
           </div>
         </div>
         <h3>General Education | Required courses | Active Citizen</h3>
+        <h4>Minimum credit required: {{ programs.length > 0 ? programs[0].creditGercac : '' }}</h4>
         <div class="row">
           <div class="col-md-12">
             <table class="table table-striped table-bordered">
@@ -219,6 +222,7 @@
           </div>
         </div>
         <h3>General Education | Elective courses</h3>
+        <h4>Minimum credit required: {{ programs.length > 0 ? programs[0].creditGeec : '' }}</h4>
         <div class="row">
           <div class="col-md-12">
             <table class="table table-striped table-bordered">
@@ -249,6 +253,7 @@
           </div>
         </div>
         <h3>Field of Specialization | Core Courses</h3>
+        <h4>Minimum credit required: {{ programs.length > 0 ? programs[0].creditFoscc : '' }}</h4>
         <div class="row">
           <div class="col-md-12">
             <table class="table table-striped table-bordered">
@@ -279,6 +284,7 @@
           </div>
         </div>
         <h3>Field of Specialization | Major Courses | Required Courses</h3>
+        <h4>Minimum credit required: {{ programs.length > 0 ? programs[0].creditFosmcrc : '' }}</h4>
         <div class="row">
           <div class="col-md-12">
             <table class="table table-striped table-bordered">
@@ -309,6 +315,7 @@
           </div>
         </div>
         <h3>Field of Specialization | Major Elective</h3>
+        <h4>Minimum credit required: {{ programs.length > 0 ? programs[0].creditFosme : '' }}</h4>
         <div class="row">
           <div class="col-md-12">
             <table class="table table-striped table-bordered">
@@ -339,6 +346,7 @@
           </div>
         </div>
         <h3>Free Elective</h3>
+        <h4>Minimum credit required: {{ programs.length > 0 ? programs[0].creditFe : '' }}</h4>
         <div class="row">
           <div class="col-md-12">
             <table class="table table-striped table-bordered">
@@ -368,7 +376,7 @@
     <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-primary" @click="openForm1">Add courses</button> |
     <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-primary" @click="openForm2">Set curriculum
       credit</button> |
-    <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-primary" @click="openForm3">Add Free Elective
+    <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-success" @click="openForm3">Update Free Elective
     </button>
   </div>
 </template>
@@ -405,6 +413,7 @@ export default {
         creditFoscc: 0,
         creditFosmcrc: 0,
         creditFosme: 0,
+        creditFe:0,
         // Initialize other section credits to 0
       },
       activeAccordionIndices: [1], // Initially set the first accordion as active
@@ -501,7 +510,6 @@ export default {
             selectedProgram.fosme.push(courseData);
             break;
         }
-
         // Send the updated program data to the server using Axios
         apiClient.put('http://localhost:8080/addCourseToProgram', selectedProgram)
           .then(response => {
@@ -524,6 +532,34 @@ export default {
       this.selectedCourse = null;
       this.courseType = '';
     },
+    addFreeElectiveSection() {
+      const selectedProgram = this.filteredPrograms.find(program => program.programId === this.selectedProgram);
+
+      if (selectedProgram) {
+        selectedProgram.freeElective = this.freeElective;
+
+
+        // Send the updated program data to the server using Axios
+        apiClient.put('http://localhost:8080/addCourseToProgram', selectedProgram)
+          .then(response => {
+            // Handle the response if needed
+            this.fetchData();
+          })
+          .catch(error => {
+            console.error('Error updating program:', error);
+          })
+          .finally(() => {
+            this.isSubmitting = false; // Reset the submission flag
+            this.showForm1 = false;
+            this.showForm3 = false;
+          });
+      } else {
+        console.error("Please select a valid program.");
+      }
+
+      this.clearForm();
+    },
+
     removeCourseToSection(sectionType, course) {
       if (this.selectedProgram && course) {
         console.log(course);
