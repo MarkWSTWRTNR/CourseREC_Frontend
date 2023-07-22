@@ -182,7 +182,7 @@
                   <td>{{ course.credit }}</td>
                   <td>
                     <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-danger"
-                      @click="removeCourseToSection(sectionType, course.courseId)">Remove</button>
+                      @click="removeCourseToSection('gercic', course.courseId)">Remove</button>
                     <router-link :to="'/courseByCourseId/' + course.courseId">Description</router-link>
                   </td>
                 </tr>
@@ -213,7 +213,7 @@
                   <td>{{ course.credit }}</td>
                   <td>
                     <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-danger"
-                      @click="removeCourseToSection(sectionType, course.courseId)">Remove</button>
+                      @click="removeCourseToSection('gercac', course.courseId)">Remove</button>
                     <router-link :to="'/courseByCourseId/' + course.courseId">Description</router-link>
                   </td>
                 </tr>
@@ -244,7 +244,7 @@
                   <td>{{ course.credit }}</td>
                   <td>
                     <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-danger"
-                      @click="removeCourseToSection(sectionType, course.courseId)">Remove</button>
+                      @click="removeCourseToSection('geec', course.courseId)">Remove</button>
                     <router-link :to="'/courseByCourseId/' + course.courseId">Description</router-link>
                   </td>
                 </tr>
@@ -275,7 +275,7 @@
                   <td>{{ course.credit }}</td>
                   <td>
                     <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-danger"
-                      @click="removeCourseToSection(sectionType, course.courseId)">Remove</button>
+                      @click="removeCourseToSection('foscc', course.courseId)">Remove</button>
                     <router-link :to="'/courseByCourseId/' + course.courseId">Description</router-link>
                   </td>
                 </tr>
@@ -306,7 +306,7 @@
                   <td>{{ course.credit }}</td>
                   <td>
                     <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-danger"
-                      @click="removeCourseToSection(sectionType, course.courseId)">Remove</button>
+                      @click="removeCourseToSection('fosmcrc', course.courseId)">Remove</button>
                     <router-link :to="'/courseByCourseId/' + course.courseId">Description</router-link>
                   </td>
                 </tr>
@@ -337,7 +337,7 @@
                   <td>{{ course.credit }}</td>
                   <td>
                     <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-danger"
-                      @click="removeCourseToSection(sectionType, course.courseId)">Remove</button>
+                      @click="removeCourseToSection('fosme', course.courseId)">Remove</button>
                     <router-link :to="'/courseByCourseId/' + course.courseId">Description</router-link>
                   </td>
                 </tr>
@@ -448,6 +448,216 @@
             </table>
           </div>
         </div>
+        <h3>Year 1 Semester 2</h3>
+        <h4>credit:</h4>
+        <div class="row">
+          <div class="col-md-12">
+            <table class="table table-striped table-bordered">
+              <thead>
+                <tr>
+                  <th>Course ID</th>
+                  <th>Course Name</th>
+                  <th>Prerequisite</th>
+                  <th>Credit</th>
+                  <th v-if="userRole === ROLES.ADMIN">Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="course in getY1s2" :key="course.id">
+                  <td>{{ course.courseId }}</td>
+                  <td>{{ course.name }}</td>
+                  <td>{{ course.preerquisite }}</td>
+                  <td>{{ course.credit }}</td>
+                  <td>
+                    <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-danger"
+                      @click="removeCourseToSection('y1s2', course.courseId)">Remove</button>
+                    <router-link :to="'/courseByCourseId/' + course.courseId">Description</router-link>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <h3>Year 2 Semester 1</h3>
+        <h4>credit:</h4>
+        <div class="row">
+          <div class="col-md-12">
+            <table class="table table-striped table-bordered">
+              <thead>
+                <tr>
+                  <th>Course ID</th>
+                  <th>Course Name</th>
+                  <th>Prerequisite</th>
+                  <th>Credit</th>
+                  <th v-if="userRole === ROLES.ADMIN">Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="course in getY2s1" :key="course.id">
+                  <td>{{ course.courseId }}</td>
+                  <td>{{ course.name }}</td>
+                  <td>{{ course.preerquisite }}</td>
+                  <td>{{ course.credit }}</td>
+                  <td>
+                    <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-danger"
+                      @click="removeCourseToSection('y2s1', course.courseId)">Remove</button>
+                    <router-link :to="'/courseByCourseId/' + course.courseId">Description</router-link>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <h3>Year 2 Semester 2</h3>
+        <h4>credit:</h4>
+        <div class="row">
+          <div class="col-md-12">
+            <table class="table table-striped table-bordered">
+              <thead>
+                <tr>
+                  <th>Course ID</th>
+                  <th>Course Name</th>
+                  <th>Prerequisite</th>
+                  <th>Credit</th>
+                  <th v-if="userRole === ROLES.ADMIN">Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="course in getY2s2" :key="course.id">
+                  <td>{{ course.courseId }}</td>
+                  <td>{{ course.name }}</td>
+                  <td>{{ course.preerquisite }}</td>
+                  <td>{{ course.credit }}</td>
+                  <td>
+                    <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-danger"
+                      @click="removeCourseToSection('y2s2', course.courseId)">Remove</button>
+                    <router-link :to="'/courseByCourseId/' + course.courseId">Description</router-link>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <h3>Year 3 Semester 1</h3>
+        <h4>credit:</h4>
+        <div class="row">
+          <div class="col-md-12">
+            <table class="table table-striped table-bordered">
+              <thead>
+                <tr>
+                  <th>Course ID</th>
+                  <th>Course Name</th>
+                  <th>Prerequisite</th>
+                  <th>Credit</th>
+                  <th v-if="userRole === ROLES.ADMIN">Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="course in getY3s1" :key="course.id">
+                  <td>{{ course.courseId }}</td>
+                  <td>{{ course.name }}</td>
+                  <td>{{ course.preerquisite }}</td>
+                  <td>{{ course.credit }}</td>
+                  <td>
+                    <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-danger"
+                      @click="removeCourseToSection('y3s1', course.courseId)">Remove</button>
+                    <router-link :to="'/courseByCourseId/' + course.courseId">Description</router-link>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <h3>Year 3 Semester 2</h3>
+        <h4>credit:</h4>
+        <div class="row">
+          <div class="col-md-12">
+            <table class="table table-striped table-bordered">
+              <thead>
+                <tr>
+                  <th>Course ID</th>
+                  <th>Course Name</th>
+                  <th>Prerequisite</th>
+                  <th>Credit</th>
+                  <th v-if="userRole === ROLES.ADMIN">Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="course in getY3s2" :key="course.id">
+                  <td>{{ course.courseId }}</td>
+                  <td>{{ course.name }}</td>
+                  <td>{{ course.preerquisite }}</td>
+                  <td>{{ course.credit }}</td>
+                  <td>
+                    <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-danger"
+                      @click="removeCourseToSection('y3s2', course.courseId)">Remove</button>
+                    <router-link :to="'/courseByCourseId/' + course.courseId">Description</router-link>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <h3>Year 4 Semester 1</h3>
+        <h4>credit:</h4>
+        <div class="row">
+          <div class="col-md-12">
+            <table class="table table-striped table-bordered">
+              <thead>
+                <tr>
+                  <th>Course ID</th>
+                  <th>Course Name</th>
+                  <th>Prerequisite</th>
+                  <th>Credit</th>
+                  <th v-if="userRole === ROLES.ADMIN">Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="course in getY4s1" :key="course.id">
+                  <td>{{ course.courseId }}</td>
+                  <td>{{ course.name }}</td>
+                  <td>{{ course.preerquisite }}</td>
+                  <td>{{ course.credit }}</td>
+                  <td>
+                    <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-danger"
+                      @click="removeCourseToSection('y4s1', course.courseId)">Remove</button>
+                    <router-link :to="'/courseByCourseId/' + course.courseId">Description</router-link>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <h3>Year 4 Semester 2</h3>
+        <h4>credit:</h4>
+        <div class="row">
+          <div class="col-md-12">
+            <table class="table table-striped table-bordered">
+              <thead>
+                <tr>
+                  <th>Course ID</th>
+                  <th>Course Name</th>
+                  <th>Prerequisite</th>
+                  <th>Credit</th>
+                  <th v-if="userRole === ROLES.ADMIN">Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="course in getY4s2" :key="course.id">
+                  <td>{{ course.courseId }}</td>
+                  <td>{{ course.name }}</td>
+                  <td>{{ course.preerquisite }}</td>
+                  <td>{{ course.credit }}</td>
+                  <td>
+                    <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-danger"
+                      @click="removeCourseToSection('y4s2', course.courseId)">Remove</button>
+                    <router-link :to="'/courseByCourseId/' + course.courseId">Description</router-link>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
         <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-primary" @click="openForm4">Add
           courses</button> |
       </div>
@@ -528,6 +738,27 @@ export default {
 
     getY1s1() {
       return this.filteredPrograms.find(program => program.programId === this.selectedProgram)?.y1s1 || [];
+    },
+    getY1s2() {
+      return this.filteredPrograms.find(program => program.programId === this.selectedProgram)?.y1s2 || [];
+    },
+    getY2s1() {
+      return this.filteredPrograms.find(program => program.programId === this.selectedProgram)?.y2s1 || [];
+    },
+    getY2s2() {
+      return this.filteredPrograms.find(program => program.programId === this.selectedProgram)?.y2s2 || [];
+    },
+    getY3s1() {
+      return this.filteredPrograms.find(program => program.programId === this.selectedProgram)?.y3s1 || [];
+    },
+    getY3s2() {
+      return this.filteredPrograms.find(program => program.programId === this.selectedProgram)?.y3s2 || [];
+    },
+    getY4s1() {
+      return this.filteredPrograms.find(program => program.programId === this.selectedProgram)?.y4s1 || [];
+    },
+    getY4s2() {
+      return this.filteredPrograms.find(program => program.programId === this.selectedProgram)?.y4s2 || [];
     },
   },
   methods: {
