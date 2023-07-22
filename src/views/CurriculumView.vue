@@ -152,7 +152,7 @@
                   <td>{{ course.credit }}</td>
                   <td>
                     <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-danger"
-                      @click="removeCourseToSection(sectionType, course.courseId)">Remove</button>
+                      @click="removeCourseToSection('gerclp', course.courseId)">Remove</button>
                     <router-link :to="'/courseByCourseId/' + course.courseId">Description</router-link>
                   </td>
                 </tr>
@@ -440,7 +440,7 @@
                   <td>{{ course.credit }}</td>
                   <td>
                     <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-danger"
-                      @click="removeCourseToSection(ys, course.courseId)">Remove</button>
+                      @click="removeCourseToSection('y1s1', course.courseId)">Remove</button>
                     <router-link :to="'/courseByCourseId/' + course.courseId">Description</router-link>
                   </td>
                 </tr>
@@ -667,25 +667,31 @@ export default {
       this.clearForm();
     },
 
-    removeCourseToSection(sectionType, course) {
-      if (this.selectedProgram && course) {
-        console.log(course);
-        // Send the selected program ID and the course ID to the server using Axios
+  removeCourseToSection(sectionType, course) {
+    if (this.selectedProgram && course) {
+      // Find the selected program in the filteredPrograms array
+      const selectedProgram = this.filteredPrograms.find(program => program.programId === this.selectedProgram);
+
+      // Check if the selected program exists
+      if (selectedProgram) {
+        // Send the selected program ID, sectionType, and the course ID to the server using Axios
         apiClient
-          .put(`http://localhost:8080/removeCourseFromProgram/${this.selectedProgram}/${course}`)
+          .put(`http://localhost:8080/removeCourseFromProgram/${this.selectedProgram}/${sectionType}/${course}`)
           .then(response => {
             // Handle the response if needed
             // Refresh the data or perform any other necessary actions
             this.fetchData();
-
           })
           .catch(error => {
             console.error('Error removing course from program:', error);
           });
-      } else {
-        console.error("Please select a valid program and course.");
       }
-    }, updateProgramCredits() {
+    } else {
+      console.error("Please select a valid program and course.");
+    }
+  },
+
+ updateProgramCredits() {
       // Send the credits object to the backend when updating the program
       const programId = this.selectedProgram; // Assuming you have the selected program ID
       apiClient
