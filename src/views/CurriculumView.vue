@@ -385,9 +385,71 @@
         <h3>Study Plan</h3>
       </div>
       <i class="fa fa-chevron-down" :class="{ 'fa-rotate-180': isActive(3) }"></i>
-
+      <div v-if="showForm4">
+        <div class="overlay">
+          <div class="popup">
+            <form @submit.prevent="addCourseToSection(ys, selectedCourse)">
+              <div class="row">
+                <div class="col-md-12">
+                  <label for="courseId">Course</label>
+                  <v-select class="form-control left-align" v-model="selectedCourse" :options="records.map(record => ({
+                    label: record.courseId + ' - ' + record.name,
+                    value: record.courseId
+                  }))" :reduce="option => option.value" :placeholder="'Select a course'">
+                  </v-select>
+                  <label for="ys">Select:</label>
+                  <select v-model="ys" id="ys">
+                    <option value="">-- Select Course Type --</option>
+                    <option value="y1s1">Year 1, Semester 1</option>
+                    <option value="y1s2">Year 1, Semester 2</option>
+                    <option value="y2s1">Year 2, Semester 1</option>
+                    <option value="y2s2">Year 2, Semester 2</option>
+                    <option value="y3s1">Year 3, Semester 1</option>
+                    <option value="y3s2">Year 3, Semester 2</option>
+                    <option value="y4s1">Year 4, Semester 1</option>
+                    <option value="y4s2">Year 4, Semester 2</option>
+                  </select>
+                  <button class="btn btn-primary" type="submit">Submit</button>
+                  <button @click="cancelForm">Cancel</button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
       <div v-show="isActive(3)" class="content">
-        <h3>Content</h3>
+        <h3>Year 1 Semester 1</h3>
+        <h4>credit:</h4>
+        <div class="row">
+          <div class="col-md-12">
+            <table class="table table-striped table-bordered">
+              <thead>
+                <tr>
+                  <th>Course ID</th>
+                  <th>Course Name</th>
+                  <th>Prerequisite</th>
+                  <th>Credit</th>
+                  <th v-if="userRole === ROLES.ADMIN">Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="course in getY1s1" :key="course.id">
+                  <td>{{ course.courseId }}</td>
+                  <td>{{ course.name }}</td>
+                  <td>{{ course.preerquisite }}</td>
+                  <td>{{ course.credit }}</td>
+                  <td>
+                    <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-danger"
+                      @click="removeCourseToSection(ys, course.courseId)">Remove</button>
+                    <router-link :to="'/courseByCourseId/' + course.courseId">Description</router-link>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-primary" @click="openForm4">Add
+          courses</button> |
       </div>
     </div>
   </div>
@@ -414,9 +476,11 @@ export default {
       showForm1: false,
       showForm2: false,
       showForm3: false,
+      showForm4: false,
       freeElective: '',
       selectedCourse: '', // Add this line to define selectedCourse in the data section
       courseType: '',
+      ys: '',
       credits: {
         creditGerclp: 0,
         creditGercic: 0,
@@ -461,6 +525,10 @@ export default {
       const selectedProgram = this.filteredPrograms.find(program => program.programId === this.selectedProgram);
       return selectedProgram && selectedProgram.freeElective ? [{ freeElective: selectedProgram.freeElective }] : [];
     },
+
+    getY1s1() {
+      return this.filteredPrograms.find(program => program.programId === this.selectedProgram)?.y1s1 || [];
+    },
   },
   methods: {
     fetchData() {
@@ -477,7 +545,7 @@ export default {
       apiClient
         .get('http://localhost:8080/programs')
         .then(response => {
-          this.programs = response.data; console.log('p', this.programs[0].gercac)
+          this.programs = response.data; console.log('p', this.programs)
         })
         .catch(error => {
           console.log('Error fetching programs:', error);
@@ -522,6 +590,30 @@ export default {
           case 'fosme':
             selectedProgram.fosme.push(courseData);
             break;
+          case 'y1s1':
+            selectedProgram.y1s1.push(courseData);
+            break;
+          case 'y1s2':
+            selectedProgram.y1s2.push(courseData);
+            break;
+          case 'y2s1':
+            selectedProgram.y2s1.push(courseData);
+            break;
+          case 'y2s2':
+            selectedProgram.y1s1.push(courseData);
+            break;
+          case 'y3s1':
+            selectedProgram.y1s1.push(courseData);
+            break;
+          case 'y3s2':
+            selectedProgram.y3s2.push(courseData);
+            break;
+          case 'y4s1':
+            selectedProgram.y4s1.push(courseData);
+            break;
+          case 'y4s2':
+            selectedProgram.y4s2.push(courseData);
+            break;
         }
         // Send the updated program data to the server using Axios
         apiClient.put('http://localhost:8080/addCourseToProgram', selectedProgram)
@@ -536,6 +628,7 @@ export default {
             this.isSubmitting = false; // Reset the submission flag
             this.showForm1 = false;
             this.showForm3 = false;
+            this.showForm4 = false;
             this.clearForm();
           });
       } else {
@@ -565,6 +658,7 @@ export default {
             this.isSubmitting = false; // Reset the submission flag
             this.showForm1 = false;
             this.showForm3 = false;
+            this.showForm4 = false;
           });
       } else {
         console.error("Please select a valid program.");
@@ -662,17 +756,22 @@ export default {
     openForm3() {
       this.showForm3 = true;
     },
+    openForm4() {
+      this.showForm4 = true;
+    },
     cancelForm() {
       // Close the form without submitting
       this.showForm1 = false;
       this.showForm2 = false;
       this.showForm3 = false;
+      this.showForm4 = false;
       this.clearForm();
       this.selectedCourse = null;
     },
     clearForm() {
       this.courseType = null;
       this.selectedCourse = null;
+      this.ys = null;
     },
   },
 
