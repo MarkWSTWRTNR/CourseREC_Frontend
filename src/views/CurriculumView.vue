@@ -58,8 +58,16 @@
                       <option>Feild of Specialization | Major Elective</option>
                       <option>Free Electives</option>
                     </select>
-                    <button v-if="selectedGroupCourse" class="btn btn-outline-success"
-                      @click="updateGroupCourse">Update</button>
+                    <!-- Add the text and credit fields -->
+                    <label for="text">Text:</label>
+                    <input v-model="text" type="text" id="text">
+
+                    <label for="credit">Credit:</label>
+                    <input v-model="credit" type="number" id="credit">
+
+                    <button v-if="selectedGroupCourse" class="btn btn-outline-success" @click="updateGroupCourse">
+                      Update
+                    </button>
                     <button v-else class="btn btn-primary" type="submit">Add Course</button>
                     <button @click="cancelForm">Cancel</button>
                   </form>
@@ -68,6 +76,7 @@
             </div>
           </div>
         </div>
+
         <div class="row">
           <div class="col-md-12" v-for="(groupCourse, groupCourseIndex) in filteredGroupCourses" :key="groupCourseIndex">
             <h4>{{ groupCourse.groupName }}</h4>
@@ -95,15 +104,18 @@
                     </button>
                     <router-link :to="'/courseByCourseId/' + course.courseId">Description</router-link>
                   </td>
+
                 </tr>
               </tbody>
             </table>
+            <h5>Note: {{ groupCourse.text }}</h5>
+            <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-info"
+              @click="; openForm()">Edit</button>
+            <hr>
           </div>
         </div>
       </div>
-
     </div>
-
     <div>
       <div @click="toggleAccordion(3)" :class="{ 'accordion': true, 'active': isActive(3) }">
         <h3>Study Plan</h3>
@@ -138,8 +150,11 @@ export default {
       records: [],
       groupCourse: [],
       groupName: '',
+      text: '',
+      credit: 0,
       activeAccordionIndices: [], // Initially set the first accordion as active
       showForm: false,
+      isSubmitting: false,
     }
   },
   computed: {
@@ -197,6 +212,8 @@ export default {
         })
     },
     addCourseToGroupCourse() {
+      if (this.isSubmitting) return; // Prevent multiple submissions
+            this.isSubmitting = true;
       if (this.selectedCourse && this.groupName && this.selectedProgram) {
         const isDuplicate = this.filteredGroupCourses.some(groupCourse => groupCourse.groupName === this.groupName);
 
@@ -233,21 +250,26 @@ export default {
     },
 
     removeCourseFromGroupCourse(groupCourse, course) {
-  const courseId = course.courseId;
+      const courseId = course.courseId;
+      const confirmDelete = confirm("Are you sure you want to delete this course?");
+      if (!confirmDelete) {
+        return;
+      }
+      apiClient
+        .put(`http://localhost:8080/removeCourseFromGroupCourse?courseId=${courseId}`, groupCourse)
+        .then(response => {
+          console.log('Course removed from group course:', response.data);
+          this.fetchData();
+        })
+        .catch(error => {
+          console.error('Error removing course from group course:', error);
+        });
+    },
 
-  apiClient
-    .put(`http://localhost:8080/removeCourseFromGroupCourse?courseId=${courseId}`, groupCourse)
-    .then(response => {
-      console.log('Course removed from group course:', response.data);
-      this.fetchData();
-    })
-    .catch(error => {
-      console.error('Error removing course from group course:', error);
-    });
-},
 
+    editGroupCourse(){
 
-
+    },
     updateCourseFromGroupCourse() {
 
     },
