@@ -110,7 +110,9 @@
             </table>
             <h5>Note: {{ groupCourse.text }}</h5>
             <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-info"
-              @click="; openForm()">Edit</button>
+              @click="editGroupCourse(groupCourse)">
+              Edit
+            </button>
             <hr>
           </div>
         </div>
@@ -145,16 +147,20 @@ export default {
       ROLES: ROLES,
       selectedFaculty: '',
       selectedProgram: '',
+      selectedCourse: [],
       faculties: [],
       programs: [],
       records: [],
       groupCourse: [],
       groupName: '',
       text: '',
+
       credit: 0,
       activeAccordionIndices: [], // Initially set the first accordion as active
       showForm: false,
       isSubmitting: false,
+      selectedGroupCourse: null,
+      index: 0
     }
   },
   computed: {
@@ -200,7 +206,7 @@ export default {
       apiClient
         .get('http://localhost:8080/courses')
         .then(response => {
-          this.records = response.data; console.log(this.records)
+          this.records = response.data; console.log
         })
         .catch(error => {
           console.log('Error fetching courses:', error)
@@ -213,42 +219,32 @@ export default {
     },
     addCourseToGroupCourse() {
       if (this.isSubmitting) return; // Prevent multiple submissions
-            this.isSubmitting = true;
-      if (this.selectedCourse && this.groupName && this.selectedProgram) {
-        const isDuplicate = this.filteredGroupCourses.some(groupCourse => groupCourse.groupName === this.groupName);
-
-        if (isDuplicate) {
-          alert('Group name already exists. Please enter a different group name.');
-        } else {
-          const courseToAdd = {
-            courses: [
-              {
-                courseId: this.selectedCourse
-              }
-            ],
-            groupName: this.groupName,
-            programs: {
-              programId: this.selectedProgram
-            },
-            text: this.text,
-            credit: this.credit
-          };
-
-          apiClient
-            .post('http://localhost:8080/addGroupCourse', courseToAdd)
-            .then(response => {
-              console.log('Course group created:', response.data);
-              this.fetchData();
-              this.clearForm();
-              this.showForm = false;
-            })
-            .catch(error => {
-              console.error('Error creating course group:', error);
-            });
-        }
-      }
+      this.isSubmitting = true;
+      const courseToAdd = {
+        courses: [
+          {
+            courseId: this.selectedCourse
+          }
+        ],
+        groupName: this.groupName,
+        programs: {
+          programId: this.selectedProgram
+        },
+        text: this.text,
+        credit: this.credit
+      };
+      apiClient
+        .post('http://localhost:8080/addGroupCourse', courseToAdd)
+        .then(response => {
+          console.log('Course group created:', response.data);
+          this.fetchData();
+          this.clearForm();
+          this.showForm = false;
+        })
+        .catch(error => {
+          console.error('Error creating course group:', error);
+        });
     },
-
     removeCourseFromGroupCourse(groupCourse, course) {
       const courseId = course.courseId;
       const confirmDelete = confirm("Are you sure you want to delete this course?");
@@ -265,12 +261,42 @@ export default {
           console.error('Error removing course from group course:', error);
         });
     },
-
-
-    editGroupCourse(){
-
+    editGroupCourse(groupCourse) {
+      console.log("Editing group course:", groupCourse);
+      if (groupCourse && groupCourse.text) {
+        this.selectedGroupCourse = { ...groupCourse };
+        this.showForm = true;
+        console.log("Selected group course:", this.selectedGroupCourse);
+      } else {
+        console.error('Invalid group course data:', groupCourse);
+      }
     },
-    updateCourseFromGroupCourse() {
+    updateGroupCourse() {
+      if (!this.selectedGroupCourse || this.isSubmitting) return; // Prevent multiple submissions
+      this.isSubmitting = true;
+
+      const updatedGroup = {
+        id: this.selectedGroupCourse.id,
+        text: this.text,
+        groupName: this.groupName,
+        credit: this.credit,
+        courses: [{ courseId: this.selectedCourse }],
+        programs: { programId: this.selectedProgram}
+      }
+      console.log('Current id: ', this.selectedGroupCourse.id);
+      console.log("Updating group course. Selected course:", this.selectedGroupCourse);
+      apiClient
+        .put('http://localhost:8080/updateGroupCourse', updatedGroup)
+        .then(response => {
+          this.fetchData();
+          console.log('Group Course updated:', response.data);
+          this.selectedGroupCourse = null;
+          this.showForm = false;
+          this.fetchData();
+        })
+        .catch(error => {
+          console.error('Error updating group course:', error);
+        });
 
     },
     toggleAccordion(accordionLevel, index = null) {
