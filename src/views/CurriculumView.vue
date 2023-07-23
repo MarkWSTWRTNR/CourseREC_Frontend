@@ -109,8 +109,7 @@
               </tbody>
             </table>
             <h5>Note: {{ groupCourse.text }}</h5>
-            <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-info"
-              @click="editGroupCourse(groupCourse)">
+            <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-info" @click="editGroupCourse(groupCourse)">
               Edit
             </button>
             <hr>
@@ -263,9 +262,13 @@ export default {
     },
     editGroupCourse(groupCourse) {
       console.log("Editing group course:", groupCourse);
-      if (groupCourse && groupCourse.text) {
+      if (groupCourse && groupCourse.id) {
         this.selectedGroupCourse = { ...groupCourse };
         this.showForm = true;
+        this.selectedCourse = groupCourse.courses[0]?.courseId || '';
+        this.groupName = groupCourse.groupName || '';
+        this.text = groupCourse.text || '';
+        this.credit = groupCourse.credit || 0;
         console.log("Selected group course:", this.selectedGroupCourse);
       } else {
         console.error('Invalid group course data:', groupCourse);
@@ -281,7 +284,7 @@ export default {
         groupName: this.groupName,
         credit: this.credit,
         courses: [{ courseId: this.selectedCourse }],
-        programs: { programId: this.selectedProgram}
+        programs: { programId: this.selectedProgram }
       }
       console.log('Current id: ', this.selectedGroupCourse.id);
       console.log("Updating group course. Selected course:", this.selectedGroupCourse);
@@ -293,6 +296,7 @@ export default {
           this.selectedGroupCourse = null;
           this.showForm = false;
           this.fetchData();
+          this.clearForm();
         })
         .catch(error => {
           console.error('Error updating group course:', error);
@@ -360,6 +364,10 @@ export default {
     clearForm() {
       this.selectedCourse = '';
       this.groupCourses = '';
+      this.text = '';
+      this.credit = 0;
+      this.groupName = '';
+      this.selectedGroupCourse = '';
     },
   },
   mounted() {
