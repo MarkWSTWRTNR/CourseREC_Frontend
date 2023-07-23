@@ -29,8 +29,43 @@
       <i class="fa fa-chevron-down" :class="{ 'fa-rotate-180': isActive(1) }"></i>
 
 
-
       <div v-show="isActive(1, index)" class="content">
+        <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-primary" @click="openForm">Add courses</button>
+        <div v-if="showForm">
+          <div class="overlay">
+            <div class="popup">
+              <div class="row">
+                <div class="col-md-12">
+                  <form @submit.prevent="addCourseToGroupCourse">
+                    <h3>{{ selectedGroupCourse ? 'Edit GroupCourse' : 'Add GroupCourse' }}</h3>
+                    <label for="courseId">Course</label>
+                    <v-select class="form-control left-align" v-model="selectedCourse" :options="records.map(record => ({
+                      label: record.courseId + ' - ' + record.name,
+                      value: record.courseId
+                    }))" :reduce="option => option.value" :placeholder="'Select a course'">
+                    </v-select>
+
+                    <label for="groupName">Group Name:</label>
+                    <select v-model="groupName" id="groupName">
+                      <option value="">-- Select Group Course --</option>
+                      <option>General Education | Required courses | Learner Pereson</option>
+                      <option>General Education | Required courses | Innovative Co-creator</option>
+                      <option>General Education | Required courses | Active Citizen</option>
+                      <option>General Education | Elective courses</option>
+                      <option>Feild of Specialization| Core Courses</option>
+                      <option>Feild of Specialization | Major Courses | Required Courses</option>
+                      <option>Feild of Specialization | Major Elective</option>
+                    </select>
+                    <button v-if="selectedGroupCourse" class="btn btn-outline-success"
+                      @click="updateGroupCourse">Update</button>
+                    <button v-else class="btn btn-primary" type="submit">Add Course</button>
+                    <button @click="cancelForm">Cancel</button>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
         <div class="row">
           <div class="col-md-12" v-for="(groupCourse, groupCourseIndex) in filteredGroupCourses" :key="groupCourseIndex">
             <h4>Group Course: {{ groupCourse.groupName }}</h4>
@@ -95,8 +130,9 @@ export default {
       programs: [],
       records: [],
       groupCourse: [],
+      groupName: '',
       activeAccordionIndices: [], // Initially set the first accordion as active
-
+      showForm: false,
     }
   },
   computed: {
@@ -111,13 +147,13 @@ export default {
       return [];
     },
     filteredGroupCourses() {
-    if (this.selectedProgram) {
-      // Filter the groupCourse based on the selected programId
-      return this.groupCourse.filter(groupCourse => groupCourse.programs && groupCourse.programs.programId === this.selectedProgram);
-    }
-    // If no program is selected or there are no matching groupCourses, return an empty array.
-    return [];
-  },
+      if (this.selectedProgram) {
+        // Filter the groupCourse based on the selected programId
+        return this.groupCourse.filter(groupCourse => groupCourse.programs && groupCourse.programs.programId === this.selectedProgram);
+      }
+      // If no program is selected or there are no matching groupCourses, return an empty array.
+      return [];
+    },
   },
   methods: {
     fetchData() {
@@ -152,6 +188,47 @@ export default {
         .then(response => {
           this.groupCourse = response.data; console.log('gc', this.groupCourse);
         })
+    },
+    addCourseToGroupCourse() {
+      if (this.selectedCourse && this.groupName && this.selectedProgram) {
+        const isDuplicate = this.filteredGroupCourses.some(groupCourse => groupCourse.groupName === this.groupName);
+
+        if (isDuplicate) {
+          alert('Group name already exists. Please enter a different group name.');
+        } else {
+          const courseToAdd = {
+            courses: [
+              {
+                courseId: this.selectedCourse
+              }
+            ],
+            groupName: this.groupName,
+            programs: {
+              programId: this.selectedProgram
+            }
+            
+          };
+
+          apiClient
+            .post('http://localhost:8080/addGroupCourse', courseToAdd)
+            .then(response => {
+              console.log('Course group created:', response.data);
+              this.fetchData();
+              this.clearForm();
+              this.showForm = false;
+            })
+            .catch(error => {
+              console.error('Error creating course group:', error);
+            });
+        }
+      }
+    },
+
+    deleteCourseFromGroupCourse() {
+
+    },
+    updateCourseFromGroupCourse() {
+
     },
     toggleAccordion(accordionLevel, index = null) {
       if (accordionLevel === 1) {
@@ -204,9 +281,18 @@ export default {
       // Extract courseId and name from the prerequisites array and return as a string
       return prerequisites.map(prerequisite => `${prerequisite.courseId} - ${prerequisite.name}`).join(", ");
     },
-
+    openForm() {
+      this.showForm = true;
+    },
+    cancelForm() {
+      this.showForm = false;
+      this.clearForm();
+    },
+    clearForm() {
+      this.selectedCourse = '';
+      this.groupCourses = '';
+    },
   },
-
   mounted() {
     this.fetchData();
   }
