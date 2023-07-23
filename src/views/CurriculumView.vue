@@ -42,7 +42,7 @@
                     <v-select class="form-control left-align" v-model="selectedCourse" :options="records.map(record => ({
                       label: record.courseId + ' - ' + record.name,
                       value: record.courseId
-                    }))" :reduce="option => option.value" :placeholder="'Select a course'">
+                    }))" multiple :reduce="option => option.value" :placeholder="'Select a course'">
                     </v-select>
 
                     <label for="groupName">Group Name:</label>
@@ -219,12 +219,11 @@ export default {
     addCourseToGroupCourse() {
       if (this.isSubmitting) return; // Prevent multiple submissions
       this.isSubmitting = true;
+      const coursesToAdd = this.selectedCourse.map(course => ({
+        courseId: course
+      }));
       const courseToAdd = {
-        courses: [
-          {
-            courseId: this.selectedCourse
-          }
-        ],
+        courses: coursesToAdd,
         groupName: this.groupName,
         programs: {
           programId: this.selectedProgram
@@ -277,13 +276,15 @@ export default {
     updateGroupCourse() {
       if (!this.selectedGroupCourse || this.isSubmitting) return; // Prevent multiple submissions
       this.isSubmitting = true;
-
+      const coursesToAdd = this.selectedCourse.map(course => ({
+        courseId: course
+      }));
       const updatedGroup = {
         id: this.selectedGroupCourse.id,
         text: this.text,
         groupName: this.groupName,
         credit: this.credit,
-        courses: [{ courseId: this.selectedCourse }],
+        courses: coursesToAdd,
         programs: { programId: this.selectedProgram }
       }
       console.log('Current id: ', this.selectedGroupCourse.id);
