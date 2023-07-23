@@ -148,7 +148,7 @@
                 <tr v-for="course in getLearnerPersonCourses" :key="course.id">
                   <td>{{ course.courseId }}</td>
                   <td>{{ course.name }}</td>
-                  <td>{{ course.preerquisite }}</td>
+                  <td>{{ getPrerequisiteInfo(course.prerequisite) }}</td>
                   <td>{{ course.credit }}</td>
                   <td>
                     <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-danger"
@@ -178,7 +178,7 @@
                 <tr v-for="course in getInnovativeCoCreatorCourses" :key="course.id">
                   <td>{{ course.courseId }}</td>
                   <td>{{ course.name }}</td>
-                  <td>{{ course.prerequisite }}</td>
+                  <td>{{ getPrerequisiteInfo(course.prerequisite) }}</td>
                   <td>{{ course.credit }}</td>
                   <td>
                     <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-danger"
@@ -209,7 +209,7 @@
                 <tr v-for="course in getActiveCitizenCourses" :key="course.id">
                   <td>{{ course.courseId }}</td>
                   <td>{{ course.name }}</td>
-                  <td>{{ course.prerequisite }}</td>
+                  <td>{{ getPrerequisiteInfo(course.prerequisite) }}</td>
                   <td>{{ course.credit }}</td>
                   <td>
                     <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-danger"
@@ -240,7 +240,7 @@
                 <tr v-for="course in getElectiveCourses" :key="course.id">
                   <td>{{ course.courseId }}</td>
                   <td>{{ course.name }}</td>
-                  <td>{{ course.prerequisite }}</td>
+                  <td>{{ getPrerequisiteInfo(course.prerequisite) }}</td>
                   <td>{{ course.credit }}</td>
                   <td>
                     <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-danger"
@@ -271,7 +271,7 @@
                 <tr v-for="course in getCoreCourses" :key="course.id">
                   <td>{{ course.courseId }}</td>
                   <td>{{ course.name }}</td>
-                  <td>{{ course.prerequisite }}</td>
+                  <td>{{ getPrerequisiteInfo(course.prerequisite) }}</td>
                   <td>{{ course.credit }}</td>
                   <td>
                     <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-danger"
@@ -302,7 +302,7 @@
                 <tr v-for="course in getMajorCourses" :key="course.id">
                   <td>{{ course.courseId }}</td>
                   <td>{{ course.name }}</td>
-                  <td>{{ course.prerequisite }}</td>
+                  <td>{{ getPrerequisiteInfo(course.prerequisite) }}</td>
                   <td>{{ course.credit }}</td>
                   <td>
                     <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-danger"
@@ -333,7 +333,7 @@
                 <tr v-for="course in getMajorElectiveCourses" :key="course.id">
                   <td>{{ course.courseId }}</td>
                   <td>{{ course.name }}</td>
-                  <td>{{ course.prerequisite }}</td>
+                  <td>{{ getPrerequisiteInfo(course.prerequisite) }}</td>
                   <td>{{ course.credit }}</td>
                   <td>
                     <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-danger"
@@ -436,7 +436,7 @@
                 <tr v-for="course in getY1s1" :key="course.id">
                   <td>{{ course.courseId }}</td>
                   <td>{{ course.name }}</td>
-                  <td>{{ course.preerquisite }}</td>
+                  <td>{{ getPrerequisiteInfo(course.prerequisite) }}</td>
                   <td>{{ course.credit }}</td>
                   <td>
                     <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-danger"
@@ -466,7 +466,7 @@
                 <tr v-for="course in getY1s2" :key="course.id">
                   <td>{{ course.courseId }}</td>
                   <td>{{ course.name }}</td>
-                  <td>{{ course.preerquisite }}</td>
+                  <td>{{ getPrerequisiteInfo(course.prerequisite) }}</td>
                   <td>{{ course.credit }}</td>
                   <td>
                     <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-danger"
@@ -496,7 +496,7 @@
                 <tr v-for="course in getY2s1" :key="course.id">
                   <td>{{ course.courseId }}</td>
                   <td>{{ course.name }}</td>
-                  <td>{{ course.preerquisite }}</td>
+                  <td>{{ getPrerequisiteInfo(course.prerequisite) }}</td>
                   <td>{{ course.credit }}</td>
                   <td>
                     <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-danger"
@@ -526,7 +526,7 @@
                 <tr v-for="course in getY2s2" :key="course.id">
                   <td>{{ course.courseId }}</td>
                   <td>{{ course.name }}</td>
-                  <td>{{ course.preerquisite }}</td>
+                  <td>{{ getPrerequisiteInfo(course.prerequisite) }}</td>
                   <td>{{ course.credit }}</td>
                   <td>
                     <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-danger"
@@ -556,7 +556,7 @@
                 <tr v-for="course in getY3s1" :key="course.id">
                   <td>{{ course.courseId }}</td>
                   <td>{{ course.name }}</td>
-                  <td>{{ course.preerquisite }}</td>
+                  <td>{{ getPrerequisiteInfo(course.prerequisite) }}</td>
                   <td>{{ course.credit }}</td>
                   <td>
                     <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-danger"
@@ -586,7 +586,7 @@
                 <tr v-for="course in getY3s2" :key="course.id">
                   <td>{{ course.courseId }}</td>
                   <td>{{ course.name }}</td>
-                  <td>{{ course.preerquisite }}</td>
+                  <td>{{ getPrerequisiteInfo(course.prerequisite) }}</td>
                   <td>{{ course.credit }}</td>
                   <td>
                     <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-danger"
@@ -616,7 +616,7 @@
                 <tr v-for="course in getY4s1" :key="course.id">
                   <td>{{ course.courseId }}</td>
                   <td>{{ course.name }}</td>
-                  <td>{{ course.preerquisite }}</td>
+                  <td>{{ getPrerequisiteInfo(course.prerequisite) }}</td>
                   <td>{{ course.credit }}</td>
                   <td>
                     <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-danger"
@@ -646,7 +646,7 @@
                 <tr v-for="course in getY4s2" :key="course.id">
                   <td>{{ course.courseId }}</td>
                   <td>{{ course.name }}</td>
-                  <td>{{ course.preerquisite }}</td>
+                  <td>{{ getPrerequisiteInfo(course.prerequisite) }}</td>
                   <td>{{ course.credit }}</td>
                   <td>
                     <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-danger"
@@ -983,6 +983,14 @@ export default {
       }
 
       return false;
+    },
+    getPrerequisiteInfo(prerequisites) {
+      if (!prerequisites || prerequisites.length === 0) {
+        return ; // Display "None" if no prerequisites
+      }
+
+      // Extract courseId and name from the prerequisites array and return as a string
+      return prerequisites.map(prerequisite => `${prerequisite.courseId} - ${prerequisite.name}`).join(", ");
     },
     openForm1() {
       this.showForm1 = true;
