@@ -51,10 +51,12 @@
                       <option>General Education | Required courses | Learner Pereson</option>
                       <option>General Education | Required courses | Innovative Co-creator</option>
                       <option>General Education | Required courses | Active Citizen</option>
-                      <option>General Education | Elective courses</option>
+                      <option>General Education | Elective courses | Learnner Person</option>
+                      <option>General Education | Elective courses | Active Citizen</option>
                       <option>Feild of Specialization| Core Courses</option>
                       <option>Feild of Specialization | Major Courses | Required Courses</option>
                       <option>Feild of Specialization | Major Elective</option>
+                      <option>Free Electives</option>
                     </select>
                     <button v-if="selectedGroupCourse" class="btn btn-outline-success"
                       @click="updateGroupCourse">Update</button>
@@ -68,7 +70,8 @@
         </div>
         <div class="row">
           <div class="col-md-12" v-for="(groupCourse, groupCourseIndex) in filteredGroupCourses" :key="groupCourseIndex">
-            <h4>Group Course: {{ groupCourse.groupName }}</h4>
+            <h4>{{ groupCourse.groupName }}</h4>
+            <h6>Mininum credit required:{{ groupCourse.credit }}</h6>
             <table class="table table-striped table-bordered">
               <thead>
                 <tr>
@@ -86,7 +89,11 @@
                   <td>{{ course.credit }}</td>
                   <td>{{ getPrerequisiteInfo(course.prerequisite) }}</td>
                   <td>
-
+                    <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-danger"
+                      @click="removeCourseFromGroupCourse(groupCourse, course.courseId)">
+                      Remove!
+                    </button>
+                    <router-link :to="'/courseByCourseId/' + course.courseId">Description</router-link>
                   </td>
                 </tr>
               </tbody>
@@ -205,8 +212,9 @@ export default {
             groupName: this.groupName,
             programs: {
               programId: this.selectedProgram
-            }
-            
+            },
+            text: this.text,
+            credit: this.credit
           };
 
           apiClient
@@ -224,9 +232,22 @@ export default {
       }
     },
 
-    deleteCourseFromGroupCourse() {
+    removeCourseFromGroupCourse(groupCourse, course) {
+  const courseId = course.courseId;
 
-    },
+  apiClient
+    .put(`http://localhost:8080/removeCourseFromGroupCourse?courseId=${courseId}`, groupCourse)
+    .then(response => {
+      console.log('Course removed from group course:', response.data);
+      this.fetchData();
+    })
+    .catch(error => {
+      console.error('Error removing course from group course:', error);
+    });
+},
+
+
+
     updateCourseFromGroupCourse() {
 
     },
