@@ -4,7 +4,7 @@
 
     <div v-if="isFormVisible" class="popup">
       <h2>{{ isEditing ? 'Edit Section' : 'Create Section' }}</h2>
-      <form @submit.prevent="saveSection">
+      <form @submit.prevent="isEditing ? updateSection() : saveSection()">
         <label for="year">Year:</label>
         <input type="text" id="year" v-model="section.year" required>
         <label for="semester">Semester:</label>
@@ -16,7 +16,7 @@
             required></v-select>
         </div>
 
-        <button @click="addOption">Add More</button>
+        <button type="button" @click="addOption">Add More</button>
 
         <div class="buttons">
           <button type="submit">{{ isEditing ? 'Save' : 'Create' }}</button>
@@ -130,6 +130,31 @@ export default {
         .then(response => {
           alert('Section saved successfully');
           // Handle any further logic or data manipulation based on the response from the backend if needed
+          this.fetchSections();
+        })
+        .catch(error => {
+          console.log(error);
+        });
+
+      this.isFormVisible = false;
+      this.resetSection();
+    },
+    updateSection() {
+      // Prepare the section data to be sent to the backend API for update
+      const sectionData = {
+        id: this.section.id, // Assuming there's an "id" field in the FinishedCourse object
+        year: this.section.year,
+        semester: this.section.semester,
+        courses: this.section.options
+      };
+
+      // Send the update request to the backend API using PUT method
+      apiClient
+        .put('http://localhost:8080/updateStudentFinishedCourse', sectionData)
+        .then(response => {
+          alert('Section updated successfully');
+          // Handle any further logic or data manipulation based on the response from the backend if needed
+          this.fetchSections();
         })
         .catch(error => {
           console.log(error);
@@ -154,6 +179,11 @@ export default {
       this.section.options = [];
     },
     addOption() {
+      // Initialize section.options as an empty array if it's undefined
+      if (!this.section.options) {
+        this.section.options = [];
+      }
+
       this.section.options.push('');
     },
     editSection(index) {
