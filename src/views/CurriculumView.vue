@@ -153,7 +153,7 @@
                   <td>
                     <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-danger"
                       @click="removeCourseToSection('gerclp', course.courseId)">Remove</button>
-                    <router-link :to="'/courseByCourseId/' + course.courseId">Description</router-link>
+                    <br><router-link :to="'/courseByCourseId/' + course.courseId">Description</router-link>
                   </td>
                 </tr>
               </tbody>
@@ -183,7 +183,7 @@
                   <td>
                     <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-danger"
                       @click="removeCourseToSection('gercic', course.courseId)">Remove</button>
-                    <router-link :to="'/courseByCourseId/' + course.courseId">Description</router-link>
+                    <br><router-link :to="'/courseByCourseId/' + course.courseId">Description</router-link>
                   </td>
                 </tr>
               </tbody>
@@ -214,7 +214,7 @@
                   <td>
                     <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-danger"
                       @click="removeCourseToSection('gercac', course.courseId)">Remove</button>
-                    <router-link :to="'/courseByCourseId/' + course.courseId">Description</router-link>
+                    <br><router-link :to="'/courseByCourseId/' + course.courseId">Description</router-link>
                   </td>
                 </tr>
               </tbody>
@@ -245,7 +245,7 @@
                   <td>
                     <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-danger"
                       @click="removeCourseToSection('geec', course.courseId)">Remove</button>
-                    <router-link :to="'/courseByCourseId/' + course.courseId">Description</router-link>
+                    <br><router-link :to="'/courseByCourseId/' + course.courseId">Description</router-link>
                   </td>
                 </tr>
               </tbody>
@@ -276,7 +276,7 @@
                   <td>
                     <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-danger"
                       @click="removeCourseToSection('foscc', course.courseId)">Remove</button>
-                    <router-link :to="'/courseByCourseId/' + course.courseId">Description</router-link>
+                    <br><router-link :to="'/courseByCourseId/' + course.courseId">Description</router-link>
                   </td>
                 </tr>
               </tbody>
@@ -307,7 +307,7 @@
                   <td>
                     <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-danger"
                       @click="removeCourseToSection('fosmcrc', course.courseId)">Remove</button>
-                    <router-link :to="'/courseByCourseId/' + course.courseId">Description</router-link>
+                    <br><router-link :to="'/courseByCourseId/' + course.courseId">Description</router-link>
                   </td>
                 </tr>
               </tbody>
@@ -338,7 +338,7 @@
                   <td>
                     <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-danger"
                       @click="removeCourseToSection('fosme', course.courseId)">Remove</button>
-                    <router-link :to="'/courseByCourseId/' + course.courseId">Description</router-link>
+                    <br><router-link :to="'/courseByCourseId/' + course.courseId">Description</router-link>
                   </td>
                 </tr>
               </tbody>
@@ -364,7 +364,7 @@
                   <!-- <td v-for="course in getFreeElective" :key="course.id">
                   <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-danger"
                       @click="deleteCourse(course.courseId)">Remove</button>
-                    <router-link :to="'/courseByCourseId/' + course.courseId">Description</router-link> 
+                    <br><router-link :to="'/courseByCourseId/' + course.courseId">Description</router-link> 
                   </td> -->
                 </tr>
               </tbody>
@@ -441,7 +441,7 @@
                   <td>
                     <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-danger"
                       @click="removeCourseToSection('y1s1', course.courseId)">Remove</button>
-                    <router-link :to="'/courseByCourseId/' + course.courseId">Description</router-link>
+                    <br><router-link :to="'/courseByCourseId/' + course.courseId">Description</router-link>
                   </td>
                 </tr>
               </tbody>
@@ -471,7 +471,7 @@
                   <td>
                     <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-danger"
                       @click="removeCourseToSection('y1s2', course.courseId)">Remove</button>
-                    <router-link :to="'/courseByCourseId/' + course.courseId">Description</router-link>
+                    <br><router-link :to="'/courseByCourseId/' + course.courseId">Description</router-link>
                   </td>
                 </tr>
               </tbody>
@@ -501,7 +501,7 @@
                   <td>
                     <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-danger"
                       @click="removeCourseToSection('y2s1', course.courseId)">Remove</button>
-                    <router-link :to="'/courseByCourseId/' + course.courseId">Description</router-link>
+                    <br><router-link :to="'/courseByCourseId/' + course.courseId">Description</router-link>
                   </td>
                 </tr>
               </tbody>
@@ -531,7 +531,7 @@
                   <td>
                     <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-danger"
                       @click="removeCourseToSection('y2s2', course.courseId)">Remove</button>
-                    <router-link :to="'/courseByCourseId/' + course.courseId">Description</router-link>
+                    <br><router-link :to="'/courseByCourseId/' + course.courseId">Description</router-link>
                   </td>
                 </tr>
               </tbody>
@@ -561,7 +561,7 @@
                   <td>
                     <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-danger"
                       @click="removeCourseToSection('y3s1', course.courseId)">Remove</button>
-                    <router-link :to="'/courseByCourseId/' + course.courseId">Description</router-link>
+                    <br><router-link :to="'/courseByCourseId/' + course.courseId">Description</router-link>
                   </td>
                 </tr>
               </tbody>
@@ -591,7 +591,7 @@
                   <td>
                     <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-danger"
                       @click="removeCourseToSection('y3s2', course.courseId)">Remove</button>
-                    <router-link :to="'/courseByCourseId/' + course.courseId">Description</router-link>
+                    <br><router-link :to="'/courseByCourseId/' + course.courseId">Description</router-link>
                   </td>
                 </tr>
               </tbody>
@@ -621,7 +621,7 @@
                   <td>
                     <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-danger"
                       @click="removeCourseToSection('y4s1', course.courseId)">Remove</button>
-                    <router-link :to="'/courseByCourseId/' + course.courseId">Description</router-link>
+                    <br><router-link :to="'/courseByCourseId/' + course.courseId">Description</router-link>
                   </td>
                 </tr>
               </tbody>
@@ -651,7 +651,7 @@
                   <td>
                     <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-danger"
                       @click="removeCourseToSection('y4s2', course.courseId)">Remove</button>
-                    <router-link :to="'/courseByCourseId/' + course.courseId">Description</router-link>
+                    <br><router-link :to="'/courseByCourseId/' + course.courseId">Description</router-link>
                   </td>
                 </tr>
               </tbody>
@@ -905,6 +905,10 @@ export default {
 
       // Check if the selected program exists
       if (selectedProgram) {
+        const confirmDelete = confirm("Are you sure you want to delete this course?");
+            if (!confirmDelete) {
+                return;
+            }
         // Send the selected program ID, sectionType, and the course ID to the server using Axios
         apiClient
           .put(`http://localhost:8080/removeCourseFromProgram/${this.selectedProgram}/${sectionType}/${course}`)
