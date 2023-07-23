@@ -31,8 +31,35 @@
 
 
       <div v-show="isActive(1, index)" class="content">
+        <div class="row">
+          <div class="col-md-12" v-for="(groupCourse, groupCourseIndex) in filteredGroupCourses" :key="groupCourseIndex">
+            <h4>Group Course: {{ groupCourse.groupName }}</h4>
+            <table class="table table-striped table-bordered">
+              <thead>
+                <tr>
+                  <th>Course ID</th>
+                  <th>Course Name</th>
+                  <th>Course Credit</th>
+                  <th>Course Prerequisite</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="(course, courseIndex) in groupCourse.courses" :key="courseIndex">
+                  <td>{{ course.courseId }}</td>
+                  <td>{{ course.name }}</td>
+                  <td>{{ course.credit }}</td>
+                  <td>{{ getPrerequisiteInfo(course.prerequisite) }}</td>
+                  <td>
 
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
       </div>
+
     </div>
 
     <div>
@@ -67,7 +94,7 @@ export default {
       faculties: [],
       programs: [],
       records: [],
-    
+      groupCourse: [],
       activeAccordionIndices: [], // Initially set the first accordion as active
 
     }
@@ -83,6 +110,14 @@ export default {
       // If no faculty is selected or there are no matching programs, return an empty array.
       return [];
     },
+    filteredGroupCourses() {
+    if (this.selectedProgram) {
+      // Filter the groupCourse based on the selected programId
+      return this.groupCourse.filter(groupCourse => groupCourse.programs && groupCourse.programs.programId === this.selectedProgram);
+    }
+    // If no program is selected or there are no matching groupCourses, return an empty array.
+    return [];
+  },
   },
   methods: {
     fetchData() {
@@ -111,6 +146,11 @@ export default {
         })
         .catch(error => {
           console.log('Error fetching courses:', error)
+        })
+      apiClient
+        .get('http://localhost:8080/groupCourses')
+        .then(response => {
+          this.groupCourse = response.data; console.log('gc', this.groupCourse);
         })
     },
     toggleAccordion(accordionLevel, index = null) {
@@ -159,12 +199,12 @@ export default {
     },
     getPrerequisiteInfo(prerequisites) {
       if (!prerequisites || prerequisites.length === 0) {
-        return; 
+        return;
       }
       // Extract courseId and name from the prerequisites array and return as a string
       return prerequisites.map(prerequisite => `${prerequisite.courseId} - ${prerequisite.name}`).join(", ");
     },
-    
+
   },
 
   mounted() {
