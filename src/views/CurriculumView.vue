@@ -30,7 +30,8 @@
 
 
       <div v-show="isActive(1, index)" class="content">
-        <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-primary" @click="openForm">Add courses</button>
+        <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-primary" @click="openForm">Add Courses To
+          Curriculum</button>
         <div v-if="showForm">
           <div class="overlay">
             <div class="popup">
@@ -61,7 +62,7 @@
                     <!-- Add the text and credit fields -->
                     <label for="text">Text:</label>
                     <input v-model="text" type="text" id="text">
-
+                    <br>
                     <label for="credit">Credit:</label>
                     <input v-model="credit" type="number" id="credit">
 
@@ -134,8 +135,8 @@
             <div class="popup">
               <div class="row">
                 <div class="col-md-12">
-                  <form @submit.prevent="addCourseToGroupCourse">
-                    <h3>{{ selectedGroupCourse ? 'Edit GroupCourse' : 'Add GroupCourse' }}</h3>
+                  <form @submit.prevent="addCourseToStudyPlan">
+                    <h3>{{ selectedStudyPlan ? 'Edit StudyPlan' : 'Add StudyPlan' }}</h3>
                     <label for="courseId">Course</label>
                     <v-select class="form-control left-align" v-model="selectedCourse" :options="records.map(record => ({
                       label: record.courseId + ' - ' + record.name,
@@ -143,8 +144,8 @@
                     }))" multiple :reduce="option => option.value" :placeholder="'Select a course'">
                     </v-select>
 
-                    <label for="groupName">Group Name:</label>
-                    <select v-model="groupName" id="groupName">
+                    <label for="yearAndSemester">Group Name:</label>
+                    <select v-model="yearAndSemester" id="yearAndSemester">
                       <option value="">-- Select Year and Semester --</option>
                       <option>Year 1 Semester 1</option>
                       <option>Year 1 Semester 2</option>
@@ -162,7 +163,7 @@
                     <label for="credit">Credit:</label>
                     <input v-model="credit" type="number" id="credit">
 
-                    <button v-if="selectedGroupCourse" class="btn btn-outline-success" @click="updateGroupCourse">
+                    <button v-if="selectedStudyPlan" class="btn btn-outline-success" @click="updateStudyPlan">
                       Update
                     </button>
                     <button v-else class="btn btn-primary" type="submit">Add Course</button>
@@ -174,9 +175,12 @@
           </div>
         </div>
         <div class="row">
-          <div class="col-md-12" v-for="(groupCourse, groupCourseIndex) in filteredGroupCourses" :key="groupCourseIndex">
-            <h4>{{ groupCourse.groupName }}</h4>
-            <h6>Mininum credit required:{{ groupCourse.credit }}</h6>
+          <div class="col-md-12" v-for="(studyPlan, studyPlanIndex) in filteredStudyPlan" :key="studyPlanIndex">
+            <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-danger" @click="removeStudyPlan(studyPlan.id)">
+              Delete Group
+            </button>
+            <h4>{{ studyPlan.yearAndSemester }}</h4>
+            <h6>credit: {{ studyPlan.credit }}</h6>
             <table class="table table-striped table-bordered">
               <thead>
                 <tr>
@@ -188,14 +192,14 @@
                 </tr>
               </thead>
               <tbody>
-                <tr v-for="(course, courseIndex) in groupCourse.courses" :key="courseIndex">
+                <tr v-for="(course, courseIndex) in studyPlan.courses" :key="courseIndex">
                   <td>{{ course.courseId }}</td>
                   <td>{{ course.name }}</td>
                   <td>{{ course.credit }}</td>
                   <td>{{ getPrerequisiteInfo(course.prerequisite) }}</td>
                   <td>
                     <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-danger"
-                      @click="removeCourseFromGroupCourse(groupCourse, course.courseId)">
+                      @click="removeCourseFromStudyPlan(studyPlan, course.courseId)">
                       Remove
                     </button>
                     <router-link :to="'/courseByCourseId/' + course.courseId">Description</router-link>
@@ -204,8 +208,8 @@
                 </tr>
               </tbody>
             </table>
-            <h5>Note: {{ groupCourse.text }}</h5>
-            <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-info" @click="editGroupCourse(groupCourse)">
+            <h5>Note: {{ studyPlan.text }}</h5>
+            <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-info" @click="editStudyPlan(studyPlan)">
               Edit
             </button>
             <hr>
@@ -237,14 +241,17 @@ export default {
       records: [],
       groupCourse: [],
       groupName: '',
+      yearAndSemester: '',
       text: '',
-
       credit: 0,
       activeAccordionIndices: [], // Initially set the first accordion as active
       showForm: false,
+      showForm2: false,
       isSubmitting: false,
       selectedGroupCourse: null,
-      index: 0
+      selectedStudyPlan: null,
+      index: 0,
+      studyPlan: [],
     }
   },
   computed: {
@@ -255,7 +262,6 @@ export default {
         console.log("sf", this.selectedFaculty);
         return filteredPrograms;
       }
-      // If no faculty is selected or there are no matching programs, return an empty array.
       return [];
     },
     filteredGroupCourses() {
@@ -263,9 +269,14 @@ export default {
         // Filter the groupCourse based on the selected programId
         return this.groupCourse.filter(groupCourse => groupCourse.programs && groupCourse.programs.programId === this.selectedProgram);
       }
-      // If no program is selected or there are no matching groupCourses, return an empty array.
       return [];
     },
+    filteredStudyPlan() {
+      if (this.selectedProgram) {
+        return this.studyPlan.filter(studyPlan => studyPlan.programs && studyPlan.programs.programId === this.selectedProgram);
+      }
+      return [];
+    }
   },
   methods: {
     fetchData() {
@@ -299,6 +310,11 @@ export default {
         .get('http://localhost:8080/groupCourses')
         .then(response => {
           this.groupCourse = response.data; console.log('gc', this.groupCourse);
+        })
+      apiClient
+        .get('http://localhost:8080/standardStudyPlans')
+        .then(response => {
+          this.studyPlan = response.data; console.log('stdp', this.studyPlan);
         })
     },
     addCourseToGroupCourse() {
@@ -400,42 +416,133 @@ export default {
           console.error('Error deleting group course:', error);
         });
     },
+
+    addCourseToStudyPlan() {
+      if (this.isSubmitting) return; // Prevent multiple submissions
+      this.isSubmitting = true;
+      const coursesToAdd = this.selectedCourse.map(course => ({
+        courseId: course
+      }));
+      const courseToAdd = {
+        courses: coursesToAdd,
+        yearAndSemester: this.yearAndSemester,
+        programs: {
+          programId: this.selectedProgram
+        },
+        text: this.text,
+        credit: this.credit
+      };
+      apiClient
+        .post('http://localhost:8080/addStandardStudyPlan', courseToAdd)
+        .then(response => {
+          console.log('Course group created:', response.data);
+          this.fetchData();
+          this.clearForm();
+          this.showForm2 = false;
+        })
+        .catch(error => {
+          console.error('Error creating course group:', error);
+        });
+    },
+    removeCourseFromStudyPlan(studyPlan, course) {
+      const courseId = course.courseId;
+      const confirmDelete = confirm("Are you sure you want to delete this course?");
+      if (!confirmDelete) {
+        return;
+      }
+      apiClient
+        .put(`http://localhost:8080/removeCourseFromStandardStudyPlan?courseId=${courseId}`, studyPlan)
+        .then(response => {
+          console.log('Course removed from group course:', response.data);
+          this.fetchData();
+        })
+        .catch(error => {
+          console.error('Error removing course from group course:', error);
+        });
+    },
+    editStudyPlan(studyPlan) {
+      console.log("Editing group course:", studyPlan);
+      if (studyPlan && studyPlan.id) {
+        this.selectedStudyPlan = { ...studyPlan };
+        this.showForm2 = true;
+        this.selectedCourse = studyPlan.courses[0]?.courseId || '';
+        this.yearAndSemester = studyPlan.yearAndSemester || '';
+        this.text = studyPlan.text || '';
+        this.credit = studyPlan.credit || 0;
+        console.log("Selected group course:", this.selectedStudyPlan);
+      } else {
+        console.error('Invalid group course data:', studyPlan);
+      }
+    },
+    updateStudyPlan() {
+      if (!this.selectedStudyPlan || this.isSubmitting) return; // Prevent multiple submissions
+      this.isSubmitting = true;
+      const coursesToAdd = this.selectedCourse.map(course => ({
+        courseId: course
+      }));
+      const updatedGroup = {
+        id: this.selectedStudyPlan.id,
+        text: this.text,
+        yearAndSemester: this.yearAndSemester,
+        credit: this.credit,
+        courses: coursesToAdd,
+        programs: { programId: this.selectedProgram }
+      }
+      console.log('Current id: ', this.selectedStudyPlan.id);
+      console.log("Updating group course. Selected course:", this.selectedStudyPlan);
+      apiClient
+        .put('http://localhost:8080/updateStandardStudyPlan', updatedGroup)
+        .then(response => {
+          this.fetchData();
+          console.log('Group Course updated:', response.data);
+          this.selectedStudyPlan = null;
+          this.showForm2 = false;
+          this.fetchData();
+          this.clearForm();
+        })
+        .catch(error => {
+          console.error('Error updating group course:', error);
+        });
+    },
+    removeGroupCourse(groupId) {
+      apiClient
+        .delete(`http://localhost:8080/deleteStandardStudyPlan/${groupId}`)
+        .then(response => {
+          console.log('Group Course deleted:', response.data);
+
+          this.fetchData();
+        })
+        .catch(error => {
+          console.error('Error deleting group course:', error);
+        });
+    },
+
+
     toggleAccordion(accordionLevel, index = null) {
       if (accordionLevel === 1) {
-        // Toggle the first accordion
         if (this.activeAccordionIndices.includes(1)) {
-          // First accordion is active, so deactivate it
           this.activeAccordionIndices = [];
         } else {
-          // First accordion is inactive, so activate it and deactivate all other accordions
           this.activeAccordionIndices = [1];
         }
       } else if (accordionLevel === 2 && index !== null) {
-        // Toggle the second accordion within a section
         if (this.activeAccordionIndices.includes(index + 2)) {
-          // Second accordion is active, so deactivate it
           this.activeAccordionIndices = this.activeAccordionIndices.filter(i => i !== index + 2);
         } else {
-          // Second accordion is inactive, so activate it
           this.activeAccordionIndices.push(index + 2);
         }
       } else if (accordionLevel === 3) {
-        // Check if the clicked accordion is already open
         if (this.activeAccordionIndices.includes(3)) {
-          // If it's open, close it by removing its index from the activeAccordionIndices
           this.activeAccordionIndices = this.activeAccordionIndices.filter(i => i !== 3);
         } else {
-          // If it's closed, add its index to the activeAccordionIndices to open it
           this.activeAccordionIndices.push(3);
         }
       }
     },
     isActive(accordionLevel, index = null) {
       if (accordionLevel === 1) {
-        // Check if the first accordion is active
         return this.activeAccordionIndices.includes(1);
       } else if (accordionLevel === 2 && index !== null) {
-        // Check if a second accordion within a section is active
         return this.activeAccordionIndices.includes(index + 2);
       }
       else if (accordionLevel === 3) {
@@ -448,7 +555,6 @@ export default {
       if (!prerequisites || prerequisites.length === 0) {
         return;
       }
-      // Extract courseId and name from the prerequisites array and return as a string
       return prerequisites.map(prerequisite => `${prerequisite.courseId} - ${prerequisite.name}`).join(", ");
     },
     openForm() {
@@ -456,6 +562,7 @@ export default {
     },
     cancelForm() {
       this.showForm = false;
+      this.showForm2 = false;
       this.clearForm();
     },
     clearForm() {
@@ -465,6 +572,10 @@ export default {
       this.credit = 0;
       this.groupName = '';
       this.selectedGroupCourse = '';
+      this.selectedStudyPlan = '';
+    }, 
+    openForm2() {
+      this.showForm2 = true;
     },
   },
   mounted() {
