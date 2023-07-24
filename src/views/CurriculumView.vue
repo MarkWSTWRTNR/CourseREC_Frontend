@@ -525,9 +525,9 @@ export default {
           this.isSubmitting = false;
         });
     },
-    removeGroupCourse(groupId) {
+    removeStudyPlan(studyPlan) {
       apiClient
-        .delete(`http://localhost:8080/deleteStandardStudyPlan/${groupId}`)
+        .delete(`http://localhost:8080/deleteStandardStudyPlan/${studyPlan}`)
         .then(response => {
           alert('Removed course successfully');
           console.log('Group Course deleted:', response.data);
