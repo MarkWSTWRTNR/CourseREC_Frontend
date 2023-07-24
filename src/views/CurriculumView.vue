@@ -79,6 +79,10 @@
 
         <div class="row">
           <div class="col-md-12" v-for="(groupCourse, groupCourseIndex) in filteredGroupCourses" :key="groupCourseIndex">
+            <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-danger"
+              @click="removeGroupCourse(groupCourse.id)">
+              Delete Group
+            </button>
             <h4>{{ groupCourse.groupName }}</h4>
             <h6>Mininum credit required:{{ groupCourse.credit }}</h6>
             <table class="table table-striped table-bordered">
@@ -100,7 +104,7 @@
                   <td>
                     <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-danger"
                       @click="removeCourseFromGroupCourse(groupCourse, course.courseId)">
-                      Remove!
+                      Remove
                     </button>
                     <router-link :to="'/courseByCourseId/' + course.courseId">Description</router-link>
                   </td>
@@ -124,8 +128,89 @@
       <i class="fa fa-chevron-down" :class="{ 'fa-rotate-180': isActive(3) }"></i>
 
       <div v-show="isActive(3)" class="content">
+        <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-primary" @click="openForm2">Add courses</button>
+        <div v-if="showForm2">
+          <div class="overlay">
+            <div class="popup">
+              <div class="row">
+                <div class="col-md-12">
+                  <form @submit.prevent="addCourseToGroupCourse">
+                    <h3>{{ selectedGroupCourse ? 'Edit GroupCourse' : 'Add GroupCourse' }}</h3>
+                    <label for="courseId">Course</label>
+                    <v-select class="form-control left-align" v-model="selectedCourse" :options="records.map(record => ({
+                      label: record.courseId + ' - ' + record.name,
+                      value: record.courseId
+                    }))" multiple :reduce="option => option.value" :placeholder="'Select a course'">
+                    </v-select>
 
+                    <label for="groupName">Group Name:</label>
+                    <select v-model="groupName" id="groupName">
+                      <option value="">-- Select Year and Semester --</option>
+                      <option>Year 1 Semester 1</option>
+                      <option>Year 1 Semester 2</option>
+                      <option>Year 2 Semester 1</option>
+                      <option>Year 2 Semester 2</option>
+                      <option>Year 3 Semester 1</option>
+                      <option>Year 3 Semester 2</option>
+                      <option>Year 4 Semester 1</option>
+                      <option>Year 4 Semester 2</option>
+                    </select>
+                    <!-- Add the text and credit fields -->
+                    <label for="text">Text:</label>
+                    <input v-model="text" type="text" id="text">
 
+                    <label for="credit">Credit:</label>
+                    <input v-model="credit" type="number" id="credit">
+
+                    <button v-if="selectedGroupCourse" class="btn btn-outline-success" @click="updateGroupCourse">
+                      Update
+                    </button>
+                    <button v-else class="btn btn-primary" type="submit">Add Course</button>
+                    <button @click="cancelForm">Cancel</button>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12" v-for="(groupCourse, groupCourseIndex) in filteredGroupCourses" :key="groupCourseIndex">
+            <h4>{{ groupCourse.groupName }}</h4>
+            <h6>Mininum credit required:{{ groupCourse.credit }}</h6>
+            <table class="table table-striped table-bordered">
+              <thead>
+                <tr>
+                  <th>Course ID</th>
+                  <th>Course Name</th>
+                  <th>Course Credit</th>
+                  <th>Course Prerequisite</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="(course, courseIndex) in groupCourse.courses" :key="courseIndex">
+                  <td>{{ course.courseId }}</td>
+                  <td>{{ course.name }}</td>
+                  <td>{{ course.credit }}</td>
+                  <td>{{ getPrerequisiteInfo(course.prerequisite) }}</td>
+                  <td>
+                    <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-danger"
+                      @click="removeCourseFromGroupCourse(groupCourse, course.courseId)">
+                      Remove
+                    </button>
+                    <router-link :to="'/courseByCourseId/' + course.courseId">Description</router-link>
+                  </td>
+
+                </tr>
+              </tbody>
+            </table>
+            <h5>Note: {{ groupCourse.text }}</h5>
+            <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-info" @click="editGroupCourse(groupCourse)">
+              Edit
+            </button>
+            <hr>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -302,7 +387,18 @@ export default {
         .catch(error => {
           console.error('Error updating group course:', error);
         });
+    },
+    removeGroupCourse(groupId) {
+      apiClient
+        .delete(`http://localhost:8080/deleteGroupCourse/${groupId}`)
+        .then(response => {
+          console.log('Group Course deleted:', response.data);
 
+          this.fetchData();
+        })
+        .catch(error => {
+          console.error('Error deleting group course:', error);
+        });
     },
     toggleAccordion(accordionLevel, index = null) {
       if (accordionLevel === 1) {
