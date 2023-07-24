@@ -1,6 +1,6 @@
 <template>
   <div>
-    <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-primary" @click="openForm">Add Finished Course</button>
+    <button class="btn btn-outline-primary" @click="openForm">Add Finished Course</button>
     <div v-if="showForm">
       <div class="overlay">
         <div class="popup">
@@ -48,8 +48,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="course in finishedCourse.courses" :key="course.courseId">
-              <!-- Use "course.courseId" as the key -->
+            <tr v-for="course in finishedCourse.courses" :key="course.id">
               <td>{{ course.courseId }}</td>
               <td>{{ course.name }}</td>
               <td>{{ course.credit }}</td>
@@ -66,6 +65,7 @@
         <hr>
       </div>
     </div>
+
   </div>
 </template>
 
@@ -85,6 +85,7 @@ export default {
       selectedFinishedCourse: null,
       year: '',
       semester: '',
+      isSubmitting: false,
 
     };
   },
@@ -113,8 +114,9 @@ export default {
     addCourseToFinishedCourse() {
       if (this.isSubmitting) return; // Prevent multiple submissions
       this.isSubmitting = true;
+      const coursesToAdd = this.selectedCourse.map(courseId => ({ courseId }));
       const courseToAdd = {
-        courses: this.selectedCourse,
+        courses: coursesToAdd,
         year: this.year,
         semester: this.semester,
       };
@@ -128,8 +130,11 @@ export default {
         })
         .catch(error => {
           console.error('Error adding finished course:', error);
+        }).finally(() => {
+          this.isSubmitting = false; // Reset the submission flag
+          this.showForm = false;
         });
-    }, 
+    },
     editFinishedCourse(finishedCourse) {
       console.log("Editing finished course:", finishedCourse);
       if (finishedCourse && finishedCourse.year && finishedCourse.semester) {
