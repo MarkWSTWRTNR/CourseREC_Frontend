@@ -91,11 +91,13 @@ export default {
       axios
         .post('http://localhost:8080/addFaculty', faculty)
         .then(response => {
+          alert('Add Faculty successfully');
           console.log(response.data);
           this.fetchFaculties();
           this.cancelForm();
         })
         .catch(error => {
+          alert('Error to add faculty')
           console.error(error);
         })
         .finally(() => {
@@ -138,12 +140,14 @@ export default {
       axios
         .put(`http://localhost:8080/updateFaculty`, updateFaculty)
         .then(response => {
+          alert('Update Faculty successfully');
           console.log(response.data);
           this.fetchFaculties();
           this.selectedFaculty = null;
           this.cancelForm();
         })
         .catch(error => {
+          alert('Error Update Faculty');
           console.error(error);
         })
         .finally(() => {

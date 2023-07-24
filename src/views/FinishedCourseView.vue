@@ -1,34 +1,41 @@
 <template>
   <div>
-    <button @click="showForm">Create</button>
+    <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-primary" @click="openForm">Add Finished Course</button>
+    <div v-if="showForm">
+      <div class="overlay">
+        <div class="popup">
+          <div class="row">
+            <div class="col-md-12">
+              <form @submit.prevent="addCourseToFinishedCourse">
+                <h3>{{ selectedFinishedCourse ? 'Edit FinishedCourse' : 'Add FinishedCourse' }}</h3>
+                <label for="courseId">Course</label>
+                <v-select class="form-control left-align" v-model="selectedCourse" :options="records.map(record => ({
+                  label: record.courseId + ' - ' + record.name,
+                  value: record.courseId
+                }))" multiple :reduce="option => option.value" :placeholder="'Select a course'">
+                </v-select>
 
-    <div v-if="isFormVisible" class="popup">
-      <h2>{{ isEditing ? 'Edit Section' : 'Create Section' }}</h2>
-      <form @submit.prevent="isEditing ? updateSection() : saveSection()">
-        <label for="year">Year:</label>
-        <input type="text" id="year" v-model="section.year" required>
-        <label for="semester">Semester:</label>
-        <input type="text" id="semester" v-model="section.semester" required>
+                <label for="year">Year:</label>
+                <input type="text" id="year" v-model="year" required>
+                <label for="semester">Semester:</label>
+                <input type="text" id="semester" v-model="semester" required>
 
-        <div v-for="(option, index) in section.options" :key="index">
-          <label :for="'option' + index">Course {{ index + 1 }}:</label>
-          <v-select :id="'option' + index" v-model="section.options[index]" label="name" :options="records" searchable
-            required></v-select>
+                <button v-if="selectedFinishedCourse" class="btn btn-outline-success" @click="updateFinishedCourse">
+                  Update
+                </button>
+                <button v-else class="btn btn-primary" type="submit">Add Course</button>
+                <button @click="cancelForm">Cancel</button>
+              </form>
+            </div>
+          </div>
         </div>
-
-        <button type="button" @click="addOption">Add More</button>
-
-        <div class="buttons">
-          <button type="submit">{{ isEditing ? 'Save' : 'Create' }}</button>
-          <button @click="cancelForm">Cancel</button>
-        </div>
-      </form>
+      </div>
     </div>
 
-    <div v-if="createdSections.length > 0">
-      <div v-for="(section, index) in createdSections" :key="index">
-        <p>Year: {{ section.year }}</p>
-        <p>Semester: {{ section.semester }}</p>
+    <div class="row">
+      <div class="col-md-12" v-for="finishedCourse in finishedCourses" :key="finishedCourse.id">
+        <p>Year: {{ finishedCourse.year }}</p>
+        <p>Semester: {{ finishedCourse.semester }}</p>
 
         <table class="table table-striped table-bordered">
           <thead>
@@ -41,7 +48,8 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="course in section.courses" :key="course.courseId">
+            <tr v-for="course in finishedCourse.courses" :key="course.courseId">
+              <!-- Use "course.courseId" as the key -->
               <td>{{ course.courseId }}</td>
               <td>{{ course.name }}</td>
               <td>{{ course.credit }}</td>
@@ -52,7 +60,9 @@
             </tr>
           </tbody>
         </table>
-        <button @click="editSection(index)">Edit</button>
+        <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-info" @click="editFinishedCourse(finishedCourse)">
+          Edit
+        </button>
         <hr>
       </div>
     </div>
@@ -62,136 +72,90 @@
 <script>
 import apiClient from '@/service/AxiosClient';
 import vSelect from 'vue-select';
-
+import { userRole, ROLES } from '@/service/roles';
 export default {
   data() {
     return {
-      isFormVisible: false,
-      isEditing: false,
-      section: {
-        year: '',
-        semester: '',
-        options: [],
-      },
+      userRole: userRole,
+      ROLES: ROLES,
+      showForm: false,
       records: [],
-      createdSections: [],
-      editIndex: null
+      finishedCourses: [],
+      selectedCourse: null,
+      selectedFinishedCourse: null,
+      year: '',
+      semester: '',
+
     };
   },
   components: {
     'v-select': vSelect,
   },
   mounted() {
-    this.fetchCourses();
-    this.fetchSections();
+    this.fetchData();
   },
   methods: {
-    fetchCourses() {
+    fetchData() {
       apiClient.get('http://localhost:8080/courses')
         .then(response => {
-          this.records = response.data.map(course => ({
-            courseId: course.courseId,
-            name: course.name,
-            credit: course.credit
-          }));
+          this.records = response.data;
         })
         .catch(error => {
           console.log(error);
         });
+      apiClient.get('http://localhost:8080/getStudentFinishedCourse')
+        .then(response => {
+          this.finishedCourses = response.data;
+        }).catch(error => {
+          console.log(error);
+        });
     },
-    showForm() {
-      this.isFormVisible = true;
-      this.isEditing = false;
+    addCourseToFinishedCourse() {
+      if (this.isSubmitting) return; // Prevent multiple submissions
+      this.isSubmitting = true;
+      const courseToAdd = {
+        courses: this.selectedCourse,
+        year: this.year,
+        semester: this.semester,
+      };
+      apiClient
+        .post('http://localhost:8080/saveStudentFinishedCourse', courseToAdd)
+        .then(response => {
+          console.log('Finished course added:', response.data);
+          this.fetchData();
+          this.clearForm();
+          this.showForm = false;
+        })
+        .catch(error => {
+          console.error('Error adding finished course:', error);
+        });
+    }, 
+    editFinishedCourse(finishedCourse) {
+      console.log("Editing finished course:", finishedCourse);
+      if (finishedCourse && finishedCourse.year && finishedCourse.semester) {
+        this.selectedFinishedCourse = finishedCourse;
+        this.showForm = true;
+        console.log("Selected finished course:", this.selectedFinishedCourse);
+      } else {
+        console.error('Invalid finished course data:', finishedCourse);
+      }
+    },
+    openForm() {
+      this.showForm = true;
+
     },
     cancelForm() {
-      this.isFormVisible = false;
+      this.showForm = false;
       this.resetSection();
     },
-    saveSection() {
-      if (this.isEditing) {
-        // Update the edited section in the createdSections array
-        this.createdSections.splice(this.editIndex, 1, { ...this.section });
-        this.isEditing = false;
-      } else {
-        // Create a new section
-        this.createdSections.push({ ...this.section });
-      }
 
-      // Prepare the section data to be sent to the backend API
-      const sectionData = {
-        year: this.section.year,
-        semester: this.section.semester,
-        courses: this.section.options
-      };
+    clearForm() {
+      this.year = '';
+      this.semester = '';
+      this.selectedCourse = [];
+      this.selectedFinishedCourse = null;
 
-      // Save the section data to the backend API
-      apiClient
-        .post('http://localhost:8080/saveStudentFinishedCourse', sectionData)
-        .then(response => {
-          alert('Section saved successfully');
-          // Handle any further logic or data manipulation based on the response from the backend if needed
-          this.fetchSections();
-        })
-        .catch(error => {
-          console.log(error);
-        });
-
-      this.isFormVisible = false;
-      this.resetSection();
     },
-    updateSection() {
-      // Prepare the section data to be sent to the backend API for update
-      const sectionData = {
-        id: this.section.id, // Assuming there's an "id" field in the FinishedCourse object
-        year: this.section.year,
-        semester: this.section.semester,
-        courses: this.section.options
-      };
-
-      // Send the update request to the backend API using PUT method
-      apiClient
-        .put('http://localhost:8080/updateStudentFinishedCourse', sectionData)
-        .then(response => {
-          alert('Section updated successfully');
-          // Handle any further logic or data manipulation based on the response from the backend if needed
-          this.fetchSections();
-        })
-        .catch(error => {
-          console.log(error);
-        });
-
-      this.isFormVisible = false;
-      this.resetSection();
-    },
-    fetchSections() {
-      apiClient.get('http://localhost:8080/getStudentFinishedCourse') // Adjust the API endpoint according to your backend
-        .then(response => {
-          this.createdSections = response.data; // Assuming the API response returns an array of sections
-        })
-        .catch(error => {
-          console.log(error);
-        });
-    },
-
-    resetSection() {
-      this.section.year = '';
-      this.section.semester = '';
-      this.section.options = [];
-    },
-    addOption() {
-      // Initialize section.options as an empty array if it's undefined
-      if (!this.section.options) {
-        this.section.options = [];
-      }
-
-      this.section.options.push('');
-    },
-    editSection(index) {
-      this.isFormVisible = true;
-      this.isEditing = true;
-      this.editIndex = index; // Store the index of the section being edited
-      this.section = { ...this.createdSections[index] };
-    }
   }
 };
 </script>

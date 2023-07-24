@@ -155,6 +155,8 @@
                       <option>Year 3 Semester 2</option>
                       <option>Year 4 Semester 1</option>
                       <option>Year 4 Semester 2</option>
+                      <option>Year 5 Semester 1</option>
+                      <option>Year 5 Semester 2</option>
                     </select>
                     <!-- Add the text and credit fields -->
                     <label for="text">Text:</label>
@@ -287,7 +289,7 @@ export default {
         })
 
         .catch(error => {
-          alert('Error fetching faculties:', error);
+          console.log('Error fetching faculties:', error);
         });
 
       apiClient
@@ -335,12 +337,14 @@ export default {
       apiClient
         .post('http://localhost:8080/addGroupCourse', courseToAdd)
         .then(response => {
+          alert('Add Course successfully');
           console.log('Course group created:', response.data);
           this.fetchData();
           this.clearForm();
           this.showForm = false;
         })
         .catch(error => {
+          alert('Error to add Course');
           console.error('Error creating course group:', error);
         });
     },
@@ -353,6 +357,7 @@ export default {
       apiClient
         .put(`http://localhost:8080/removeCourseFromGroupCourse?courseId=${courseId}`, groupCourse)
         .then(response => {
+          alert('Removed course successfully');
           console.log('Course removed from group course:', response.data);
           this.fetchData();
         })
@@ -393,6 +398,7 @@ export default {
       apiClient
         .put('http://localhost:8080/updateGroupCourse', updatedGroup)
         .then(response => {
+          alert('Update Course successfully');
           this.fetchData();
           console.log('Group Course updated:', response.data);
           this.selectedGroupCourse = null;
@@ -401,6 +407,7 @@ export default {
           this.clearForm();
         })
         .catch(error => {
+          alert('Error update Group Course');
           console.error('Error updating group course:', error);
         });
     },
@@ -408,11 +415,13 @@ export default {
       apiClient
         .delete(`http://localhost:8080/deleteGroupCourse/${groupId}`)
         .then(response => {
+          alert('Removed Group Course');
           console.log('Group Course deleted:', response.data);
 
           this.fetchData();
         })
         .catch(error => {
+          alert('Error to remove Group Course');
           console.error('Error deleting group course:', error);
         });
     },
@@ -435,12 +444,14 @@ export default {
       apiClient
         .post('http://localhost:8080/addStandardStudyPlan', courseToAdd)
         .then(response => {
+          alert('Add course successfully');
           console.log('Course group created:', response.data);
           this.fetchData();
           this.clearForm();
           this.showForm2 = false;
         })
         .catch(error => {
+          alert('Error to Add course');
           console.error('Error creating course group:', error);
         });
     },
@@ -493,6 +504,7 @@ export default {
       apiClient
         .put('http://localhost:8080/updateStandardStudyPlan', updatedGroup)
         .then(response => {
+          alert('Update course successfully');
           this.fetchData();
           console.log('Group Course updated:', response.data);
           this.selectedStudyPlan = null;
@@ -501,6 +513,7 @@ export default {
           this.clearForm();
         })
         .catch(error => {
+          alert('Error to update course');
           console.error('Error updating group course:', error);
         });
     },
@@ -508,11 +521,13 @@ export default {
       apiClient
         .delete(`http://localhost:8080/deleteStandardStudyPlan/${groupId}`)
         .then(response => {
+          alert('Removed course successfully');
           console.log('Group Course deleted:', response.data);
 
           this.fetchData();
         })
         .catch(error => {
+          alert('Error Removed course');
           console.error('Error deleting group course:', error);
         });
     },

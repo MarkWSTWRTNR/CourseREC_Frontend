@@ -179,6 +179,7 @@ export default {
                     console.log([course])
                 })
                 .catch(error => {
+                    alert('Error creating course');
                     console.log(error);
                 }).finally(() => {
                     this.isSubmitting = false; // Reset the submission flag
@@ -200,6 +201,7 @@ export default {
                     this.fetchCourses();
                 })
                 .catch(error => {
+                    alert('Error delete course');
                     console.log(error);
                 });
         },
