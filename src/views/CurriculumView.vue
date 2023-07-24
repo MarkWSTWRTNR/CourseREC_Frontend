@@ -346,6 +346,8 @@ export default {
         .catch(error => {
           alert('Error to add Course');
           console.error('Error creating course group:', error);
+        }).finally(() => {
+          this.isSubmitting = false;
         });
     },
     removeCourseFromGroupCourse(groupCourse, course) {
@@ -409,6 +411,8 @@ export default {
         .catch(error => {
           alert('Error update Group Course');
           console.error('Error updating group course:', error);
+        }).finally(() => {
+          this.isSubmitting = false;
         });
     },
     removeGroupCourse(groupId) {
@@ -453,6 +457,8 @@ export default {
         .catch(error => {
           alert('Error to Add course');
           console.error('Error creating course group:', error);
+        }).finally(() => {
+          this.isSubmitting = false;
         });
     },
     removeCourseFromStudyPlan(studyPlan, course) {
@@ -515,6 +521,8 @@ export default {
         .catch(error => {
           alert('Error to update course');
           console.error('Error updating group course:', error);
+        }).finally(() => {
+          this.isSubmitting = false;
         });
     },
     removeGroupCourse(groupId) {
@@ -588,7 +596,7 @@ export default {
       this.groupName = '';
       this.selectedGroupCourse = '';
       this.selectedStudyPlan = '';
-    }, 
+    },
     openForm2() {
       this.showForm2 = true;
     },
