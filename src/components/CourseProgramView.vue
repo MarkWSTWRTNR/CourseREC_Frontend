@@ -133,6 +133,9 @@ export default {
         .catch(error => {
           console.error('Error creating program:', error);
           alert('Error creating program. Please check the console for more details.');
+        }).finally(() => {
+          this.isSubmitting = false; // Reset the submission flag
+          this.showForm = false;
         });
     },
     deleteProgram(id) {
