@@ -49,14 +49,14 @@
                     <label for="groupName">Group Name:</label>
                     <select v-model="groupName" id="groupName">
                       <option value="">-- Select Group Course --</option>
-                      <option>General Education | Required courses | Learner Pereson</option>
+                      <option>General Education | Required courses | Learner Person</option>
                       <option>General Education | Required courses | Innovative Co-creator</option>
                       <option>General Education | Required courses | Active Citizen</option>
-                      <option>General Education | Elective courses | Learnner Person</option>
+                      <option>General Education | Elective courses | Learner Person</option>
                       <option>General Education | Elective courses | Active Citizen</option>
-                      <option>Feild of Specialization| Core Courses</option>
-                      <option>Feild of Specialization | Major Courses | Required Courses</option>
-                      <option>Feild of Specialization | Major Elective</option>
+                      <option>Field of Specialization| Core Courses</option>
+                      <option>Field of Specialization | Major Courses | Required Courses</option>
+                      <option>Field of Specialization | Major Elective</option>
                       <option>Free Electives</option>
                     </select>
                     <!-- Add the text and credit fields -->
