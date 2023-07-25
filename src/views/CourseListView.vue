@@ -216,7 +216,7 @@ export default {
                     courseId: prerequisite.courseId,
                     name: prerequisite.name,
                     label: `${prerequisite.courseId} - ${prerequisite.name}`
-                }));
+                })) || [];
                 this.description = course.description;
                 this.selectedPrerequisites = this.prerequisite.map(prerequisite => prerequisite.courseId);
                 this.showForm = true;

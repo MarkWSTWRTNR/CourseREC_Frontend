@@ -372,7 +372,7 @@ export default {
       if (groupCourse && groupCourse.id) {
         this.selectedGroupCourse = { ...groupCourse };
         this.showForm = true;
-        this.selectedCourse = groupCourse.courses[0]?.courseId || '';
+        this.selectedCourse = groupCourse.courses.map(course => course.courseId) || [];
         this.groupName = groupCourse.groupName || '';
         this.text = groupCourse.text || '';
         this.credit = groupCourse.credit || 0;
@@ -384,9 +384,7 @@ export default {
     updateGroupCourse() {
       if (!this.selectedGroupCourse || this.isSubmitting) return; // Prevent multiple submissions
       this.isSubmitting = true;
-      const coursesToAdd = this.selectedCourse.map(course => ({
-        courseId: course
-      }));
+      const coursesToAdd = Array.isArray(this.selectedCourse) ? this.selectedCourse.map(course => ({ courseId: course })) : [{ courseId: this.selectedCourse }];
       const updatedGroup = {
         id: this.selectedGroupCourse.id,
         text: this.text,
@@ -482,7 +480,7 @@ export default {
       if (studyPlan && studyPlan.id) {
         this.selectedStudyPlan = { ...studyPlan };
         this.showForm2 = true;
-        this.selectedCourse = studyPlan.courses[0]?.courseId || '';
+        this.selectedCourse = studyPlan.courses.map(course => course.courseId) || [];
         this.yearAndSemester = studyPlan.yearAndSemester || '';
         this.text = studyPlan.text || '';
         this.credit = studyPlan.credit || 0;
@@ -494,9 +492,7 @@ export default {
     updateStudyPlan() {
       if (!this.selectedStudyPlan || this.isSubmitting) return; // Prevent multiple submissions
       this.isSubmitting = true;
-      const coursesToAdd = this.selectedCourse.map(course => ({
-        courseId: course
-      }));
+      const coursesToAdd = Array.isArray(this.selectedCourse) ? this.selectedCourse.map(course => ({ courseId: course })) : [{ courseId: this.selectedCourse }];
       const updatedGroup = {
         id: this.selectedStudyPlan.id,
         text: this.text,
