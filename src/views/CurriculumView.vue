@@ -358,7 +358,7 @@ export default {
           });
       } else {
         this.isSubmitting = false;
-        alert('Please select a course.');
+        alert('Please fill out this field.');
       }
     },
     removeCourseFromGroupCourse(groupCourse, course) {
@@ -477,7 +477,7 @@ export default {
           });
       } else {
         this.isSubmitting = false;
-        alert('Please select a course.');
+        alert('Please fill out this field');
       }
     },
     removeCourseFromStudyPlan(studyPlan, course) {
