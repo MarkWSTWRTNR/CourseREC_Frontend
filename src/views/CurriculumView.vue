@@ -124,7 +124,7 @@
     </div>
     <div>
       <div @click="toggleAccordion(3)" :class="{ 'accordion': true, 'active': isActive(3) }">
-        <h3>Study Plan</h3>
+        <h3>Standard Study Plan</h3>
       </div>
       <i class="fa fa-chevron-down" :class="{ 'fa-rotate-180': isActive(3) }"></i>
 
@@ -414,6 +414,10 @@ export default {
         });
     },
     removeGroupCourse(groupId) {
+      const confirmDelete = confirm("Are you sure you want to delete this group course?");
+            if (!confirmDelete) {
+                return;
+            }
       apiClient
         .delete(`http://localhost:8080/deleteGroupCourse/${groupId}`)
         .then(response => {
@@ -522,6 +526,10 @@ export default {
         });
     },
     removeStudyPlan(studyPlan) {
+      const confirmDelete = confirm("Are you sure you want to delete this group?");
+            if (!confirmDelete) {
+                return;
+            }
       apiClient
         .delete(`http://localhost:8080/deleteStandardStudyPlan/${studyPlan}`)
         .then(response => {

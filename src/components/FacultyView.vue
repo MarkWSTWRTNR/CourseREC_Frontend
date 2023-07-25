@@ -110,6 +110,10 @@ export default {
       this.clearForm;
     },
     deleteFaculty(id) {
+      const confirmDelete = confirm("Are you sure you want to delete this faculty?");
+            if (!confirmDelete) {
+                return;
+            }
       axios
         .delete(`http://localhost:8080/deleteFaculty/${id}`)
         .then(response => {
