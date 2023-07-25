@@ -40,14 +40,14 @@
                   <form @submit.prevent="addCourseToGroupCourse">
                     <h3>{{ selectedGroupCourse ? 'Edit GroupCourse' : 'Add GroupCourse' }}</h3>
                     <label for="courseId">Course</label>
-                    <v-select class="form-control left-align" v-model="selectedCourse" :options="records.map(record => ({
+                    <v-select @input="required" class="form-control left-align" v-model="selectedCourse" :options="records.map(record => ({
                       label: record.courseId + ' - ' + record.name,
                       value: record.courseId
                     }))" multiple :reduce="option => option.value" :placeholder="'Select a course'">
                     </v-select>
 
                     <label for="groupName">Group Name:</label>
-                    <select v-model="groupName" id="groupName">
+                    <select v-model="groupName" id="groupName" required>
                       <option value="">-- Select Group Course --</option>
                       <option>General Education | Required courses | Learner Person</option>
                       <option>General Education | Required courses | Innovative Co-creator</option>
@@ -58,13 +58,13 @@
                       <option>Field of Specialization | Major Courses | Required Courses</option>
                       <option>Field of Specialization | Major Elective</option>
                       <option>Free Electives</option>
-                    </select>
+                    </select><br>
                     <!-- Add the text and credit fields -->
                     <label for="text">Text:</label>
                     <input v-model="text" type="text" id="text">
                     <br>
                     <label for="credit">Credit:</label>
-                    <input v-model="credit" type="number" id="credit">
+                    <input v-model="credit" type="number" id="credit" required>
 
                     <button v-if="selectedGroupCourse" class="btn btn-outline-success" @click="updateGroupCourse">
                       Update
@@ -138,14 +138,14 @@
                   <form @submit.prevent="addCourseToStudyPlan">
                     <h3>{{ selectedStudyPlan ? 'Edit StudyPlan' : 'Add StudyPlan' }}</h3>
                     <label for="courseId">Course</label>
-                    <v-select class="form-control left-align" v-model="selectedCourse" :options="records.map(record => ({
+                    <v-select @input="required" class="form-control left-align" v-model="selectedCourse" :options="records.map(record => ({
                       label: record.courseId + ' - ' + record.name,
                       value: record.courseId
                     }))" multiple :reduce="option => option.value" :placeholder="'Select a course'">
                     </v-select>
 
                     <label for="yearAndSemester">Group Name:</label>
-                    <select v-model="yearAndSemester" id="yearAndSemester">
+                    <select v-model="yearAndSemester" id="yearAndSemester" required>
                       <option value="">-- Select Year and Semester --</option>
                       <option>Year 1 Semester 1</option>
                       <option>Year 1 Semester 2</option>
@@ -163,7 +163,7 @@
                     <input v-model="text" type="text" id="text">
 
                     <label for="credit">Credit:</label>
-                    <input v-model="credit" type="number" id="credit">
+                    <input v-model="credit" type="number" id="credit" required>
 
                     <button v-if="selectedStudyPlan" class="btn btn-outline-success" @click="updateStudyPlan">
                       Update
@@ -254,6 +254,7 @@ export default {
       selectedStudyPlan: null,
       index: 0,
       studyPlan: [],
+      isCourseSelected: false
     }
   },
   computed: {
@@ -319,36 +320,46 @@ export default {
           this.studyPlan = response.data; console.log('stdp', this.studyPlan);
         })
     },
+    validateCourseSelection() {
+      // Check if at least one course is selected
+      this.isCourseSelected = this.selectedCourse.length > 0;
+    },
     addCourseToGroupCourse() {
       if (this.isSubmitting) return; // Prevent multiple submissions
       this.isSubmitting = true;
-      const coursesToAdd = this.selectedCourse.map(course => ({
-        courseId: course
-      }));
-      const courseToAdd = {
-        courses: coursesToAdd,
-        groupName: this.groupName,
-        programs: {
-          programId: this.selectedProgram
-        },
-        text: this.text,
-        credit: this.credit
-      };
-      apiClient
-        .post('http://localhost:8080/addGroupCourse', courseToAdd)
-        .then(response => {
-          alert('Add Course successfully');
-          console.log('Course group created:', response.data);
-          this.fetchData();
-          this.clearForm();
-          this.showForm = false;
-        })
-        .catch(error => {
-          alert('Error to add Course');
-          console.error('Error creating course group:', error);
-        }).finally(() => {
-          this.isSubmitting = false;
-        });
+      this.validateCourseSelection();
+      if (this.isCourseSelected) {
+        const coursesToAdd = this.selectedCourse.map(course => ({
+          courseId: course
+        }));
+        const courseToAdd = {
+          courses: coursesToAdd,
+          groupName: this.groupName,
+          programs: {
+            programId: this.selectedProgram
+          },
+          text: this.text,
+          credit: this.credit
+        };
+        apiClient
+          .post('http://localhost:8080/addGroupCourse', courseToAdd)
+          .then(response => {
+            alert('Add Course successfully');
+            console.log('Course group created:', response.data);
+            this.fetchData();
+            this.clearForm();
+            this.showForm = false;
+          })
+          .catch(error => {
+            alert('Error to add Course');
+            console.error('Error creating course group:', error);
+          }).finally(() => {
+            this.isSubmitting = false;
+          });
+      } else {
+        this.isSubmitting = false;
+        alert('Please select a course.');
+      }
     },
     removeCourseFromGroupCourse(groupCourse, course) {
       const courseId = course.courseId;
@@ -415,9 +426,9 @@ export default {
     },
     removeGroupCourse(groupId) {
       const confirmDelete = confirm("Are you sure you want to delete this group course?");
-            if (!confirmDelete) {
-                return;
-            }
+      if (!confirmDelete) {
+        return;
+      }
       apiClient
         .delete(`http://localhost:8080/deleteGroupCourse/${groupId}`)
         .then(response => {
@@ -435,33 +446,39 @@ export default {
     addCourseToStudyPlan() {
       if (this.isSubmitting) return; // Prevent multiple submissions
       this.isSubmitting = true;
-      const coursesToAdd = this.selectedCourse.map(course => ({
-        courseId: course
-      }));
-      const courseToAdd = {
-        courses: coursesToAdd,
-        yearAndSemester: this.yearAndSemester,
-        programs: {
-          programId: this.selectedProgram
-        },
-        text: this.text,
-        credit: this.credit
-      };
-      apiClient
-        .post('http://localhost:8080/addStandardStudyPlan', courseToAdd)
-        .then(response => {
-          alert('Add course successfully');
-          console.log('Course group created:', response.data);
-          this.fetchData();
-          this.clearForm();
-          this.showForm2 = false;
-        })
-        .catch(error => {
-          alert('Error to Add course');
-          console.error('Error creating course group:', error);
-        }).finally(() => {
-          this.isSubmitting = false;
-        });
+      this.validateCourseSelection();
+      if (this.isCourseSelected) {
+        const coursesToAdd = this.selectedCourse.map(course => ({
+          courseId: course
+        }));
+        const courseToAdd = {
+          courses: coursesToAdd,
+          yearAndSemester: this.yearAndSemester,
+          programs: {
+            programId: this.selectedProgram
+          },
+          text: this.text,
+          credit: this.credit
+        };
+        apiClient
+          .post('http://localhost:8080/addStandardStudyPlan', courseToAdd)
+          .then(response => {
+            alert('Add course successfully');
+            console.log('Course group created:', response.data);
+            this.fetchData();
+            this.clearForm();
+            this.showForm2 = false;
+          })
+          .catch(error => {
+            alert('Error to Add course');
+            console.error('Error creating course group:', error);
+          }).finally(() => {
+            this.isSubmitting = false;
+          });
+      } else {
+        this.isSubmitting = false;
+        alert('Please select a course.');
+      }
     },
     removeCourseFromStudyPlan(studyPlan, course) {
       const courseId = course.courseId;
@@ -527,9 +544,9 @@ export default {
     },
     removeStudyPlan(studyPlan) {
       const confirmDelete = confirm("Are you sure you want to delete this group?");
-            if (!confirmDelete) {
-                return;
-            }
+      if (!confirmDelete) {
+        return;
+      }
       apiClient
         .delete(`http://localhost:8080/deleteStandardStudyPlan/${studyPlan}`)
         .then(response => {
