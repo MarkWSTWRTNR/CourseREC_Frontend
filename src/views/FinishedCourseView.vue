@@ -23,6 +23,7 @@
                 <button v-if="selectedFinishedCourse" class="btn btn-outline-success" @click="updateFinishedCourse">
                   Update
                 </button>
+
                 <button v-else class="btn btn-primary" type="submit">Add Course</button>
                 <button @click="cancelForm">Cancel</button>
               </form>
@@ -34,6 +35,9 @@
 
     <div class="row">
       <div class="col-md-12" v-for="finishedCourse in finishedCourses" :key="finishedCourse.id">
+        <button class="btn btn-outline-danger" @click="removeGroupFinishedCourse(finishedCourse.id)">
+          Delete Group
+        </button>
         <p>Year: {{ finishedCourse.year }}</p>
         <p>Semester: {{ finishedCourse.semester }}</p>
 
@@ -54,12 +58,16 @@
               <td>{{ course.credit }}</td>
               <td>{{ course.grade }}</td>
               <td>
+                <button class="btn btn-outline-danger"
+                  @click="removeCourseFromFinishedCourse(finishedCourse, course.courseId)">
+                  Remove
+                </button>
                 <router-link :to="'/courseByCourseId/' + course.courseId">Description</router-link>
               </td>
             </tr>
           </tbody>
         </table>
-        <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-info" @click="editFinishedCourse(finishedCourse)">
+        <button class="btn btn-outline-info" @click="editFinishedCourse(finishedCourse)">
           Edit
         </button>
         <hr>
@@ -99,14 +107,14 @@ export default {
     fetchData() {
       apiClient.get('http://localhost:8080/courses')
         .then(response => {
-          this.records = response.data;
+          this.records = response.data; console.log("course", this.records);
         })
         .catch(error => {
           console.log(error);
         });
       apiClient.get('http://localhost:8080/getStudentFinishedCourse')
         .then(response => {
-          this.finishedCourses = response.data;
+          this.finishedCourses = response.data; console.log("FC" , this.finishedCourses);
         }).catch(error => {
           console.log(error);
         });
@@ -145,13 +153,72 @@ export default {
         console.error('Invalid finished course data:', finishedCourse);
       }
     },
+    updateFinishedCourse() {
+      if (!this.selectedFinishedCourse || this.isSubmitting) return; // Prevent multiple submissions
+      this.isSubmitting = true;
+      const coursesToAdd = this.selectedCourse.map(courseId => ({ courseId }));
+      const updatedFinishedCourse = {
+        id: this.selectedFinishedCourse.id,
+        courses: coursesToAdd,
+        year: this.year,
+        semester: this.semester,
+      };
+
+      apiClient
+        .put('http://localhost:8080/updateStudentFinishedCourse', updatedFinishedCourse)
+        .then(response => {
+          console.log('Finished course updated:', response.data);
+          this.fetchData();
+          this.clearForm();
+          this.showForm = false;
+        })
+        .catch(error => {
+          console.error('Error updating finished course:', error);
+        })
+        .finally(() => {
+          this.isSubmitting = false; // Reset the submission flag
+          this.showForm = false;
+        });
+    },
+    removeCourseFromFinishedCourse(finishedCourse, courseId) {
+      const courseIndex = finishedCourse.courses.findIndex(course => course.courseId === courseId);
+      if (courseIndex !== -1) {
+        finishedCourse.courses.splice(courseIndex, 1);
+        apiClient
+          .put('http://localhost:8080/updateStudentFinishedCourse', finishedCourse)
+          .then(response => {
+            console.log('Course removed from finished course:', response.data);
+            this.fetchData();
+          })
+          .catch(error => {
+            console.error('Error removing course from finished course:', error);
+          });
+      }
+    },
+    removeGroupFinishedCourse(groupId) {
+    
+      // Send a DELETE request to the server to delete the group of finished courses
+      apiClient
+        .delete(`http://localhost:8080/deleteFinishedCourse/${groupId}`)
+        .then(response => {
+          console.log('url' , groupId)
+          console.log('Group of finished courses deleted:', response.data);
+          // After successful deletion, fetch the updated list of finished courses
+          this.fetchData();
+        })
+        .catch(error => {
+          console.error('Error deleting group of finished courses:', error);
+        });
+    },
+
+
     openForm() {
       this.showForm = true;
 
     },
     cancelForm() {
       this.showForm = false;
-      this.resetSection();
+      this.clearForm();
     },
 
     clearForm() {
