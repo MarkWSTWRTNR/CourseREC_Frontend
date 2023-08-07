@@ -74,9 +74,10 @@
                                     <v-select class="form-control left-align" id="coursePrerequisite"
                                         v-model="selectedPrerequisites" :options="records.map(record => ({
                                             label: record.courseId + ' - ' + record.name,
-                                            value: { courseId: record.courseId }
+                                            value: { courseId: record.courseId, name: record.name } // Include both courseId and name
                                         }))" multiple :reduce="option => option.value" :placeholder="'Select prerequisite courses'">
                                     </v-select>
+
                                 </div>
                                 <div class="form-group">
                                     <label for="description">Description</label>
@@ -218,7 +219,13 @@ export default {
                     label: `${prerequisite.courseId} - ${prerequisite.name}`
                 })) || [];
                 this.description = course.description;
-                this.selectedPrerequisites = this.prerequisite.map(prerequisite => prerequisite.courseId);
+
+                // Populate selectedPrerequisites array with course IDs of prerequisites
+                this.selectedPrerequisites = this.prerequisite.map(prerequisite => ({
+                    courseId: prerequisite.courseId,
+                    name: prerequisite.name
+                }));
+
                 this.showForm = true;
             } else {
                 alert('Invalid course object:', course);
@@ -227,7 +234,6 @@ export default {
         updateCourse() {
             if (!this.selectedCourse || this.isSubmitting) return; // Prevent multiple submissions
             this.isSubmitting = true;
-
             const updatedCourse = {
                 courseId: this.selectedCourse.courseId,
                 name: this.name,
@@ -254,6 +260,7 @@ export default {
                 });
         },
 
+
         openForm() {
             this.showForm = true;
         },
@@ -268,7 +275,7 @@ export default {
             this.name = '';
             this.credit = 0;
             this.gradingtype = '';
-            this.prerequisite = [];
+
             this.description = '';
         },
 
