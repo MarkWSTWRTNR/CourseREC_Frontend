@@ -9,6 +9,7 @@ import FinishedCourseView from "../views/FinishedCourseView.vue";
 import CourseDetailView from "../components/CourseDetailView.vue"
 import FacultyView from "../components/FacultyView.vue";
 import CourseProgramView from "../components/CourseProgramView.vue"
+
 import { ROLES } from "@/service/roles";
 const routes = [
 
@@ -68,7 +69,7 @@ const routes = [
   },
   {
     path:'/courseprogram',
-    name: 'courseprogramview',
+    name: 'courseprogram',
     component: CourseProgramView,
     meta:{roles: [ROLES.ADMIN]}
   }

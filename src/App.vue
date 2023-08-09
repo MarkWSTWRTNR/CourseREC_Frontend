@@ -2,12 +2,13 @@
   <div class="container">
     <!-- Vertical navbar on the right -->
     <nav v-if="userRole === ROLES.ADMIN" class="navbar navbar-admin">
+      <a :href="oauthLoginLink">Login with CMU</a>
       <router-link to="/course_list">Course list</router-link>
       <router-link to="/curriculum">Curriculum</router-link>
-      <router-link to="/login">login</router-link>
     </nav>
 
     <nav v-if="userRole === ROLES.STUDENT" class="navbar navbar-student">
+      <a :href="oauthLoginLink">Login with CMU</a>
       <router-link to="/dashboard">Dashboard</router-link>
       <router-link to="/curriculum">Curriculum</router-link>
       <router-link to="/course_list">Course List</router-link>
@@ -34,9 +35,17 @@ export default {
       ROLES: ROLES,
     };
   },
+  computed: {
+    oauthLoginLink() {
+      const clientId = "09924PuMCdFKpWXhwqfZsy1rw8Xhx94d51bBCJzh";
+      const redirectUri = encodeURIComponent("http://localhost:3000/course_list");
+      const scope = "cmuitaccount.basicinfo";
+      const responseType = "code";
+      return `https://oauth.cmu.ac.th/v1/Authorize.aspx?response_type=${responseType}&client_id=${clientId}&redirect_uri=${redirectUri}&scope=${scope}`;
+    },
+  },
 };
 </script>
-
 <style>
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
@@ -53,11 +62,13 @@ export default {
 /* Update styles for the vertical navbar on the right */
 .navbar {
   display: flex;
-  flex-direction: column; /* Display the links vertically */
+  flex-direction: column;
+  /* Display the links vertically */
   padding: 15px;
   background-color: #f1f1f1;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0);
-  width: 200px; /* Set a fixed width for the vertical navbar */
+  width: 200px;
+  /* Set a fixed width for the vertical navbar */
 }
 
 /* Right align the vertical navbar */
@@ -99,7 +110,7 @@ export default {
 
 /* Styles for the content on the left */
 .content {
-  flex: 1; /* Fill the remaining width of the container */
+  flex: 1;
+  /* Fill the remaining width of the container */
   padding: 15px;
-}
-</style>
+}</style>
