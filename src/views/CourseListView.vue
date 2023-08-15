@@ -103,6 +103,7 @@ import searchTools from "../service/searchTools";
 // crud.js
 import vSelect from 'vue-select';
 import apiClient from "@/service/AxiosClient";
+import { ProgressPlugin } from "bootstrap-vue";
 
 export default {
     components: {
@@ -111,6 +112,12 @@ export default {
     name: 'courselist',
     mixins: [searchTools],
     data() {
+
+        //\2. get prop code from redirection
+        //3. make axios call post  (by step 4)  toget access token
+        //4 receive access token (step 5)
+        //5. call get with the bearer access token (step5)
+        //6. receive resorcce, get studentID to chck role at backend
         return {
             userRole: userRole,
             ROLES: ROLES,

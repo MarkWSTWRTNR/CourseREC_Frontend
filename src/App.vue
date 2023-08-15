@@ -44,6 +44,11 @@ export default {
       return `https://oauth.cmu.ac.th/v1/Authorize.aspx?response_type=${responseType}&client_id=${clientId}&redirect_uri=${redirectUri}&scope=${scope}`;
     },
   },
+  methods:{
+    login(){
+      //1 call axios get oauthLoginLink
+    }
+  }
 };
 </script>
 <style>
