@@ -2,13 +2,13 @@
   <div class="container">
     <!-- Vertical navbar on the right -->
     <nav v-if="userRole === ROLES.ADMIN" class="navbar navbar-admin">
-      <a :href="oauthLoginLink">Login with CMU</a>
       <router-link to="/course_list">Course list</router-link>
       <router-link to="/curriculum">Curriculum</router-link>
     </nav>
-
+    <div id="app">
+    <student-info></student-info>
+  </div>
     <nav v-if="userRole === ROLES.STUDENT" class="navbar navbar-student">
-      <a :href="oauthLoginLink">Login with CMU</a>
       <router-link to="/dashboard">Dashboard</router-link>
       <router-link to="/curriculum">Curriculum</router-link>
       <router-link to="/course_list">Course List</router-link>
@@ -29,26 +29,13 @@
 import { userRole, ROLES } from "../src/service/roles";
 
 export default {
+  name: 'App',
   data() {
     return {
       userRole: userRole,
       ROLES: ROLES,
     };
   },
-  computed: {
-    oauthLoginLink() {
-      const clientId = "09924PuMCdFKpWXhwqfZsy1rw8Xhx94d51bBCJzh";
-      const redirectUri = encodeURIComponent("http://localhost:3000/course_list");
-      const scope = "cmuitaccount.basicinfo";
-      const responseType = "code";
-      return `https://oauth.cmu.ac.th/v1/Authorize.aspx?response_type=${responseType}&client_id=${clientId}&redirect_uri=${redirectUri}&scope=${scope}`;
-    },
-  },
-  methods:{
-    login(){
-      //1 call axios get oauthLoginLink
-    }
-  }
 };
 </script>
 <style>

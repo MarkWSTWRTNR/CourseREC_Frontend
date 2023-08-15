@@ -9,7 +9,7 @@ import FinishedCourseView from "../views/FinishedCourseView.vue";
 import CourseDetailView from "../components/CourseDetailView.vue"
 import FacultyView from "../components/FacultyView.vue";
 import CourseProgramView from "../components/CourseProgramView.vue"
-
+import StudentInfo from '../components/StudentInfo.vue';
 import { ROLES } from "@/service/roles";
 const routes = [
 
@@ -45,35 +45,41 @@ const routes = [
   },
   {
     path: "/studyguide",
-    name:"studyguide",
-    component:StudyGuideView,
-    meta: {roles: [ROLES.STUDENT]}
+    name: "studyguide",
+    component: StudyGuideView,
+    meta: { roles: [ROLES.STUDENT] }
   },
   {
     path: "/finishedcourse",
-    name:"finishedcourse",
-    component:FinishedCourseView,
-    meta: {roles: [ROLES.STUDENT]}
+    name: "finishedcourse",
+    component: FinishedCourseView,
+    meta: { roles: [ROLES.STUDENT] }
   },
   {
     path: '/courseByCourseId/:courseId',
     name: 'coursedetails',
     component: CourseDetailView,
-    meta: {roles: [ROLES.STUDENT, ROLES.ADMIN]},
+    meta: { roles: [ROLES.STUDENT, ROLES.ADMIN] },
     props: true
-  },{
-    path:'/faculty',
+  }, {
+    path: '/faculty',
     name: 'faculty',
     component: FacultyView,
-    meta: {roles: [ROLES.STUDENT, ROLES.ADMIN]}
+    meta: { roles: [ROLES.STUDENT, ROLES.ADMIN] }
   },
   {
-    path:'/courseprogram',
+    path: '/courseprogram',
     name: 'courseprogram',
     component: CourseProgramView,
-    meta:{roles: [ROLES.ADMIN]}
+    meta: { roles: [ROLES.ADMIN] }
+  }, 
+  {
+    path: '/student_info',
+    name: 'StudentInfo',
+    component: StudentInfo,
+    props: route => ({ code: route.query.code })
   }
-    
+
 ];
 
 const router = createRouter({
