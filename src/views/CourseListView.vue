@@ -98,19 +98,15 @@
   
 <script>
 import { userRole, ROLES } from "../service/roles"
-import searchTools from "../service/searchTools";
-
 // crud.js
 import vSelect from 'vue-select';
 import apiClient from "@/service/AxiosClient";
-import { ProgressPlugin } from "bootstrap-vue";
 
 export default {
     components: {
         'v-select': vSelect,
     },
     name: 'courselist',
-    mixins: [searchTools],
     data() {
 
         //\2. get prop code from redirection

@@ -1,4 +1,5 @@
 <template>
+  <div>
   <div v-if="userRole === ROLES.ADMIN">
     <router-link to="/faculty"><button> Create Faculty</button></router-link>
     <router-link to="/courseprogram"><button> Create Program</button></router-link>
@@ -219,6 +220,7 @@
         </div>
       </div>
     </div>
+  </div>
   </div>
 </template>
 
