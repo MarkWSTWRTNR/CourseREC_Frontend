@@ -50,6 +50,17 @@
 		</div>
 
 		<div class="flex"></div>
+		<div class="menu">
+			<router-link to="/userInfo" class="button">
+				<span class="material-symbols-outlined">info</span>
+				<span class="text">UserInfo</span>
+			</router-link>
+			<router-link to="/login" class="button">
+				<span class="material-symbols-outlined">login</span>
+				<span class="text">Login</span>
+			</router-link>
+			
+		</div>
 	</aside>
 </template>
 
