@@ -39,6 +39,7 @@ export default {
             try {
                 const response = await LoginService.fetchUserInfo(accessToken)
                 this.userInfo = response.data
+                localStorage.setItem('userInfo', JSON.stringify(this.userInfo))
                 this.loading = false
             } catch (error) {
                 console.error("Error fetching user info:", error)
@@ -47,17 +48,24 @@ export default {
         }
     },
     mounted() {
-        // If the user is redirected back to this component with a code in the URL, handle it
-        const urlParams = new URLSearchParams(window.location.search);
-        const code = urlParams.get('code');
-        console.log("Authorization Code:", code);
-
-        if (code) {
-            this.handleRedirectWithCode(code)
-        } else {
+        const storedUserInfo = localStorage.getItem('userInfo')
+        if (storedUserInfo) {
+            this.userInfo = JSON.parse(storedUserInfo)
             this.loading = false
+        } else {
+            // If the user is redirected back to this component with a code in the URL, handle it
+            const urlParams = new URLSearchParams(window.location.search);
+            const code = urlParams.get('code');
+            console.log("Authorization Code:", code);
+
+            if (code) {
+                this.handleRedirectWithCode(code)
+            } else {
+                this.loading = false
+            }
         }
     }
 }
+
 </script>
   
