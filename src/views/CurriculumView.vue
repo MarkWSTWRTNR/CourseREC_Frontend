@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="container">
   <div v-if="userRole === ROLES.ADMIN">
     <router-link to="/faculty"><button> Create Faculty</button></router-link>
     <router-link to="/courseprogram"><button> Create Program</button></router-link>

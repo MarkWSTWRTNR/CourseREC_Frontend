@@ -1,4 +1,5 @@
 <template>
+  <div class="container">
   <div>
     <h2>{{ course.name }}</h2>
     <p><strong>Course ID:</strong> {{ course.courseId }}</p>
@@ -16,7 +17,7 @@
     </p>
     <p><strong>Description:</strong> {{ course.description }}</p>
   </div>
-  <p><strong></strong></p>
+  <p><strong></strong></p></div>
 </template>
   
 <script>

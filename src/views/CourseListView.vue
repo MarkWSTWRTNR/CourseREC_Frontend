@@ -1,5 +1,6 @@
 <!-- CourseListView.vue -->
 <template>
+    <div class="container">
     <!-- <div>
     <input type="text" v-model="searchQuery" placeholder="Search courses">
     <button @click="searchCourses">Search</button>
@@ -94,6 +95,7 @@
             </div>
         </div>
     </div>
+</div>
 </template>
   
 <script>

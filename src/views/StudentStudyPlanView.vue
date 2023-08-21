@@ -1,5 +1,6 @@
 <!-- ต้องใส่ faculty กับ programs ไหม เพราะว่าตอน Reccomend course มันต้องlink กันรึป่าว -->
 <template>
+  <div class="container">
   <h3>Select Faculty:</h3>
   <select v-model="selectedFaculty">
     <option value="">-- Select Faculty --</option>
@@ -56,6 +57,7 @@
       </div>
     </div>
   </div>
+</div>
 </template>
 
 <script>

@@ -1,4 +1,5 @@
 <template>
+    <div class="container">
     <div>
         <div v-if="loading">
             Loading user info...
@@ -7,7 +8,7 @@
             <h2>User Info</h2>
             <pre>{{ userInfo }}</pre>
         </div>
-    </div>
+    </div></div>
 </template>
   
 <script>

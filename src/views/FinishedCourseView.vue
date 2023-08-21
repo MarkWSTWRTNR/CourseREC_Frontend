@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="container">
     <button class="btn btn-outline-primary" @click="openForm">Add Finished Course</button>
     <div v-if="showForm">
       <div class="overlay">
