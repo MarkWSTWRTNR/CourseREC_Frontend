@@ -9,7 +9,6 @@ import FinishedCourseView from "../views/FinishedCourseView.vue";
 import CourseDetailView from "../components/CourseDetailView.vue"
 import FacultyView from "../components/FacultyView.vue";
 import CourseProgramView from "../components/CourseProgramView.vue"
-import Login from '../components/login.vue';
 import UserInfo from '../components/UserInfo.vue';
 import { ROLES } from "@/service/roles";
 const routes = [
@@ -75,14 +74,10 @@ const routes = [
     meta: { roles: [ROLES.ADMIN] }
   }, 
   {
-    path: '/login',
-    name: 'Login',
-    component: Login,
-  },
-  {
     path: '/userInfo',
     name: 'UserInfo',
     component: UserInfo,
+
   }
 
 ];

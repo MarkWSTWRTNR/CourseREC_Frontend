@@ -20,7 +20,7 @@ export default {
             loading: true,
             userInfo: null
         }
-    },
+    }, 
     methods: {
         async handleRedirectWithCode(code) {
             try {

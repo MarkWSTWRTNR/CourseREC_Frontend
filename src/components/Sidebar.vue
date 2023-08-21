@@ -34,7 +34,7 @@
 				<span class="material-symbols-outlined">dynamic_feed</span>
 				<span class="text">Curriculum</span>
 			</router-link>
-			
+
 			<router-link to="/recommendcourse" class="button">
 				<span class="material-symbols-outlined">recommend</span>
 				<span class="text">Recommend Course</span>
@@ -55,11 +55,17 @@
 				<span class="material-symbols-outlined">info</span>
 				<span class="text">UserInfo</span>
 			</router-link>
-			<router-link to="/login" class="button">
+
+			<!-- If user is logged in, show Logout button, else show Login button -->
+			<button v-if="isLoggedIn" @click="logout" class="button">
+				<span class="material-symbols-outlined">logout</span>
+				<span class="text">Logout</span>
+			</button>
+			<button v-else @click="login" class="button">
 				<span class="material-symbols-outlined">login</span>
 				<span class="text">Login</span>
-			</router-link>
-			
+			</button>
+
 		</div>
 	</aside>
 </template>
@@ -74,8 +80,47 @@ const ToggleMenu = () => {
 	is_expanded.value = !is_expanded.value
 	localStorage.setItem("is_expanded", is_expanded.value)
 }
-</script>
 
+</script>
+<script>
+import LoginService from '@/service/LoginService'
+export default {
+	data() {
+		return {
+			searchQuery: '',
+			accessToken: null,
+			userInfo: null
+		}
+	},
+	computed: {
+		isLoggedIn() {
+			return !!this.accessToken;
+		}
+	},
+	methods: {
+		async login() {
+			if (!this.accessToken) {
+				const response = await LoginService.login();
+				if (response && response.data) {
+					this.accessToken = response.data;
+					window.location.href = response.data; // Redirect to cmuoauth page for authentication
+				}
+			}
+		},
+		logout() {
+			console.log("Logout method called");
+			localStorage.removeItem('access_token'); // Remove the token from local storage
+			localStorage.removeItem('userInfo')
+			this.accessToken = null;
+			this.userInfo = null;
+			console.log("userInfo after logout:", this.userInfo);
+		}
+	},
+	created() {
+		this.accessToken = LoginService.getStoredAccessToken();
+	}
+}
+</script>
 <style lang="scss" scoped>
 aside {
 	display: flex;
@@ -227,4 +272,5 @@ aside {
 		position: absolute;
 		z-index: 99;
 	}
-}</style>
+}
+</style>
