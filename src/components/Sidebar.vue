@@ -115,6 +115,7 @@ export default {
 			console.log("Logout method called");
 			localStorage.removeItem('access_token'); // Remove the token from local storage
 			localStorage.removeItem('userInfo')
+			localStorage.removeItem('studyGuideRecommendation')
 			this.accessToken = null;
 			this.userInfo = null;
 			console.log("userInfo after logout:", this.userInfo);
