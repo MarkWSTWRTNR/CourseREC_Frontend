@@ -10,6 +10,7 @@ import CourseDetailView from "../components/CourseDetailView.vue"
 import FacultyView from "../components/FacultyView.vue";
 import CourseProgramView from "../components/CourseProgramView.vue"
 import UserInfo from '../components/UserInfo.vue';
+import LoginService from "@/service/LoginService";
 import { ROLES } from "@/service/roles";
 const routes = [
 
@@ -86,5 +87,18 @@ const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes,
 });
-
+router.beforeEach((to, from, next) => {
+  // Check if the route requires authentication
+  if (to.matched.some(record => record.meta.roles)) {
+    // Check if user is not logged in
+    if (!LoginService.isLoggedIn()) {
+      // Redirect to login page or another appropriate page
+      next({ name: 'UserInfo' });
+    } else {
+      next(); // Allow navigation
+    }
+  } else {
+    next(); // Allow navigation for routes that don't require authentication
+  }
+});
 export default router;

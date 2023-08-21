@@ -12,41 +12,45 @@
 
 		<h3>Menu</h3>
 		<div class="menu" v-if="userRole === ROLES.ADMIN">
-			<router-link to="/course_list" class="button">
-				<span class="material-symbols-outlined">list</span>
-				<span class="text">Course list</span>
-			</router-link>
-			<router-link to="/curriculum" class="button">
-				<span class="material-symbols-outlined">dynamic_feed</span>
-				<span class="text">Curriculum</span>
-			</router-link>
+			<div v-if="isLoggedIn">
+				<router-link to="/course_list" class="button">
+					<span class="material-symbols-outlined">list</span>
+					<span class="text">Course list</span>
+				</router-link>
+				<router-link to="/curriculum" class="button">
+					<span class="material-symbols-outlined">dynamic_feed</span>
+					<span class="text">Curriculum</span>
+				</router-link>
+			</div>
 		</div>
 		<div class="menu" v-if="userRole === ROLES.STUDENT">
-			<router-link to="/dashboard" class="button">
-				<span class="material-symbols-outlined">dashboard</span>
-				<span class="text">Dashboard</span>
-			</router-link>
-			<router-link to="/course_list" class="button">
-				<span class="material-symbols-outlined">list</span>
-				<span class="text">Course List</span>
-			</router-link>
-			<router-link to="/curriculum" class="button">
-				<span class="material-symbols-outlined">dynamic_feed</span>
-				<span class="text">Curriculum</span>
-			</router-link>
+			<div v-if="isLoggedIn">
+				<router-link to="/dashboard" class="button">
+					<span class="material-symbols-outlined">dashboard</span>
+					<span class="text">Dashboard</span>
+				</router-link>
+				<router-link to="/course_list" class="button">
+					<span class="material-symbols-outlined">list</span>
+					<span class="text">Course List</span>
+				</router-link>
+				<router-link to="/curriculum" class="button">
+					<span class="material-symbols-outlined">dynamic_feed</span>
+					<span class="text">Curriculum</span>
+				</router-link>
 
-			<router-link to="/recommendcourse" class="button">
-				<span class="material-symbols-outlined">recommend</span>
-				<span class="text">Recommend Course</span>
-			</router-link>
-			<router-link to="/finishedcourse" class="button">
-				<span class="material-symbols-outlined">bookmark</span>
-				<span class="text">Finished Course</span>
-			</router-link>
-			<router-link to="/studyguide" class="button">
-				<span class="material-symbols-outlined">star</span>
-				<span class="text">Study Guide</span>
-			</router-link>
+				<router-link to="/recommendcourse" class="button">
+					<span class="material-symbols-outlined">recommend</span>
+					<span class="text">Recommend Course</span>
+				</router-link>
+				<router-link to="/finishedcourse" class="button">
+					<span class="material-symbols-outlined">bookmark</span>
+					<span class="text">Finished Course</span>
+				</router-link>
+				<router-link to="/studyguide" class="button">
+					<span class="material-symbols-outlined">star</span>
+					<span class="text">Study Guide</span>
+				</router-link>
+			</div>
 		</div>
 
 		<div class="flex"></div>

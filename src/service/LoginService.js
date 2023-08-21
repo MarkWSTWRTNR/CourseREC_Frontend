@@ -20,5 +20,8 @@ export default {
   },
   login() {
     return apiClient.get('http://localhost:8080/login')
+  },
+  isLoggedIn() {
+    return !!localStorage.getItem('access_token');
   }
 }
