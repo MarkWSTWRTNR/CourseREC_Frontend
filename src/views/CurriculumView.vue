@@ -304,7 +304,7 @@ export default {
           console.log('Error fetching programs:', error);
         });
       apiClient
-        .get('http://localhost:8080/courses')
+        .get('http://localhost:8080/allCourse')
         .then(response => {
           this.records = response.data; console.log
         })

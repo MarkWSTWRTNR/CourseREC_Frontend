@@ -105,7 +105,7 @@ export default {
   },
   methods: {
     fetchData() {
-      apiClient.get('http://localhost:8080/courses')
+      apiClient.get('http://localhost:8080/allCourse')
         .then(response => {
           this.records = response.data; console.log("course", this.records);
         })
@@ -199,7 +199,7 @@ export default {
     
       // Send a DELETE request to the server to delete the group of finished courses
       apiClient
-        .delete(`http://localhost:8080/deleteFinishedCourse/${groupId}`)
+        .delete(`http://localhost:8080/deleteFinishedGroupCourse/${groupId}`)
         .then(response => {
           console.log('url' , groupId)
           console.log('Group of finished courses deleted:', response.data);
