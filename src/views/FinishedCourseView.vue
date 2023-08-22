@@ -112,7 +112,7 @@ export default {
         .catch(error => {
           console.log(error);
         });
-      apiClient.get('http://localhost:8080/getStudentFinishedCourse')
+      apiClient.get('http://localhost:8080/getFinishedGroupCourse')
         .then(response => {
           this.finishedCourses = response.data; console.log("FC" , this.finishedCourses);
         }).catch(error => {
@@ -129,7 +129,7 @@ export default {
         semester: this.semester,
       };
       apiClient
-        .post('http://localhost:8080/saveStudentFinishedCourse', courseToAdd)
+        .post('http://localhost:8080/saveFinishedGroupCourse', courseToAdd)
         .then(response => {
           console.log('Finished course added:', response.data);
           this.fetchData();
@@ -165,7 +165,7 @@ export default {
       };
 
       apiClient
-        .put('http://localhost:8080/updateStudentFinishedCourse', updatedFinishedCourse)
+        .put('http://localhost:8080/updateFinishedGroupCourse', updatedFinishedCourse)
         .then(response => {
           console.log('Finished course updated:', response.data);
           this.fetchData();
@@ -185,7 +185,7 @@ export default {
       if (courseIndex !== -1) {
         finishedCourse.courses.splice(courseIndex, 1);
         apiClient
-          .put('http://localhost:8080/updateStudentFinishedCourse', finishedCourse)
+          .put('http://localhost:8080/updateFinishedGroupCourse', finishedCourse)
           .then(response => {
             console.log('Course removed from finished course:', response.data);
             this.fetchData();

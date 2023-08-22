@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <h2>Study Guide Recommendations by ChatGPT</h2>
-    <button @click="getRecommendation">Get Study Guide Recommendation</button>
+    <button class="btn btn-info" @click="getRecommendation">Get Study Guide Recommendation</button>
 
     <!-- Loading State -->
     <div v-if="loading">Loading...</div>
