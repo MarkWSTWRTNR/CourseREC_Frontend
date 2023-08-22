@@ -6,8 +6,8 @@
     <button @click="searchCourses">Search</button>
   </div> -->
         <div class="pagination-buttons">
-            <button @click="prevPage" :disabled="currentPage === 1">Previous</button>
-            <button @click="nextPage" :disabled="currentPage === totalPages">Next</button>
+            <button @click="changePage(-1)" :disabled="currentPage === 1">Previous</button>
+            <button @click="changePage(1)" :disabled="currentPage === totalPages">Next</button>
         </div>
 
         <div class="row">
@@ -118,12 +118,6 @@ export default {
     },
     name: 'courselist',
     data() {
-
-        //\2. get prop code from redirection
-        //3. make axios call post  (by step 4)  toget access token
-        //4 receive access token (step 5)
-        //5. call get with the bearer access token (step5)
-        //6. receive resorcce, get studentID to chck role at backend
         return {
             userRole: userRole,
             ROLES: ROLES,
@@ -144,13 +138,13 @@ export default {
         };
     },
     mounted() {
-        this.fetchCourses(12, 1);
+        this.fetchCourses();
     },
     methods: {
-        fetchCourses(perPage = 12, page = 1) {
-            CourseService.getCourses(perPage, page)
+        fetchCourses() {
+            CourseService.getCourses(12, this.currentPage)
                 .then(response => {
-                    this.totalPages = Math.ceil(response.headers['x-total-count'] / perPage);
+                    this.totalPages = Math.ceil(response.headers['x-total-count'] / 12);
                     this.records = response.data.map(course => ({
                         id: course.id,
                         courseId: course.courseId,
@@ -171,17 +165,9 @@ export default {
                     console.log(error);
                 });
         },
-        nextPage() {
-            if (this.currentPage < this.totalPages) {
-                this.currentPage++;
-                this.fetchCourses(12, this.currentPage);
-            }
-        },
-        prevPage() {
-            if (this.currentPage > 1) {
-                this.currentPage--;
-                this.fetchCourses(12, this.currentPage);
-            }
+        changePage(direction) {
+            this.currentPage += direction;
+            this.fetchCourses();
         },
 
         addCourse() {
@@ -195,7 +181,7 @@ export default {
                 prerequisite: this.selectedPrerequisites,
                 description: this.description
             };
-            apiClient.post('http://localhost:8080/addCourse', course)
+            CourseService.addCourse(course)
                 .then(response => {
                     alert('Course created successfully');
                     const data = response.data;
@@ -224,7 +210,7 @@ export default {
             if (!confirmDelete) {
                 return;
             }
-            apiClient.delete(`http://localhost:8080/deleteCourse/${id}`)
+            CourseService.deleteCourse(id)
                 .then(response => {
                     alert('Course deleted successfully');
                     this.fetchCourses();
@@ -271,8 +257,7 @@ export default {
                 description: this.description
             };
 
-            apiClient
-                .put(`http://localhost:8080/updateCourse`, updatedCourse)
+            CourseService.updateCourse(updatedCourse)
                 .then(response => {
                     alert('Course updated successfully');
                     this.fetchCourses();
@@ -338,6 +323,7 @@ export default {
     justify-content: space-between;
     margin-top: 20px;
 }
+
 .pagination-buttons {
     display: flex;
     justify-content: center;
@@ -348,5 +334,4 @@ export default {
     opacity: 0.5;
     cursor: not-allowed;
 }
-
 </style>
