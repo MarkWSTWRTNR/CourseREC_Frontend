@@ -89,12 +89,12 @@ export default {
       showForm: false,
       records: [],
       finishedCourses: [],
-      selectedCourse: null,
+      selectedCourse: [],
       selectedFinishedCourse: null,
       year: '',
       semester: '',
       isSubmitting: false,
-
+      cmuitaccount_name: '',
     };
   },
   components: {
@@ -105,8 +105,8 @@ export default {
     const storedUserInfo = localStorage.getItem('userInfo');
     if (storedUserInfo) {
       const userInfo = JSON.parse(storedUserInfo);
-      const cmuitaccount_name = userInfo.cmuitaccount_name; // Extract cmuitaccount_name from user info
-      this.fetchCompletedCourses(cmuitaccount_name); // Fetch completed courses using cmuitaccount_name as username
+      this.cmuitaccount_name = userInfo.cmuitaccount_name; // Store cmuitaccount_name as a data property
+      this.fetchCompletedCourses(this.cmuitaccount_name); // Fetch completed courses using cmuitaccount_name as username
     } else {
       // Handle other cases or leave as is
     }
@@ -124,7 +124,7 @@ export default {
 
     },
     fetchCompletedCourses(username) {
-      console.log("username",username)
+
       apiClient.get(`http://localhost:8080/users/${username}/completedCourses`)
         .then(response => {
           this.finishedCourses = response.data;
@@ -143,10 +143,10 @@ export default {
         semester: this.semester,
       };
       apiClient
-        .post('http://localhost:8080/saveFinishedGroupCourse', courseToAdd)
+        .post(`http://localhost:8080/users/${this.cmuitaccount_name}/completedCourses`, courseToAdd)
         .then(response => {
           console.log('Finished course added:', response.data);
-          this.fetchData();
+          this.fetchCompletedCourses(this.cmuitaccount_name);
           this.clearForm();
           this.showForm = false;
         })
@@ -179,10 +179,10 @@ export default {
       };
 
       apiClient
-        .put('http://localhost:8080/updateFinishedGroupCourse', updatedFinishedCourse)
+        .put(`http://localhost:8080/users/${this.cmuitaccount_name}/completedCourses/${this.selectedFinishedCourse.id}`, updatedFinishedCourse)
         .then(response => {
           console.log('Finished course updated:', response.data);
-          this.fetchData();
+          this.fetchCompletedCourses(this.cmuitaccount_name);
           this.clearForm();
           this.showForm = false;
         })
@@ -199,10 +199,10 @@ export default {
       if (courseIndex !== -1) {
         finishedCourse.courses.splice(courseIndex, 1);
         apiClient
-          .put('http://localhost:8080/updateFinishedGroupCourse', finishedCourse)
+          .put(`http://localhost:8080/users/${this.cmuitaccount_name}/completedCourses/${finishedCourse.id}`, finishedCourse)
           .then(response => {
             console.log('Course removed from finished course:', response.data);
-            this.fetchData();
+            this.fetchCompletedCourses(this.cmuitaccount_name);
           })
           .catch(error => {
             console.error('Error removing course from finished course:', error);
@@ -210,15 +210,14 @@ export default {
       }
     },
     removeGroupFinishedCourse(groupId) {
-
       // Send a DELETE request to the server to delete the group of finished courses
       apiClient
-        .delete(`http://localhost:8080/deleteFinishedGroupCourse/${groupId}`)
+        .delete(`http://localhost:8080/users/${this.cmuitaccount_name}/completedCourses/${groupId}`)
         .then(response => {
           console.log('url', groupId)
           console.log('Group of finished courses deleted:', response.data);
           // After successful deletion, fetch the updated list of finished courses
-          this.fetchData();
+          this.fetchCompletedCourses(this.cmuitaccount_name);
         })
         .catch(error => {
           console.error('Error deleting group of finished courses:', error);
