@@ -1,14 +1,20 @@
 <template>
     <div class="container">
-    <div>
-        <div v-if="loading">
-            Loading user info...
+        <div>
+            <div v-if="loading">
+                Loading user info...
+            </div>
+            <div v-else>
+                <h2>User Info</h2>
+                <div>
+                    <p><strong>CMU IT Account:</strong> {{ userInfo.cmuitaccount }}</p>
+                    <p><strong>Student ID:</strong> {{ userInfo.student_id }}</p>
+                    <p><strong>Name (Thai):</strong> {{ userInfo.firstname_TH }} {{ userInfo.lastname_TH }}</p>
+                    <p><strong>Name (English):</strong> {{ userInfo.firstname_EN }} {{ userInfo.lastname_EN }}</p>
+                </div>
+            </div>
         </div>
-        <div v-if="userInfo">
-            <h2>User Info</h2>
-            <pre>{{ userInfo }}</pre>
-        </div>
-    </div></div>
+    </div>
 </template>
   
 <script>
@@ -19,40 +25,54 @@ export default {
     data() {
         return {
             loading: true,
-            userInfo: null
+            userInfo: {}
         }
-    }, 
-    methods: {
-        async handleRedirectWithCode(code) {
-            try {
-                // Exchange the authorization code for an access token
-                const response = await LoginService.getAccessToken({ code: code });
-                const accessToken = response.data.access_token
-                localStorage.setItem('access_token', accessToken)
+    },
 
-                // Fetch user info using the access token
-                this.fetchUserInfo(accessToken)
-            } catch (error) {
-                console.error("Error fetching access token or user info:", error)
-            }
+    methods: {
+        handleRedirectWithCode(code) {
+            // Exchange the authorization code for an access token
+            LoginService.getAccessToken({ code: code })
+                .then((response) => {
+                    const accessToken = response.data.access_token;
+                    localStorage.setItem('access_token', accessToken);
+
+                    // Fetch user info using the access token
+                    this.fetchUserInfo(accessToken);
+                })
+                .catch((error) => {
+                    console.error("Error fetching access token:", error);
+                });
         },
-        async fetchUserInfo(accessToken) {
-            try {
-                const response = await LoginService.fetchUserInfo(accessToken)
-                this.userInfo = response.data
-                localStorage.setItem('userInfo', JSON.stringify(this.userInfo))
-                this.loading = false
-            } catch (error) {
-                console.error("Error fetching user info:", error)
-                this.loading = false
-            }
+        fetchUserInfo(accessToken) {
+            // Fetch user info using the access token
+            LoginService.fetchUserInfo(accessToken)
+                .then((response) => {
+                    const userData = response.data; // Extract user data from the response
+                    this.userInfo = userData.userInfo; // Update userInfo with user data
+                    console.log("cmuitaccount", this.userInfo.cmuitaccount);
+                    this.loading = false;
+
+                    // Store user info in localStorage
+                    localStorage.setItem('userInfo', JSON.stringify(this.userInfo));
+                })
+                .catch((error) => {
+                    console.error("Error fetching user info:", error);
+                    this.loading = false;
+                });
         }
     },
     mounted() {
-        const storedUserInfo = localStorage.getItem('userInfo')
+        const storedUserInfo = localStorage.getItem('userInfo');
+        const accessToken = localStorage.getItem('access_token');
+        
         if (storedUserInfo) {
-            this.userInfo = JSON.parse(storedUserInfo)
-            this.loading = false
+            this.userInfo = JSON.parse(storedUserInfo);
+            this.loading = false;
+        }
+        
+        if (accessToken) {
+            this.fetchUserInfo(accessToken);
         } else {
             // If the user is redirected back to this component with a code in the URL, handle it
             const urlParams = new URLSearchParams(window.location.search);
@@ -60,13 +80,11 @@ export default {
             console.log("Authorization Code:", code);
 
             if (code) {
-                this.handleRedirectWithCode(code)
+                this.handleRedirectWithCode(code);
             } else {
-                this.loading = false
+                this.loading = false;
             }
         }
     }
 }
-
 </script>
-  
