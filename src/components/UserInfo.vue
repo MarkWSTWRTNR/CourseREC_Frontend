@@ -7,6 +7,7 @@
             <div v-else>
                 <h2>User Info</h2>
                 <div>
+                    <p><strong>Cmuitaccount Name:</strong> {{ userInfo.cmuitaccount_name }}</p>
                     <p><strong>CMU IT Account:</strong> {{ userInfo.cmuitaccount }}</p>
                     <p><strong>Student ID:</strong> {{ userInfo.student_id }}</p>
                     <p><strong>Name (Thai):</strong> {{ userInfo.firstname_TH }} {{ userInfo.lastname_TH }}</p>

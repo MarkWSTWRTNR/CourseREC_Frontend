@@ -102,6 +102,15 @@ export default {
   },
   mounted() {
     this.fetchData();
+    const storedUserInfo = localStorage.getItem('userInfo');
+    if (storedUserInfo) {
+      const userInfo = JSON.parse(storedUserInfo);
+      const cmuitaccount_name = userInfo.cmuitaccount_name; // Extract cmuitaccount_name from user info
+      this.fetchCompletedCourses(cmuitaccount_name); // Fetch completed courses using cmuitaccount_name as username
+    } else {
+      // Handle other cases or leave as is
+    }
+
   },
   methods: {
     fetchData() {
@@ -112,9 +121,14 @@ export default {
         .catch(error => {
           console.log(error);
         });
-      apiClient.get('http://localhost:8080/getFinishedGroupCourse')
+
+    },
+    fetchCompletedCourses(username) {
+      console.log("username",username)
+      apiClient.get(`http://localhost:8080/users/${username}/completedCourses`)
         .then(response => {
-          this.finishedCourses = response.data; console.log("FC" , this.finishedCourses);
+          this.finishedCourses = response.data;
+          console.log("Finished Courses:", this.finishedCourses);
         }).catch(error => {
           console.log(error);
         });
@@ -196,12 +210,12 @@ export default {
       }
     },
     removeGroupFinishedCourse(groupId) {
-    
+
       // Send a DELETE request to the server to delete the group of finished courses
       apiClient
         .delete(`http://localhost:8080/deleteFinishedGroupCourse/${groupId}`)
         .then(response => {
-          console.log('url' , groupId)
+          console.log('url', groupId)
           console.log('Group of finished courses deleted:', response.data);
           // After successful deletion, fetch the updated list of finished courses
           this.fetchData();
