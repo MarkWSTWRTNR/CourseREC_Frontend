@@ -30,7 +30,8 @@ export default {
     return {
       recommendation: '',
       finishedCourses: [],
-      loading: false
+      loading: false,
+      cmuitaccount_name: '',
     };
   },
   methods: {
@@ -41,7 +42,7 @@ export default {
 
       this.loading = true;
       try {
-        const response = await axios.get('http://localhost:8080/bot/chat');
+        const response = await axios.get(`http://localhost:8080/bot/${this.cmuitaccount_name}/chat`);
         this.recommendation = response.data.recommendation;
         this.finishedCourses = response.data.finishedCourses;
 
@@ -64,6 +65,13 @@ export default {
       const parsedData = JSON.parse(storedData);
       this.recommendation = parsedData.recommendation;
       this.finishedCourses = parsedData.finishedCourses;
+    }
+    const storedUserInfo = localStorage.getItem('userInfo');
+    if (storedUserInfo) {
+      const userInfo = JSON.parse(storedUserInfo);
+      this.cmuitaccount_name = userInfo.cmuitaccount_name; // Store cmuitaccount_name as a data property
+    } else {
+      // Handle other cases or leave as is
     }
   }
 };
