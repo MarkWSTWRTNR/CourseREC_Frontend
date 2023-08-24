@@ -12,7 +12,6 @@ import CourseProgramView from "../components/CourseProgramView.vue"
 import UserInfo from '../components/UserInfo.vue';
 import LoginService from "@/service/LoginService";
 import HomeListView from "@/views/HomeListView.vue"
-import { ref } from 'vue';
 import { userRole, ROLES } from "@/service/roles";
 const routes = [
   {

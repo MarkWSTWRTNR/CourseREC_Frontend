@@ -22,8 +22,14 @@
     <ul>
       <li v-for="comment in course.comments" :key="comment.id">
         <strong>{{ comment.user.username }}:</strong> {{ comment.comment }}
+        <button type="button" class="btn btn-danger" @click="deleteComment(comment.id)">Delete</button>
       </li>
     </ul>
+    <div>
+      <h3>Add Comment</h3>
+      <textarea v-model="newCommentText"></textarea>
+      <button  type="button" class="btn btn-primary" @click="addComment">Add Comment</button>
+    </div>
   </div>
 </template>
   
@@ -35,13 +41,18 @@ export default {
   data() {
     return {
       course: {
-        comments:[]
+        comments: []
       }
     };
   },
   mounted() {
     const courseId = this.$route.params.courseId;
     this.fetchCourse(courseId);
+    const storedUserInfo = localStorage.getItem('userInfo');
+    if (storedUserInfo) {
+      const userInfo = JSON.parse(storedUserInfo);
+      this.cmuitaccount_name = userInfo.cmuitaccount_name;
+    }
   },
   methods: {
     fetchCourse(courseId) {
@@ -53,6 +64,34 @@ export default {
         .catch(error => {
           console.log(error);
         });
+    },
+    deleteComment(commentId) {
+      axios.delete(`http://localhost:8080/users/${this.cmuitaccount_name}/comments/${commentId}`)
+        .then(response => {
+          // Remove the deleted comment from the UI
+          this.course.comments = this.course.comments.filter(comment => comment.id !== commentId);
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    },
+    addComment() {
+      if (this.newCommentText) {
+        const newComment = {
+          comment: this.newCommentText,
+          course: { courseId: this.course.courseId } // Set the course property
+        };
+
+        axios.post(`http://localhost:8080/users/${this.cmuitaccount_name}/comments`, newComment)
+          .then(response => {
+            const savedComment = response.data;
+            this.course.comments.push(savedComment);
+            this.newCommentText = ''; // Clear the input
+          })
+          .catch(error => {
+            console.log(error);
+          });
+      }
     }
   }
 };
