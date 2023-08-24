@@ -11,69 +11,76 @@ import FacultyView from "../components/FacultyView.vue";
 import CourseProgramView from "../components/CourseProgramView.vue"
 import UserInfo from '../components/UserInfo.vue';
 import LoginService from "@/service/LoginService";
-import { ROLES } from "@/service/roles";
+import HomeListView from "@/views/HomeListView.vue"
+import { ref } from 'vue';
+import { userRole, ROLES } from "@/service/roles";
 const routes = [
-
+  {
+    path: "/home",
+    name: "home",
+    component: HomeListView,
+  }
+  ,
   {
     path: "/curriculum",
     name: "curriculum",
     component: CurriculumView,
-    meta: { roles: [ROLES.ADMIN, ROLES.STUDENT] }
+    meta: { roles: [ROLES.ROLE_ADMIN, ROLES.ROLE_STUDENT] }
   },
   {
     path: "/course_list",
     name: "courselist",
     component: CourseListView,
-    meta: { roles: [ROLES.STUDENT] }
+    meta: { roles: [ROLES.ROLE_STUDENT] }
   },
   {
     path: "/dashboard",
     name: "dashboard",
     component: DashboardView,
-    meta: { roles: [ROLES.STUDENT] }
+    meta: { roles: [ROLES.ROLE_STUDENT] }
   },
   {
     path: "/studentstudyplan",
     name: "studentstudyplan",
     component: StudentStudyPlanView,
-    meta: { roles: [ROLES.STUDENT] }
+    meta: { roles: [ROLES.ROLE_STUDENT] }
   },
   {
     path: "/recommendcourse",
     name: "recommendcourse",
     component: RecommendCourseView,
-    meta: { roles: [ROLES.STUDENT] }
+    meta: { roles: [ROLES.ROLE_STUDENT] }
   },
   {
     path: "/studyguide",
     name: "studyguide",
     component: StudyGuideView,
-    meta: { roles: [ROLES.STUDENT] }
+    meta: { roles: [ROLES.ROLE_STUDENT] }
   },
   {
     path: "/finishedcourse",
     name: "finishedcourse",
     component: FinishedCourseView,
-    meta: { roles: [ROLES.STUDENT] }
+    meta: { roles: [ROLES.ROLE_STUDENT] }
   },
   {
     path: '/courseByCourseId/:courseId',
     name: 'coursedetails',
     component: CourseDetailView,
-    meta: { roles: [ROLES.STUDENT, ROLES.ADMIN] },
+    meta: { roles: [ROLES.ROLE_STUDENT, ROLES.ROLE_ADMIN] },
     props: true
   }, {
     path: '/faculty',
     name: 'faculty',
     component: FacultyView,
-    meta: { roles: [ROLES.STUDENT, ROLES.ADMIN] }
+    meta: { roles: [ROLES.ROLE_STUDENT, ROLES.ROLE_ADMIN] }
   },
   {
     path: '/courseprogram',
     name: 'courseprogram',
     component: CourseProgramView,
-    meta: { roles: [ROLES.ADMIN] }
-  }, 
+    meta: { roles: [ROLES.ROLE_ADMIN] }
+  },
   {
     path: '/userInfo',
     name: 'UserInfo',
@@ -87,7 +94,7 @@ const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes,
 });
-router.beforeEach((to, from, next) => {
+router.beforeEach(async (to, from, next) => {
   // Check if the route requires authentication
   if (to.matched.some(record => record.meta.roles)) {
     // Check if user is not logged in
@@ -95,10 +102,29 @@ router.beforeEach((to, from, next) => {
       // Redirect to login page or another appropriate page
       next({ name: 'UserInfo' });
     } else {
-      next(); // Allow navigation
+      // Fetch user data to get the role
+      try {
+        const response = await LoginService.fetchUserInfo(localStorage.getItem('access_token'));
+        const userData = response.data;
+        const userRoleValue = userData.role;
+
+        // Check if the user's role matches the required roles
+        if (to.meta.roles.includes(userRoleValue)) {
+          userRole.value = userRoleValue; // Update the user role
+          next(); // Allow navigation
+        } else {
+          // Redirect to a forbidden or access-denied page
+          next({ name: 'ForbiddenPage' }); // Adjust the name as needed
+        }
+      } catch (error) {
+        console.error("Error fetching user info:", error);
+        next(false); // Prevent navigation on error
+      }
     }
   } else {
     next(); // Allow navigation for routes that don't require authentication
   }
 });
+
+
 export default router;

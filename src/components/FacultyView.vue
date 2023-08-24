@@ -8,7 +8,7 @@
               <tr>
                 <th>Faculty ID</th>
                 <th>Faculty Name</th>
-                <th v-if="userRole === ROLES.ADMIN">Action</th>
+                <th v-if="userRole === ROLES.ROLE_ADMIN">Action</th>
               </tr>
             </thead>
             <tbody>
@@ -16,9 +16,9 @@
                 <td>{{ record.facultyId }}</td>
                 <td>{{ record.name }}</td>
                 <td>
-                  <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-danger"
+                  <button v-if="userRole === ROLES.ROLE_ADMIN" class="btn btn-outline-danger"
                     @click="deleteFaculty(record.facultyId)">Delete</button>
-                  <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-info"
+                  <button v-if="userRole === ROLES.ROLE_ADMIN" class="btn btn-outline-info"
                     @click="editFaculty(record)">Edit</button>
                 </td>
               </tr>
@@ -27,7 +27,7 @@
         </div>
       </div>
       <div>
-        <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-primary" @click="openForm">Add Faculty</button>
+        <button v-if="userRole === ROLES.ROLE_ADMIN" class="btn btn-outline-primary" @click="openForm">Add Faculty</button>
         <div v-if="showForm">
           <div class="overlay">
             <div class="popup">

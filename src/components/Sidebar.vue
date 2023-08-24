@@ -11,7 +11,13 @@
 		</div>
 
 		<h3>Menu</h3>
-		<div class="menu" v-if="userRole === ROLES.ADMIN">
+		<div class="menu">
+			<router-link to="/home" class="button">
+				<span class="material-symbols-outlined">home</span>
+				<span class="text">Home</span>
+			</router-link>
+		</div>
+		<div class="menu" v-if="userRole === ROLES.ROLE_ADMIN">
 			<div v-if="isLoggedIn">
 				<router-link to="/course_list" class="button">
 					<span class="material-symbols-outlined">list</span>
@@ -23,7 +29,7 @@
 				</router-link>
 			</div>
 		</div>
-		<div class="menu" v-if="userRole === ROLES.STUDENT">
+		<div class="menu" v-if="userRole === ROLES.ROLE_STUDENT">
 			<div v-if="isLoggedIn">
 				<router-link to="/dashboard" class="button">
 					<span class="material-symbols-outlined">dashboard</span>
@@ -110,6 +116,7 @@ export default {
 					window.location.href = response.data; // Redirect to cmuoauth page for authentication
 				}
 			}
+			
 		},
 		logout() {
 			console.log("Logout method called");

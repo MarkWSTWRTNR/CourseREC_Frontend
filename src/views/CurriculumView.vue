@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-  <div v-if="userRole === ROLES.ADMIN">
+  <div v-if="userRole === ROLES.ROLE_ADMIN">
     <router-link to="/faculty"><button> Create Faculty</button></router-link>
     <router-link to="/courseprogram"><button> Create Program</button></router-link>
   </div>
@@ -31,7 +31,7 @@
 
 
       <div v-show="isActive(1, index)" class="content">
-        <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-primary" @click="openForm">Add Courses To
+        <button v-if="userRole === ROLES.ROLE_ADMIN" class="btn btn-outline-primary" @click="openForm">Add Courses To
           Curriculum</button>
         <div v-if="showForm">
           <div class="overlay">
@@ -81,7 +81,7 @@
 
         <div class="row">
           <div class="col-md-12" v-for="(groupCourse, groupCourseIndex) in filteredGroupCourses" :key="groupCourseIndex">
-            <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-danger"
+            <button v-if="userRole === ROLES.ROLE_ADMIN" class="btn btn-outline-danger"
               @click="removeGroupCourse(groupCourse.id)">
               Delete Group
             </button>
@@ -104,7 +104,7 @@
                   <td>{{ course.credit }}</td>
                   <td>{{ getPrerequisiteInfo(course.prerequisite) }}</td>
                   <td>
-                    <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-danger"
+                    <button v-if="userRole === ROLES.ROLE_ADMIN" class="btn btn-outline-danger"
                       @click="removeCourseFromGroupCourse(groupCourse, course.courseId)">
                       Remove
                     </button>
@@ -115,7 +115,7 @@
               </tbody>
             </table>
             <h5>Note: {{ groupCourse.text }}</h5>
-            <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-info" @click="editGroupCourse(groupCourse)">
+            <button v-if="userRole === ROLES.ROLE_ADMIN" class="btn btn-outline-info" @click="editGroupCourse(groupCourse)">
               Edit
             </button>
             <hr>
@@ -130,7 +130,7 @@
       <i class="fa fa-chevron-down" :class="{ 'fa-rotate-180': isActive(3) }"></i>
 
       <div v-show="isActive(3)" class="content">
-        <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-primary" @click="openForm2">Add courses</button>
+        <button v-if="userRole === ROLES.ROLE_ADMIN" class="btn btn-outline-primary" @click="openForm2">Add courses</button>
         <div v-if="showForm2">
           <div class="overlay">
             <div class="popup">
@@ -179,7 +179,7 @@
         </div>
         <div class="row">
           <div class="col-md-12" v-for="(studyPlan, studyPlanIndex) in filteredStudyPlan" :key="studyPlanIndex">
-            <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-danger" @click="removeStudyPlan(studyPlan.id)">
+            <button v-if="userRole === ROLES.ROLE_ADMIN" class="btn btn-outline-danger" @click="removeStudyPlan(studyPlan.id)">
               Delete Group
             </button>
             <h4>{{ studyPlan.yearAndSemester }}</h4>
@@ -201,7 +201,7 @@
                   <td>{{ course.credit }}</td>
                   <td>{{ getPrerequisiteInfo(course.prerequisite) }}</td>
                   <td>
-                    <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-danger"
+                    <button v-if="userRole === ROLES.ROLE_ADMIN" class="btn btn-outline-danger"
                       @click="removeCourseFromStudyPlan(studyPlan, course.courseId)">
                       Remove
                     </button>
@@ -212,7 +212,7 @@
               </tbody>
             </table>
             <h5>Note: {{ studyPlan.text }}</h5>
-            <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-info" @click="editStudyPlan(studyPlan)">
+            <button v-if="userRole === ROLES.ROLE_ADMIN" class="btn btn-outline-info" @click="editStudyPlan(studyPlan)">
               Edit
             </button>
             <hr>

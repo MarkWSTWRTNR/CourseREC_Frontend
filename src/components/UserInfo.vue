@@ -15,12 +15,16 @@
                 </div>
             </div>
         </div>
+        <pre>
+        {{ userInfo }}
+    </pre>
     </div>
+    
 </template>
   
 <script>
 import LoginService from '@/service/LoginService'
-
+import { userRole, ROLES } from '@/service/roles';
 export default {
     name: 'UserInfo',
     data() {
@@ -51,6 +55,8 @@ export default {
                 .then((response) => {
                     const userData = response.data; // Extract user data from the response
                     this.userInfo = userData.userInfo; // Update userInfo with user data
+                    userRole.value = userData.role;
+                    console.log(userRole.value)
                     console.log("cmuitaccount", this.userInfo.cmuitaccount);
                     this.loading = false;
 

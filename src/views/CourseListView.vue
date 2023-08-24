@@ -39,9 +39,9 @@
                                 </li>
                             </td>
                             <td>
-                                <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-danger"
+                                <button v-if="userRole === ROLES.ROLE_ADMIN" class="btn btn-outline-danger"
                                     @click="deleteCourse(record.id)">Delete</button>
-                                <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-info"
+                                <button v-if="userRole === ROLES.ROLE_ADMIN" class="btn btn-outline-info"
                                     @click="editCourse(record); openForm()">Edit</button><br>
                                 <router-link :to="'/courseByCourseId/' + record.courseId">Description</router-link>
                             </td>
@@ -51,7 +51,7 @@
             </div>
         </div>
         <div>
-            <button v-if="userRole === ROLES.ADMIN" class="btn btn-outline-primary" @click="openForm">Add courses</button>
+            <button v-if="userRole === ROLES.ROLE_ADMIN" class="btn btn-outline-primary" @click="openForm">Add courses</button>
             <div v-if="showForm">
                 <div class="overlay">
                     <div class="popup">
@@ -108,9 +108,7 @@
   
 <script>
 import { userRole, ROLES } from "../service/roles"
-// crud.js
 import vSelect from 'vue-select';
-import apiClient from "@/service/AxiosClient";
 import CourseService from '@/service/CourseService.js';
 export default {
     components: {

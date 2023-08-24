@@ -9,7 +9,7 @@ export default {
     });
   },
   getStoredAccessToken() {
-    return localStorage.getItem('access_token')
+    return localStorage.getItem('access_token');
   },
   fetchUserInfo(accessToken) {
     return apiClient.get('http://localhost:8080/userinfo', {
@@ -25,3 +25,4 @@ export default {
     return !!localStorage.getItem('access_token');
   }
 }
+
