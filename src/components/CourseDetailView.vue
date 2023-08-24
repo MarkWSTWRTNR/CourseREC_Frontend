@@ -19,17 +19,19 @@
     </div>
     <p><strong></strong></p>
     <h3>Comments</h3>
-    <ul>
-      <li v-for="comment in course.comments" :key="comment.id">
-        <strong>{{ comment.user.username }}:</strong> {{ comment.comment }}
-        <button type="button" class="btn btn-danger" @click="deleteComment(comment.id)">Delete</button>
-      </li>
-    </ul>
-    <div>
+    <div class="comment-box" v-for="comment in course.comments" :key="comment.id">
+      <div class="comment-header">
+        <strong>{{ comment.user.username }}</strong>
+        <button v-if="comment.user.username === cmuitaccount_name" type="button" class="btn btn-danger" @click="deleteComment(comment.id)">Delete</button>
+      </div>
+      <div class="comment-content">
+        {{ comment.comment }}
+      </div>
+    </div>
       <h3>Add Comment</h3>
       <textarea v-model="newCommentText"></textarea>
       <button  type="button" class="btn btn-primary" @click="addComment">Add Comment</button>
-    </div>
+  
   </div>
 </template>
   
@@ -42,7 +44,8 @@ export default {
     return {
       course: {
         comments: []
-      }
+      },
+      cmuitaccount_name: '',
     };
   },
   mounted() {
@@ -96,4 +99,21 @@ export default {
   }
 };
 </script>
-  
+
+<style scoped>
+.comment-box {
+  border: 1px solid #ccc;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+.comment-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.comment-content {
+  margin-top: 5px;
+}
+</style>
