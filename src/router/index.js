@@ -31,7 +31,7 @@ const routes = [
     path: "/course_list",
     name: "courselist",
     component: CourseListView,
-    meta: { roles: [ROLES.ROLE_STUDENT] }
+    meta: { roles: [ROLES.ROLE_ADMIN, ROLES.ROLE_STUDENT] }
   },
   {
     path: "/dashboard",
