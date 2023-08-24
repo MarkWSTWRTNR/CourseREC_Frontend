@@ -22,16 +22,22 @@
     <div class="comment-box" v-for="comment in course.comments" :key="comment.id">
       <div class="comment-header">
         <strong>{{ comment.user.username }}</strong>
-        <button v-if="comment.user.username === cmuitaccount_name" type="button" class="btn btn-danger" @click="deleteComment(comment.id)">Delete</button>
+        <button v-if="comment.user.username === cmuitaccount_name" type="button" class="btn btn-danger"
+          @click="deleteComment(comment.id)">Delete</button>
       </div>
       <div class="comment-content">
         {{ comment.comment }}
       </div>
+      <div class="comment-rating star-filled">
+        <span v-html="generateStarIcons(comment.ratingScore)"></span>
+      </div>
     </div>
-      <h3>Add Comment</h3>
-      <textarea v-model="newCommentText"></textarea>
-      <button  type="button" class="btn btn-primary" @click="addComment">Add Comment</button>
-  
+    <h3>Add Comment</h3>
+    <textarea v-model="newCommentText"></textarea>
+    <label for="rating">Rating:</label>
+    <input type="number" id="rating" v-model="newRating" min="1" max="5" />
+    <button type="button" class="btn btn-primary" @click="addComment">Add Comment</button>
+
   </div>
 </template>
   
@@ -46,6 +52,8 @@ export default {
         comments: []
       },
       cmuitaccount_name: '',
+      newCommentText: '',
+      newRating: 0
     };
   },
   mounted() {
@@ -82,7 +90,8 @@ export default {
       if (this.newCommentText) {
         const newComment = {
           comment: this.newCommentText,
-          course: { courseId: this.course.courseId } // Set the course property
+          course: { courseId: this.course.courseId }, // Set the course property
+          ratingScore: this.newRating,
         };
 
         axios.post(`http://localhost:8080/users/${this.cmuitaccount_name}/comments`, newComment)
@@ -90,11 +99,23 @@ export default {
             const savedComment = response.data;
             this.course.comments.push(savedComment);
             this.newCommentText = ''; // Clear the input
+            this.newRating = 1;
           })
           .catch(error => {
             console.log(error);
           });
       }
+    },
+    generateStarIcons(ratingScore) {
+      const starIcons = [];
+      for (let i = 1; i <= 5; i++) {
+        if (i <= ratingScore) {
+          starIcons.push('<i class="fas fa-star "></i>');
+        } else {
+          starIcons.push('<i class="far fa-star "></i>');
+        }
+      }
+      return starIcons.join('');
     }
   }
 };
@@ -112,7 +133,9 @@ export default {
   justify-content: space-between;
   align-items: center;
 }
-
+.star-filled {
+  color: gold; /* Change this to the color you want */
+}
 .comment-content {
   margin-top: 5px;
 }
