@@ -1,7 +1,7 @@
 <template>
 <div class="app">
 		<!-- Sidebar -->
-		<Sidebar />
+		<Slidebar />
 
 		<!-- Content -->
 		<router-view />
@@ -9,18 +9,16 @@
 </template>
 
 <script>
-import { userRole, ROLES } from "../src/service/roles";
-import Sidebar from "../src/components/Sidebar.vue"
+
+import Slidebar from "../src/components/Slidebar.vue"
 
 export default {
   name: 'App',
   components:{
-    Sidebar
+    Slidebar
   },
   data() {
     return {
-      userRole: userRole,
-      ROLES: ROLES,
     };
   },
 };
