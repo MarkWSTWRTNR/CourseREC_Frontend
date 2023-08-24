@@ -1,23 +1,30 @@
 <template>
   <div class="container">
-  <div>
-    <h2>{{ course.name }}</h2>
-    <p><strong>Course ID:</strong> {{ course.courseId }}</p>
-    <p><strong>Credit:</strong> {{ course.credit }}</p>
-    <p><strong>Grading Type:</strong> {{ course.gradingtype }}</p>
-    <p><strong>Course Prerequisite:</strong>
-      <li v-for="prerequisite in course.prereq" :key="prerequisite.courseId">
-        {{ prerequisite.courseId }} - {{ prerequisite.name }}
+    <div>
+      <h2>{{ course.name }}</h2>
+      <p><strong>Course ID:</strong> {{ course.courseId }}</p>
+      <p><strong>Credit:</strong> {{ course.credit }}</p>
+      <p><strong>Grading Type:</strong> {{ course.gradingtype }}</p>
+      <p><strong>Course Prerequisite:</strong>
+        <li v-for="prerequisite in course.prereq" :key="prerequisite.courseId">
+          {{ prerequisite.courseId }} - {{ prerequisite.name }}
+        </li>
+      <p><strong>Programs:</strong>
+        <li v-for="program in course.groupCourses" :key="program.id">
+          {{ program.programs.name }} ({{ program.programs.programId }})
+        </li>
+      </p>
+      </p>
+      <p><strong>Description:</strong> {{ course.description }}</p>
+    </div>
+    <p><strong></strong></p>
+    <h3>Comments</h3>
+    <ul>
+      <li v-for="comment in course.comments" :key="comment.id">
+        <strong>{{ comment.user.username }}:</strong> {{ comment.comment }}
       </li>
-    <p><strong>Programs:</strong>
-      <li v-for="program in course.groupCourses" :key="program.id">
-        {{ program.programs.name }} ({{ program.programs.programId }})
-      </li>
-    </p>
-    </p>
-    <p><strong>Description:</strong> {{ course.description }}</p>
+    </ul>
   </div>
-  <p><strong></strong></p></div>
 </template>
   
 <script>
@@ -27,7 +34,9 @@ export default {
   name: 'CourseDetail',
   data() {
     return {
-      course: {}
+      course: {
+        comments:[]
+      }
     };
   },
   mounted() {
