@@ -34,7 +34,8 @@
     </div>
 
     <div class="row">
-      <div class="col-md-12" v-for="finishedCourse in finishedCourses" :key="finishedCourse.id">
+      <div v-if="finishedCourses && finishedCourses.length > 0" class="col-md-12"
+        v-for="finishedCourse in finishedCourses" :key="finishedCourse.id">
         <button class="btn btn-outline-danger" @click="removeGroupFinishedCourse(finishedCourse.id)">
           Delete Group
         </button>
@@ -71,6 +72,9 @@
           Edit
         </button>
         <hr>
+      </div>
+      <div v-else class="col-md-12">
+        <p>No finished courses available.</p>
       </div>
     </div>
 
@@ -124,12 +128,14 @@ export default {
 
     },
     fetchCompletedCourses(username) {
-
       apiClient.get(`http://localhost:8080/users/${username}/completedCourses`)
         .then(response => {
           this.finishedCourses = response.data;
           console.log("Finished Courses:", this.finishedCourses);
         }).catch(error => {
+          if (error.response && error.response.status === 404) {
+            this.showNoCoursesMessage = true;
+          }
           console.log(error);
         });
     },
@@ -160,15 +166,24 @@ export default {
     editFinishedCourse(finishedCourse) {
       console.log("Editing finished course:", finishedCourse);
       if (finishedCourse && finishedCourse.year && finishedCourse.semester) {
-        this.selectedFinishedCourse = finishedCourse;
+        // Create a shallow copy of the finishedCourse object
+        this.selectedFinishedCourse = { ...finishedCourse };
+        this.selectedCourse = this.selectedFinishedCourse.courses.map(course => course.courseId);
+        this.year = this.selectedFinishedCourse.year;
+        this.semester = this.selectedFinishedCourse.semester;
         this.showForm = true;
         console.log("Selected finished course:", this.selectedFinishedCourse);
       } else {
         console.error('Invalid finished course data:', finishedCourse);
       }
-    },
+    }
+    ,
     updateFinishedCourse() {
       if (!this.selectedFinishedCourse || this.isSubmitting) return; // Prevent multiple submissions
+      if (!this.year || !this.semester) {
+        alert('Year and semester are required.');
+        return; // Prevent submission
+      }
       this.isSubmitting = true;
       const coursesToAdd = this.selectedCourse.map(courseId => ({ courseId }));
       const updatedFinishedCourse = {

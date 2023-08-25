@@ -73,7 +73,7 @@
 			</button>
 			<button v-else @click="login" class="button">
 				<span class="material-symbols-outlined">login</span>
-				<span class="text">Login</span>
+				<span class="text">Login with CMU account</span>
 			</button>
 
 		</div>
