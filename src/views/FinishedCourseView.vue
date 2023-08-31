@@ -57,7 +57,18 @@
               <td>{{ course.courseId }}</td>
               <td>{{ course.name }}</td>
               <td>{{ course.credit }}</td>
-              <td>{{ course.grade }}</td>
+              <td><select name="" id="">
+                  <option value="">-- Select Grade --</option>
+                  <option value="A">A</option>
+                  <option value="B_PLUS">B+</option>
+                  <option value="B">B</option>
+                  <option value="C_PLUS">C+</option>
+                  <option value="C">C</option>
+                  <option value="D_PLUS">D+</option>
+                  <option value="D">D</option>
+                  <option value="F">F</option>
+                </select>
+              </td>
               <td>
                 <button class="btn btn-outline-danger"
                   @click="removeCourseFromFinishedCourse(finishedCourse, course.courseId)">
@@ -71,6 +82,9 @@
         <button class="btn btn-outline-info" @click="editFinishedCourse(finishedCourse)">
           Edit
         </button>
+        <button type="button" class="btn btn-dark" @click="setGradeForCourse(username, courseId, selectedGrade)">Set Grade</button>
+        <button type="button" class="btn btn-dark" @click="calculateGPAAndCreditForUser(username)">Calculate GPA</button>
+
         <hr>
       </div>
       <div v-else class="col-md-12">
@@ -238,7 +252,27 @@ export default {
           console.error('Error deleting group of finished courses:', error);
         });
     },
-
+    setGradeForCourse(username, courseId, grade) {
+      const gradeRequestBody = { grade };
+      apiClient.post(`/users/${this.cmuitaccount_name}/courses/${courseId}/setGrade`, gradeRequestBody)
+        .then(response => {
+          console.log("Grade set successfully:", response.data);
+          // You can perform any necessary actions after setting the grade
+        })
+        .catch(error => {
+          console.error("Error setting grade:", error);
+        });
+    }, calculateGPAAndCreditForUser(username) {
+      apiClient.get(`/users/${this.cmuitaccount_name}/calculateGPAAndCredit`)
+        .then(response => {
+          const result = response.data;
+          console.log("GPA and credit data:", result);
+          // You can update your component state with the GPA and credit data
+        })
+        .catch(error => {
+          console.error("Error calculating GPA and credit:", error);
+        });
+    },
 
     openForm() {
       this.showForm = true;
