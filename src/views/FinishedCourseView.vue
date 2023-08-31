@@ -59,7 +59,11 @@
               <td>{{ course.courseId }}</td>
               <td>{{ course.name }}</td>
               <td>{{ course.credit }}</td>
-              <td><select v-model="selectedGrade[course.courseId]">
+              <td>
+                {{ course.grade }}
+              </td>
+              <td>
+                <select v-model="selectedGrade[course.courseId]">
                   <option value="">-- Select Grade --</option>
                   <option value="A">A</option>
                   <option value="B_PLUS">B+</option>
@@ -70,8 +74,6 @@
                   <option value="D">D</option>
                   <option value="F">F</option>
                 </select>
-              </td>
-              <td>
                 <button class="btn btn-outline-danger"
                   @click="removeCourseFromFinishedCourse(finishedCourse, course.courseId)">
                   Remove
