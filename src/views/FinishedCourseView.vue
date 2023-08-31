@@ -1,6 +1,8 @@
 <template>
   <div class="container">
     <button class="btn btn-outline-primary" @click="openForm">Add Finished Course</button>
+    
+        <button type="button" class="btn btn-dark" @click="calculateGPAAndCreditForUser(username)">Calculate GPA</button>
     <div v-if="showForm">
       <div class="overlay">
         <div class="popup">
@@ -57,8 +59,8 @@
               <td>{{ course.courseId }}</td>
               <td>{{ course.name }}</td>
               <td>{{ course.credit }}</td>
-              <td><select name="" id="">
-                  <option value="">-- Select Grade --</option>
+              <td><select v-model="selectedGrade">
+                  <option value=null>-- Select Grade --</option>
                   <option value="A">A</option>
                   <option value="B_PLUS">B+</option>
                   <option value="B">B</option>
@@ -76,15 +78,14 @@
                 </button>
                 <router-link :to="'/courseByCourseId/' + course.courseId">Description</router-link>
               </td>
+              <button type="button" class="btn btn-dark" @click="setGradeForCourse(course.courseId, selectedGrade)">Set Grade</button>
             </tr>
           </tbody>
         </table>
         <button class="btn btn-outline-info" @click="editFinishedCourse(finishedCourse)">
           Edit
         </button>
-        <button type="button" class="btn btn-dark" @click="setGradeForCourse(username, courseId, selectedGrade)">Set Grade</button>
-        <button type="button" class="btn btn-dark" @click="calculateGPAAndCreditForUser(username)">Calculate GPA</button>
-
+      
         <hr>
       </div>
       <div v-else class="col-md-12">
@@ -113,6 +114,7 @@ export default {
       semester: '',
       isSubmitting: false,
       cmuitaccount_name: '',
+      selectedGrade: null,
     };
   },
   components: {
@@ -252,9 +254,9 @@ export default {
           console.error('Error deleting group of finished courses:', error);
         });
     },
-    setGradeForCourse(username, courseId, grade) {
+    setGradeForCourse(courseId, grade) {
       const gradeRequestBody = { grade };
-      apiClient.post(`/users/${this.cmuitaccount_name}/courses/${courseId}/setGrade`, gradeRequestBody)
+      apiClient.post(`http://localhost:8080/users/${this.cmuitaccount_name}/courses/${courseId}/setGrade`, gradeRequestBody)
         .then(response => {
           console.log("Grade set successfully:", response.data);
           // You can perform any necessary actions after setting the grade
@@ -262,8 +264,8 @@ export default {
         .catch(error => {
           console.error("Error setting grade:", error);
         });
-    }, calculateGPAAndCreditForUser(username) {
-      apiClient.get(`/users/${this.cmuitaccount_name}/calculateGPAAndCredit`)
+    }, calculateGPAAndCreditForUser() {
+      apiClient.get(`http://localhost:8080/users/${this.cmuitaccount_name}/calculateGPAAndCredit`)
         .then(response => {
           const result = response.data;
           console.log("GPA and credit data:", result);
