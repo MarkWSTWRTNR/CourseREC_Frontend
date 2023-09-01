@@ -60,7 +60,7 @@
               <td>{{ course.name }}</td>
               <td>{{ course.credit }}</td>
               <td>
-                {{ course.userCourseGrades[0].grade }}
+                {{ course.userCourseGrades && course.userCourseGrades[0] ? course.userCourseGrades[0].grade : 'N/A' }}
               </td>
               <td>
                 <select v-model="selectedGrade[course.courseId]">
