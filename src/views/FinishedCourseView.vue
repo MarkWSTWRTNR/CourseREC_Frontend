@@ -1,8 +1,6 @@
 <template>
   <div class="container">
     <button class="btn btn-outline-primary" @click="openForm">Add Finished Course</button>
-
-    <button type="button" class="btn btn-dark" @click="calculateGPAAndCreditForUser(username)">Calculate GPA</button>
     <div v-if="showForm">
       <div class="overlay">
         <div class="popup">
@@ -89,9 +87,9 @@
               </td>
             </tr>
           </tbody>
-          <p>GPA: {{ gpa }}</p>
-          <p>Credit: {{ credit }}</p>
         </table>
+        <p>GPA: {{ gpa }}</p>
+        <p>Credit: {{ credit }}</p>
         <button class="btn btn-outline-info" @click="editFinishedCourse(finishedCourse)">
           Edit
         </button>
@@ -142,7 +140,7 @@ export default {
     } else {
       // Handle other cases or leave as is
     }
-
+    this.calculateGPAAndCreditForUser()
   },
   methods: {
     fetchData() {
@@ -275,7 +273,8 @@ export default {
         apiClient.post(`http://localhost:8080/users/${this.cmuitaccount_name}/courses/${courseId}/setGrade`, gradeRequestBody)
           .then(response => {
             console.log("Grade set successfully:", response.data);
-            // You can perform any necessary actions after setting the grade
+            this.fetchCompletedCourses(this.cmuitaccount_name);
+            this.calculateGPAAndCreditForUser()
           })
           .catch(error => {
             console.error("Error setting grade:", error);
@@ -289,6 +288,7 @@ export default {
           console.log("GPA and credit data:", result);
           this.gpa = result.gpa;
           this.credit = result.earnedCredit;
+          this.fetchCompletedCourses(this.cmuitaccount_name);
         })
         .catch(error => {
           console.error("Error calculating GPA and credit:", error);
