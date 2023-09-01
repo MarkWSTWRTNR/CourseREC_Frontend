@@ -89,6 +89,8 @@
               </td>
             </tr>
           </tbody>
+          <p>GPA: {{ gpa }}</p>
+          <p>Credit: {{ credit }}</p>
         </table>
         <button class="btn btn-outline-info" @click="editFinishedCourse(finishedCourse)">
           Edit
@@ -123,6 +125,8 @@ export default {
       isSubmitting: false,
       cmuitaccount_name: '',
       selectedGrade: {},
+      gpa: null,
+      credit: null,
     };
   },
   components: {
@@ -283,7 +287,8 @@ export default {
         .then(response => {
           const result = response.data;
           console.log("GPA and credit data:", result);
-          // You can update your component state with the GPA and credit data
+          this.gpa = result.gpa;
+          this.credit = result.earnedCredit;
         })
         .catch(error => {
           console.error("Error calculating GPA and credit:", error);
