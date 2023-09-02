@@ -88,8 +88,8 @@
             </tr>
           </tbody>
         </table>
-        <p>GPA: {{ gpa }}</p>
-        <p>Credit: {{ credit }}</p>
+        <p>GPA: {{ finishedCourse.groupGPA }}</p>
+        <p>Credit: {{ finishedCourse.groupEarnedCredit }}</p>
         <button class="btn btn-outline-info" @click="editFinishedCourse(finishedCourse)">
           Edit
         </button>
@@ -123,8 +123,6 @@ export default {
       isSubmitting: false,
       cmuitaccount_name: '',
       selectedGrade: {},
-      gpa: null,
-      credit: null,
     };
   },
   components: {
@@ -282,19 +280,29 @@ export default {
       });
     },
     calculateGPAAndCreditForUser() {
-      apiClient.get(`http://localhost:8080/users/${this.cmuitaccount_name}/calculateGPAAndCredit`)
+      apiClient.get(`http://localhost:8080/calculateAllGroupGPAAndCredit`)
         .then(response => {
-          const result = response.data;
-          console.log("GPA and credit data:", result);
-          this.gpa = result.gpa;
-          this.credit = result.earnedCredit;
-          this.fetchCompletedCourses(this.cmuitaccount_name);
+          const groupGPAAndCreditMap = response.data;
+          console.log("Group GPA and credit data:", groupGPAAndCreditMap);
+          this.groupGPAAndCreditMap = groupGPAAndCreditMap;
+
+          // Call a method to update the GPA and credit values for each finished course
+          this.updateGPAAndCreditForFinishedCourses();
         })
         .catch(error => {
           console.error("Error calculating GPA and credit:", error);
         });
     },
 
+    updateGPAAndCreditForFinishedCourses() {
+      this.finishedCourses.forEach(finishedCourse => {
+        const groupResults = this.groupGPAAndCreditMap[finishedCourse.id];
+        if (groupResults) {
+          finishedCourse.groupGPA = groupResults.groupGPA || 'N/A';
+          finishedCourse.groupEarnedCredit = groupResults.groupEarnedCredit || 'N/A';
+        }
+      });
+    },
     openForm() {
       this.showForm = true;
 
