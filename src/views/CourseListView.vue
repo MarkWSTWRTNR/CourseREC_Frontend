@@ -51,7 +51,8 @@
             </div>
         </div>
         <div>
-            <button v-if="userRole === ROLES.ROLE_ADMIN" class="btn btn-outline-primary" @click="openForm">Add courses</button>
+            <button v-if="userRole === ROLES.ROLE_ADMIN" class="btn btn-outline-primary" @click="openForm">Add
+                courses</button>
             <div v-if="showForm">
                 <div class="overlay">
                     <div class="popup">
@@ -79,9 +80,9 @@
                                     <div class="form-group">
                                         <label for="coursePrerequisite">Course Prerequisite</label>
                                         <v-select class="form-control left-align" id="coursePrerequisite"
-                                            v-model="selectedPrerequisites" :options="records.map(record => ({
-                                                label: record.courseId + ' - ' + record.name,
-                                                value: { courseId: record.courseId, name: record.name } // Include both courseId and name
+                                            v-model="selectedPrerequisites" :options="allCourse.map(allcourse => ({
+                                                label: allcourse.courseId + ' - ' + allcourse.name,
+                                                value: { courseId: allcourse.courseId, name: allcourse.name } // Include both courseId and name
                                             }))" multiple :reduce="option => option.value"
                                             :placeholder="'Select prerequisite courses'">
                                         </v-select>
@@ -120,6 +121,7 @@ export default {
             userRole: userRole,
             ROLES: ROLES,
             records: [],
+            allCourse: [],
             id: '',
             courseId: '',
             name: '',
@@ -137,31 +139,39 @@ export default {
     },
     mounted() {
         this.fetchCourses();
+        this.getAllCourse();
     },
     methods: {
         fetchCourses() {
             CourseService.getCourses(12, this.currentPage)
                 .then(response => {
                     this.totalPages = Math.ceil(response.headers['x-total-count'] / 12);
-                    this.records = response.data.map(course => ({
-                        id: course.id,
-                        courseId: course.courseId,
-                        name: course.name,
-                        credit: course.credit,
-                        gradingtype: course.gradingtype,
-                        prerequisite: course.prerequisite.map(prerequisite => ({
-                            courseId: prerequisite.courseId,
-                            name: prerequisite.name,
-                            label: `${prerequisite.courseId} - ${prerequisite.name}`
-                        })),
-                        description: course.description,
-                        label: `${course.courseId} - ${course.name}`
-                    }));
-                    console.log(this.records)
+                    this.records = response.data;
                 })
                 .catch(error => {
                     console.log(error);
                 });
+        },
+        getAllCourse() {
+            CourseService.getAllCourse().then(response => {
+                this.allCourse = response.data.map(course => ({
+                    id: course.id,
+                    courseId: course.courseId,
+                    name: course.name,
+                    credit: course.credit,
+                    gradingtype: course.gradingtype,
+                    prerequisite: course.prerequisite.map(prerequisite => ({
+                        courseId: prerequisite.courseId,
+                        name: prerequisite.name,
+                        label: `${prerequisite.courseId} - ${prerequisite.name}`
+                    })),
+                    description: course.description,
+                    label: `${course.courseId} - ${course.name}`
+                }));
+                console.log(this.allCourse);
+            }).catch(error => {
+                console.log(error);
+            });
         },
         changePage(direction) {
             this.currentPage += direction;
@@ -280,14 +290,15 @@ export default {
             this.showForm = false;
             this.clearForm();
             this.selectedCourse = null;
+           
         },
         clearForm() {
             this.courseId = '';
             this.name = '';
             this.credit = 0;
             this.gradingtype = '';
-
             this.description = '';
+            this.selectedPrerequisites = [];
         },
 
 
