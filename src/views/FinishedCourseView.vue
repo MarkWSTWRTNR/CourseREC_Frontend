@@ -58,7 +58,7 @@
               <td>{{ course.name }}</td>
               <td>{{ course.credit }}</td>
               <td>
-                {{ course.userCourseGrades && course.userCourseGrades[0] ? course.userCourseGrades[0].grade : 'N/A' }}
+                {{ findUserGrade(course.userCourseGrades, cmuitaccount_name) || 'N/A' }}
               </td>
               <td>
                 <select v-model="selectedGrade[course.courseId]">
@@ -100,7 +100,8 @@
         <p>No finished courses available.</p>
       </div>
     </div>
-
+    <p>GPAX : {{ gpax }}</p>
+    <p>Accumulate credit: {{ credit }}</p>
   </div>
 </template>
 
@@ -123,6 +124,8 @@ export default {
       isSubmitting: false,
       cmuitaccount_name: '',
       selectedGrade: {},
+      gpax: null,
+      credit: null
     };
   },
   components: {
@@ -138,7 +141,8 @@ export default {
     } else {
       // Handle other cases or leave as is
     }
-    this.calculateGPAAndCreditForUser()
+    this.calculateGPAAndCreditForEachGroup()
+    this.calculateGPAXAndAccumulateCredit()
   },
   methods: {
     fetchData() {
@@ -272,14 +276,15 @@ export default {
           .then(response => {
             console.log("Grade set successfully:", response.data);
             this.fetchCompletedCourses(this.cmuitaccount_name);
-            this.calculateGPAAndCreditForUser()
+            this.calculateGPAAndCreditForEachGroup()
+            this.calculateGPAXAndAccumulateCredit()
           })
           .catch(error => {
             console.error("Error setting grade:", error);
           });
       });
     },
-    calculateGPAAndCreditForUser() {
+    calculateGPAAndCreditForEachGroup() {
       apiClient.get(`http://localhost:8080/calculateAllGroupGPAAndCredit`)
         .then(response => {
           const groupGPAAndCreditMap = response.data;
@@ -293,7 +298,6 @@ export default {
           console.error("Error calculating GPA and credit:", error);
         });
     },
-
     updateGPAAndCreditForFinishedCourses() {
       this.finishedCourses.forEach(finishedCourse => {
         const groupResults = this.groupGPAAndCreditMap[finishedCourse.id];
@@ -302,6 +306,22 @@ export default {
           finishedCourse.groupEarnedCredit = groupResults.groupEarnedCredit || 'N/A';
         }
       });
+    },
+    calculateGPAXAndAccumulateCredit() {
+      apiClient.get(`http://localhost:8080/users/${this.cmuitaccount_name}/calculateGPAAndCredit`).then(response => {
+        const result = response.data;
+        this.gpax = result.gpa;
+        this.credit = result.earnedCredit;
+        this.fetchCompletedCourses(this.cmuitaccount_name);
+        this.calculateGPAAndCreditForEachGroup()
+      }).catch(error => {
+        console.error("Error getting gpax and credit", error);
+      })
+
+    },
+    findUserGrade(userCourseGrades, username) {
+      const userGrade = userCourseGrades.find(grade => grade.user.username === username);
+      return userGrade ? userGrade.grade : null;
     },
     openForm() {
       this.showForm = true;
