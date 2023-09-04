@@ -179,9 +179,6 @@ export default {
 			this.cmuitaccount_name = null
 			router.push({ name: 'home' })
 		},
-		refreshPage(){
-			if(this.cmuitaccount_name != null)
-		}
 	},
 	created() {
 		this.accessToken = LoginService.getStoredAccessToken();
