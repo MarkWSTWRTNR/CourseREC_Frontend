@@ -1,30 +1,43 @@
 <template>
 	<aside :class="`${is_expanded ? 'is-expanded' : ''}`">
-		<div class="logo">
-			<img :src="logoURL" alt="Vue" />
+		<div class="logo" :class="{ 'zoomed': is_expanded }">
+			<img :src="logoURL" alt="logo" />
 		</div>
+
 
 		<div class="menu-toggle-wrap">
 			<button class="menu-toggle" @click="ToggleMenu">
-				<span class="material-symbols-outlined">keyboard_double_arrow_right</span>
+				<span class="material-symbols-outlined"><lord-icon src="https://cdn.lordicon.com/ompsjcne.json"
+						trigger="hover" colors="outline:#121331,primary:#ebe6ef" stroke="100"
+						style="width:30px;height:30px">
+					</lord-icon></span>
 			</button>
 		</div>
 
 		<h3>Menu</h3>
 		<div class="menu">
 			<router-link to="/home" class="button">
-				<span class="material-symbols-outlined">home</span>
+				<span class="material-symbols-outlined"><lord-icon src="https://cdn.lordicon.com/etqbfrgp.json"
+						trigger="hover"
+						colors="outline:#131432,primary:#667179,secondary:#6d1225,tertiary:#b2937a,quaternary:#adb2b8"
+						style="width:50px;height:50px">
+					</lord-icon></span>
 				<span class="text">Home</span>
 			</router-link>
 		</div>
 		<div class="menu" v-if="userRole === ROLES.ROLE_ADMIN">
 			<div v-if="isLoggedIn">
 				<router-link to="/course_list" class="button">
-					<span class="material-symbols-outlined">list</span>
+					<span class="material-symbols-outlined"><lord-icon src="https://cdn.lordicon.com/iqocwzif.json"
+							trigger="hover" colors="primary:#6d1225,secondary:#b2937a" style="width:50px;height:50px">
+						</lord-icon> </span>
 					<span class="text">Course list</span>
 				</router-link>
 				<router-link to="/curriculum" class="button">
-					<span class="material-symbols-outlined">dynamic_feed</span>
+					<span class="material-symbols-outlined"><lord-icon src="https://cdn.lordicon.com/sjtkwowv.json"
+							trigger="morph" colors="primary:#6d1225,secondary:#121331,tertiary:#b2937a,quaternary:#667179"
+							style="width:50px;height:50px">
+						</lord-icon></span>
 					<span class="text">Curriculum</span>
 				</router-link>
 			</div>
@@ -32,28 +45,46 @@
 		<div class="menu" v-if="userRole === ROLES.ROLE_STUDENT">
 			<div v-if="isLoggedIn">
 				<router-link to="/dashboard" class="button">
-					<span class="material-symbols-outlined">dashboard</span>
+					<span class="material-symbols-outlined"><lord-icon src="https://cdn.lordicon.com/hbwqfgcf.json"
+							trigger="hover" colors="outline:#121331,primary:#667179,secondary:#b2937a,tertiary:#6d1225"
+							style="width:50px;height:50px">
+						</lord-icon></span>
 					<span class="text">Dashboard</span>
 				</router-link>
 				<router-link to="/course_list" class="button">
-					<span class="material-symbols-outlined">list</span>
+					<span class="material-symbols-outlined"><lord-icon src="https://cdn.lordicon.com/iqocwzif.json"
+							trigger="hover" colors="primary:#6d1225,secondary:#b2937a" style="width:50px;height:50px">
+						</lord-icon></span>
 					<span class="text">Course List</span>
 				</router-link>
 				<router-link to="/curriculum" class="button">
-					<span class="material-symbols-outlined">dynamic_feed</span>
+					<span class="material-symbols-outlined"><lord-icon src="https://cdn.lordicon.com/sjtkwowv.json"
+							trigger="morph" colors="primary:#6d1225,secondary:#121331,tertiary:#b2937a,quaternary:#667179"
+							style="width:50px;height:50px">
+						</lord-icon></span>
 					<span class="text">Curriculum</span>
 				</router-link>
 
 				<router-link to="/recommendcourse" class="button">
-					<span class="material-symbols-outlined">recommend</span>
+					<span class="material-symbols-outlined"><lord-icon src="https://cdn.lordicon.com/snnvmbic.json"
+							trigger="morph" colors="outline:#121331,primary:#6d1225,secondary:#B2937A"
+							style="width:50px;height:50px">
+						</lord-icon></span>
 					<span class="text">Recommend Course</span>
 				</router-link>
 				<router-link to="/finishedcourse" class="button">
-					<span class="material-symbols-outlined">bookmark</span>
+					<span class="material-symbols-outlined"><lord-icon src="https://cdn.lordicon.com/ttioogfl.json"
+							trigger="morph"
+							colors="primary:#121331,secondary:#667179,tertiary:#6d1225,quaternary:#b2937a,quinary:#adb2b8"
+							style="width:50px;height:50px">
+						</lord-icon></span>
 					<span class="text">Finished Course</span>
 				</router-link>
 				<router-link to="/studyguide" class="button">
-					<span class="material-symbols-outlined">star</span>
+					<span class="material-symbols-outlined"><lord-icon src="https://cdn.lordicon.com/coowbsor.json"
+							trigger="hover" colors="outline:#121331,primary:#b2937a,secondary:#6d1225,tertiary:#ebe6ef"
+							style="width:50px;height:50px">
+						</lord-icon></span>
 					<span class="text">Study Guide</span>
 				</router-link>
 			</div>
@@ -62,17 +93,25 @@
 		<div class="flex"></div>
 		<div class="menu">
 			<router-link to="/userInfo" class="button">
-				<span class="material-symbols-outlined">info</span>
+				<span><lord-icon src="https://cdn.lordicon.com/dqxvvqzi.json" trigger="hover"
+						colors="outline:#121331,primary:#b2937a,secondary:#6d1225" style="width:50px;height:50px;">
+					</lord-icon></span>
 				<span class="text">UserInfo</span>
 			</router-link>
 
 			<!-- If user is logged in, show Logout button, else show Login button -->
 			<button v-if="isLoggedIn" @click="logout" class="button">
-				<span class="material-symbols-outlined">logout</span>
+				<span class="material-symbols-outlined"><lord-icon src="https://cdn.lordicon.com/qsacmnwj.json"
+						trigger="hover" colors="outline:#121331,primary:#6d1225,secondary:#b2937a"
+						style="width:50px;height:50px">
+					</lord-icon></span>
 				<span class="text">Logout</span>
 			</button>
 			<button v-else @click="login" class="button">
-				<span class="material-symbols-outlined">login</span>
+				<span class="material-symbols-outlined"><lord-icon src="https://cdn.lordicon.com/qsacmnwj.json"
+						trigger="hover" colors="outline:#121331,primary:#b2937a,secondary:#6d1225"
+						style="width:50px;height:50px">
+					</lord-icon></span>
 				<span class="text">Login with CMU account</span>
 			</button>
 
@@ -116,7 +155,7 @@ export default {
 					window.location.href = response.data; // Redirect to cmuoauth page for authentication
 				}
 			}
-			
+
 		},
 		logout() {
 			console.log("Logout method called");
@@ -142,7 +181,7 @@ aside {
 	background-color: var(--dark);
 	color: var(--light);
 
-	width: calc(2rem + 32px);
+	width: calc(2rem + 60px);
 	overflow: hidden;
 	min-height: 100vh;
 	padding: 1rem;
@@ -157,9 +196,20 @@ aside {
 		margin-bottom: 1rem;
 
 		img {
-			width: 2rem;
+			width: 50px;
+			height: 60px;
+			transition: transform 0.2s ease-in-out;
+			/* Add transition property */
 		}
 	}
+
+	.zoomed {
+		img {
+			transform: scale(1.5);
+			/* Increase the scale for zoom effect */
+		}
+	}
+
 
 	.menu-toggle-wrap {
 		display: flex;
