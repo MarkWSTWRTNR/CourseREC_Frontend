@@ -208,11 +208,16 @@ aside {
 		margin-bottom: 1rem;
 		display: flex;
 		justify-content: center;
+
+
+
 		img {
 			width: 100px;
 			height: 100px;
 			transition: transform 0.2s ease-in-out;
+
 			/* Add transition property */
+		
 		}
 	}
 
@@ -287,7 +292,9 @@ aside {
 			}
 
 			&:hover {
+				font-size: 25px;
 				background-color: var(--dark-alt);
+				box-shadow: 0 0 30px #01FFF4;
 
 				.material-symbols-outlined,
 				.text {
