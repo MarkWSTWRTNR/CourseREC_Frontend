@@ -49,6 +49,8 @@ export default {
                 })
                 .catch((error) => {
                     console.error("Error fetching access token:", error);
+                }).finally(()=>{
+                    window.location.reload()
                 });
         },
         fetchUserInfo(accessToken) {
