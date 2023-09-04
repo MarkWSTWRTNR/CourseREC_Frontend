@@ -96,7 +96,9 @@
 				<span><lord-icon src="https://cdn.lordicon.com/dqxvvqzi.json" trigger="hover"
 						colors="outline:#121331,primary:#b2937a,secondary:#6d1225" style="width:50px;height:50px;">
 					</lord-icon></span>
-				<span class="text">UserInfo</span>
+				<span class="text">UserInfo:
+					{{ cmuitaccount_name }}
+				</span>
 			</router-link>
 
 			<!-- If user is logged in, show Logout button, else show Login button -->
@@ -120,7 +122,7 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import logoURL from '../assets/logo.png'
 import { userRole, ROLES } from '@/service/roles';
 const is_expanded = ref(localStorage.getItem("is_expanded") === "true")
@@ -129,16 +131,29 @@ const ToggleMenu = () => {
 	is_expanded.value = !is_expanded.value
 	localStorage.setItem("is_expanded", is_expanded.value)
 }
-
+onMounted(() => {
+	ToggleMenu()
+})
 </script>
 <script>
 import LoginService from '@/service/LoginService'
+import router from '@/router';
 export default {
 	data() {
 		return {
 			searchQuery: '',
 			accessToken: null,
-			userInfo: null
+			userInfo: null,
+			cmuitaccount_name: null,
+		}
+	},
+	mounted() {
+		const storedUserInfo = localStorage.getItem('userInfo');
+		if (storedUserInfo) {
+			const userInfo = JSON.parse(storedUserInfo);
+			this.cmuitaccount_name = userInfo.cmuitaccount_name; // Store cmuitaccount_name as a data property
+		} else {
+			// Handle other cases or leave as is
 		}
 	},
 	computed: {
@@ -147,15 +162,11 @@ export default {
 		}
 	},
 	methods: {
-		async login() {
-			if (!this.accessToken) {
-				const response = await LoginService.login();
-				if (response && response.data) {
-					this.accessToken = response.data;
-					window.location.href = response.data; // Redirect to cmuoauth page for authentication
-				}
-			}
-
+		login() {
+			LoginService.login().then((response) => {
+				this.accessToken = response.data;
+				window.location.href = response.data; // Redirect to cmuoauth page for authentication
+			});
 		},
 		logout() {
 			console.log("Logout method called");
@@ -165,7 +176,11 @@ export default {
 			this.accessToken = null;
 			this.userInfo = null;
 			console.log("userInfo after logout:", this.userInfo);
-			window.location.reload();
+			this.cmuitaccount_name = null
+			router.push({ name: 'home' })
+		},
+		refreshPage(){
+			if(this.cmuitaccount_name != null)
 		}
 	},
 	created() {
