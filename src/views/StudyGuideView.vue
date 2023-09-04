@@ -1,23 +1,23 @@
 <template>
   <div class="container">
-    <h2>Study Guide Recommendations by ChatGPT</h2>
+    <h2 class="white">Study Guide Recommendations by ChatGPT</h2>
     <button class="btn btn-info" @click="getRecommendation">Get Study Guide Recommendation</button>
 
     <!-- Loading State -->
-    <div v-if="loading">Loading...</div>
+    <div v-if="loading" class="white">Loading...</div>
 
     <!-- Display Finished Courses -->
     <div v-if="finishedCourses && !loading">
-      <h3>Finished Courses:</h3>
+      <h3 class="white">Finished Courses:</h3>
       <ul>
-        <li v-for="course in finishedCourses" :key="course">{{ course }}</li>
+        <li v-for="course in finishedCourses" :key="course" class="white">{{ course }}</li>
       </ul>
     </div>
 
     <!-- Display Recommendation -->
     <div v-if="recommendation && !loading">
-      <h3>Recommendation:</h3>
-      <p>{{ recommendation }}</p>
+      <h3 class="white">Recommendation:</h3>
+      <p class="white">{{ recommendation }}</p>
     </div>
   </div>
 </template>

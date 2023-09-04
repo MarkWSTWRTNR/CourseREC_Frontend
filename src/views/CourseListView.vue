@@ -5,11 +5,6 @@
     <input type="text" v-model="searchQuery" placeholder="Search courses">
     <button @click="searchCourses">Search</button>
   </div> -->
-        <div class="pagination-buttons">
-            <button @click="changePage(-1)" :disabled="currentPage === 1">Previous</button>
-            <button @click="changePage(1)" :disabled="currentPage === totalPages">Next</button>
-        </div>
-
         <div class="row">
             <div class="col-md-12">
                 <table class="table table-striped table-bordered">
@@ -49,7 +44,16 @@
                     </tbody>
                 </table>
             </div>
+            <div class="pagination-buttons">
+                <button class="custom-btn btn-5 left-button" @click="changePage(-1)" :disabled="currentPage === 1">
+                    <b>Previous</b>
+                </button>
+                <button class="custom-btn btn-5 right-button" @click="changePage(1)" :disabled="currentPage === totalPages">
+                    <b>Next</b>
+                </button>
+            </div>
         </div>
+
         <div>
             <button v-if="userRole === ROLES.ROLE_ADMIN" class="btn btn-outline-primary" @click="openForm">Add
                 courses</button>
@@ -108,6 +112,7 @@
 </template>
   
 <script>
+import '../assets/css/Button.css';
 import { userRole, ROLES } from "../service/roles"
 import vSelect from 'vue-select';
 import CourseService from '@/service/CourseService.js';
@@ -290,7 +295,7 @@ export default {
             this.showForm = false;
             this.clearForm();
             this.selectedCourse = null;
-           
+
         },
         clearForm() {
             this.courseId = '';
@@ -335,12 +340,21 @@ export default {
 
 .pagination-buttons {
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
+    align-items: center;
     margin-top: 20px;
 }
 
 .pagination-buttons button:disabled {
     opacity: 0.5;
     cursor: not-allowed;
+}
+
+.left-button {
+    justify-content: flex-start;
+}
+
+.right-button {
+    justify-content: flex-end;
 }
 </style>

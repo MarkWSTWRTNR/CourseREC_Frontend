@@ -27,7 +27,7 @@ export default {
 
 :root {
 	--primary: #E1D084;
-	--primary-alt: #22c55e;
+	--primary-alt: #ADB2B8;
 	--grey: #64748b;
 	--dark: #001C2D;
 	--dark-alt: #334155;
@@ -56,7 +56,7 @@ button {
 
 .app {
 	display: flex;
-	background-color: #E4E8E7;
+	background-color: #23282c;
 	main {
 		flex: 1 1 0;
 		padding: 2rem;

@@ -81,8 +81,9 @@
 					<span class="text">Finished Course</span>
 				</router-link>
 				<router-link to="/studyguide" class="button">
-					<span class="material-symbols-outlined"><lord-icon src="https://cdn.lordicon.com/coowbsor.json"
-							trigger="hover" colors="outline:#121331,primary:#b2937a,secondary:#6d1225,tertiary:#ebe6ef"
+					<span class="material-symbols-outlined"><lord-icon src="https://cdn.lordicon.com/zfuqnliu.json"
+							trigger="hover"
+							colors="outline:#121331,primary:#3a3347,secondary:#667179,tertiary:#e1d084,quaternary:#6d1225,quinary:#b2937a,senary:#e3c0ac"
 							style="width:50px;height:50px">
 						</lord-icon></span>
 					<span class="text">Study Guide</span>
@@ -217,7 +218,7 @@ aside {
 			transition: transform 0.2s ease-in-out;
 
 			/* Add transition property */
-		
+
 		}
 	}
 
@@ -304,7 +305,7 @@ aside {
 
 			&.router-link-exact-active {
 				background-color: var(--dark-alt);
-				border-right: 5px solid var(--primary);
+				border-right: 5px solid var(--primary-alt);
 
 				.material-symbols-outlined,
 				.text {

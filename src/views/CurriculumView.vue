@@ -5,7 +5,7 @@
     <router-link to="/courseprogram"><button> Create Program</button></router-link>
   </div>
 
-  <h3>Select Faculty:</h3>
+  <h3 class="white">Select Faculty:</h3>
   <select v-model="selectedFaculty">
     <option value="">-- Select Faculty --</option>
     <option v-for="faculty in faculties" :value="faculty.name" :key="faculty.facultyId">
@@ -13,7 +13,7 @@
     </option>
   </select>
 
-  <h3 v-if="selectedFaculty">Select Program:</h3>
+  <h3 v-if="selectedFaculty" class="white">Select Program:</h3>
   <select v-if="selectedFaculty" v-model="selectedProgram">
     <option value="">-- Select Program --</option>
     <option v-for="program in filteredPrograms" :value="program.programId" :key="program.programId">
@@ -85,8 +85,8 @@
               @click="removeGroupCourse(groupCourse.id)">
               Delete Group
             </button>
-            <h4>{{ groupCourse.groupName }}</h4>
-            <h6>Mininum credit required:{{ groupCourse.credit }}</h6>
+            <h4 class="white">{{ groupCourse.groupName }}</h4>
+            <h6 class="white">Mininum credit required:{{ groupCourse.credit }}</h6>
             <table class="table table-striped table-bordered">
               <thead>
                 <tr>
@@ -114,11 +114,11 @@
                 </tr>
               </tbody>
             </table>
-            <h5>Description: {{ groupCourse.text }}</h5>
+            <h5 class="white">Description: {{ groupCourse.text }}</h5>
             <button v-if="userRole === ROLES.ROLE_ADMIN" class="btn btn-outline-info" @click="editGroupCourse(groupCourse)">
               Edit
             </button>
-            <hr>
+            <hr class="white">
           </div>
         </div>
       </div>
@@ -145,7 +145,7 @@
                     }))" multiple :reduce="option => option.value" :placeholder="'Select a course'">
                     </v-select>
 
-                    <label for="yearAndSemester">Group Name:</label>
+                    <label for="yearAndSemester" >Group Name:</label>
                     <select v-model="yearAndSemester" id="yearAndSemester" required>
                       <option value="">-- Select Year and Semester --</option>
                       <option>Year 1 Semester 1</option>
@@ -182,8 +182,8 @@
             <button v-if="userRole === ROLES.ROLE_ADMIN" class="btn btn-outline-danger" @click="removeStudyPlan(studyPlan.id)">
               Delete Group
             </button>
-            <h4>{{ studyPlan.yearAndSemester }}</h4>
-            <h6>credit: {{ studyPlan.credit }}</h6>
+            <h4 class="white">{{ studyPlan.yearAndSemester }}</h4>
+            <h6 class="white">credit: {{ studyPlan.credit }}</h6>
             <table class="table table-striped table-bordered">
               <thead>
                 <tr>
@@ -211,11 +211,11 @@
                 </tr>
               </tbody>
             </table>
-            <h5>Note: {{ studyPlan.text }}</h5>
+            <h5 class="white">Description: {{ studyPlan.text }}</h5>
             <button v-if="userRole === ROLES.ROLE_ADMIN" class="btn btn-outline-info" @click="editStudyPlan(studyPlan)">
               Edit
             </button>
-            <hr>
+            <hr class="white">
           </div>
         </div>
       </div>
@@ -631,6 +631,9 @@ export default {
 </script>
 
 <style>
+.white{
+  color: white;
+}
 .accordion {
   border: 1px solid #ccc;
   margin-bottom: 10px;
