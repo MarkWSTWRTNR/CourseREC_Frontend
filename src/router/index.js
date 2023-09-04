@@ -12,6 +12,7 @@ import CourseProgramView from "../components/CourseProgramView.vue"
 import UserInfo from '../components/UserInfo.vue';
 import LoginService from "@/service/LoginService";
 import HomeListView from "@/views/HomeListView.vue"
+import ForbiddenPage from "../components/ForbiddenPage.vue"
 import { userRole, ROLES } from "@/service/roles";
 const routes = [
   {
@@ -85,7 +86,14 @@ const routes = [
     name: 'UserInfo',
     component: UserInfo,
 
-  }
+  },
+  {
+    path: '/forbiddenPage',
+    name: 'ForbiddenPage', 
+    component: ForbiddenPage
+  },
+
+
 
 ];
 
@@ -93,37 +101,37 @@ const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes,
 });
-// router.beforeEach(async (to, from, next) => {
-//   // Check if the route requires authentication
-//   if (to.matched.some(record => record.meta.roles)) {
-//     // Check if user is not logged in
-//     if (!LoginService.isLoggedIn()) {
-//       // Redirect to login page or another appropriate page
-//       next({ name: 'UserInfo' });
-//     } else {
-//       // Fetch user data to get the role
-//       try {
-//         const response = await LoginService.fetchUserInfo(localStorage.getItem('access_token'));
-//         const userData = response.data;
-//         const userRoleValue = userData.role;
+router.beforeEach(async (to, from, next) => {
+  // Check if the route requires authentication
+  if (to.matched.some(record => record.meta.roles)) {
+    // Check if user is not logged in
+    if (!LoginService.isLoggedIn()) {
+      // Redirect to login page or another appropriate page
+      next({ name: 'UserInfo' });
+    } else {
+      // Fetch user data to get the role
+      try {
+        const response = await LoginService.fetchUserInfo(localStorage.getItem('access_token'));
+        const userData = response.data;
+        const userRoleValue = userData.role;
 
-//         // Check if the user's role matches the required roles
-//         if (to.meta.roles.includes(userRoleValue)) {
-//           userRole.value = userRoleValue; // Update the user role
-//           next(); // Allow navigation
-//         } else {
-//           // Redirect to a forbidden or access-denied page
-//           next({ name: 'ForbiddenPage' }); // Adjust the name as needed
-//         }
-//       } catch (error) {
-//         console.error("Error fetching user info:", error);
-//         next(false); // Prevent navigation on error
-//       }
-//     }
-//   } else {
-//     next(); // Allow navigation for routes that don't require authentication
-//   }
-// });
+        // Check if the user's role matches the required roles
+        if (to.meta.roles.includes(userRoleValue)) {
+          userRole.value = userRoleValue; // Update the user role
+          next(); // Allow navigation
+        } else {
+          // Redirect to a forbidden or access-denied page
+          next({ name: 'ForbiddenPage' }); // Adjust the name as needed
+        }
+      } catch (error) {
+        console.error("Error fetching user info:", error);
+        next(false); // Prevent navigation on error
+      }
+    }
+  } else {
+    next(); // Allow navigation for routes that don't require authentication
+  }
+});
 
 
 export default router;

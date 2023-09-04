@@ -61,7 +61,7 @@
                       <option>Free Electives</option>
                     </select><br>
                     <!-- Add the text and credit fields -->
-                    <label for="text">Text:</label>
+                    <label for="text">Description:</label>
                     <input v-model="text" type="text" id="text">
                     <br>
                     <label for="credit">Credit:</label>
@@ -114,7 +114,7 @@
                 </tr>
               </tbody>
             </table>
-            <h5>Note: {{ groupCourse.text }}</h5>
+            <h5>Description: {{ groupCourse.text }}</h5>
             <button v-if="userRole === ROLES.ROLE_ADMIN" class="btn btn-outline-info" @click="editGroupCourse(groupCourse)">
               Edit
             </button>
