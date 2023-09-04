@@ -206,10 +206,11 @@ aside {
 
 	.logo {
 		margin-bottom: 1rem;
-
+		display: flex;
+		justify-content: center;
 		img {
-			width: 50px;
-			height: 60px;
+			width: 100px;
+			height: 100px;
 			transition: transform 0.2s ease-in-out;
 			/* Add transition property */
 		}
