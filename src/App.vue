@@ -33,6 +33,7 @@ export default {
 	--dark-alt: #334155;
 	--light: #f1f5f9;
 	--sidebar-width: 300px;
+	--background-page: #23282c;
 }
 
 * {
@@ -43,7 +44,7 @@ export default {
 }
 
 body {
-	background: var(--light);
+	background:var(--background-page);
 }
 
 button {
@@ -56,7 +57,7 @@ button {
 
 .app {
 	display: flex;
-	background-color: #23282c;
+	background-color: var(--background-page);
 	main {
 		flex: 1 1 0;
 		padding: 2rem;
