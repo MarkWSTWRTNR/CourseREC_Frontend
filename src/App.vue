@@ -26,7 +26,7 @@ export default {
 <style lang="scss">
 
 :root {
-	--primary: #4ade80;
+	--primary: #E1D084;
 	--primary-alt: #22c55e;
 	--grey: #64748b;
 	--dark: #001C2D;
