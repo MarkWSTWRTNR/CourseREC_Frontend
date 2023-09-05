@@ -1,40 +1,41 @@
 <template>
   <div class="container">
     <div>
-      <h2>{{ course.name }}</h2>
-      <p><strong>Course ID:</strong> {{ course.courseId }}</p>
-      <p><strong>Credit:</strong> {{ course.credit }}</p>
-      <p><strong>Grading Type:</strong> {{ course.gradingtype }}</p>
-      <p><strong>Course Prerequisite:</strong>
+      <h2 class="white">{{ course.name }}</h2>
+      <p class="white"><strong>Course ID:</strong> {{ course.courseId }}</p>
+      <p class="white"><strong>Credit:</strong> {{ course.credit }}</p>
+      <p class="white"><strong>Grading Type:</strong> {{ course.gradingtype }}</p>
+      <p class="white"><strong>Course Prerequisite:</strong>
         <li v-for="prerequisite in course.prereq" :key="prerequisite.courseId">
           {{ prerequisite.courseId }} - {{ prerequisite.name }}
         </li>
-      <p><strong>Programs:</strong>
-        <li v-for="program in course.groupCourses" :key="program.id">
+      <p>
+        <strong class="white">Programs:</strong>
+        <li class="white" v-for="program in course.groupCourses" :key="program.id">
           {{ program.programs.name }} ({{ program.programs.programId }})
         </li>
       </p>
       </p>
-      <p><strong>Description:</strong> {{ course.description }}</p>
+      <p class="white"><strong>Description:</strong> {{ course.description }}</p>
     </div>
     <p><strong></strong></p>
-    <h3>Comments</h3>
+    <h3 class="white">Comments</h3>
     <div class="comment-box" v-for="comment in course.comments" :key="comment.id">
       <div class="comment-header">
-        <strong>{{ comment.user.username }}</strong>
+        <strong class="white">{{ comment.user.username }}</strong>
         <button v-if="comment.user.username === cmuitaccount_name" type="button" class="btn btn-danger"
           @click="deleteComment(comment.id)">Delete</button>
       </div>
       <div class="comment-content">
-        {{ comment.comment }}
+        <p class="white">{{ comment.comment }}</p>
       </div>
       <div class="comment-rating star-filled">
         <span v-html="generateStarIcons(comment.ratingScore)"></span>
       </div>
     </div>
-    <h3>Add Comment</h3>
-    <textarea v-model="newCommentText"></textarea>
-    <label for="rating">Rating:</label>
+    <h3 class="white">Add Comment</h3>
+    <textarea v-model="newCommentText"></textarea> <br>
+    <label class="white" for="rating">Rating:</label>
     <input type="number" id="rating" v-model="newRating" min="1" max="5" />
     <button type="button" class="btn btn-primary" @click="addComment">Add Comment</button>
 
@@ -77,9 +78,12 @@ export default {
         });
     },
     deleteComment(commentId) {
+      const confirmDelete = confirm("Are you sure you want to delete this comment?");
+            if (!confirmDelete) {
+                return;
+            }
       axios.delete(`http://localhost:8080/users/${this.cmuitaccount_name}/comments/${commentId}`)
         .then(response => {
-          // Remove the deleted comment from the UI
           this.course.comments = this.course.comments.filter(comment => comment.id !== commentId);
         })
         .catch(error => {
@@ -133,9 +137,12 @@ export default {
   justify-content: space-between;
   align-items: center;
 }
+
 .star-filled {
-  color: gold; /* Change this to the color you want */
+  color: gold;
+  /* Change this to the color you want */
 }
+
 .comment-content {
   margin-top: 5px;
 }

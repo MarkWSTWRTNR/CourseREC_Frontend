@@ -346,7 +346,7 @@ export default {
 }
 
 .pagination-buttons button:disabled {
-    opacity: 0.5;
+    opacity: 0.2;
     cursor: not-allowed;
 }
 

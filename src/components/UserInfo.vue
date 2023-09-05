@@ -7,13 +7,13 @@
             <div v-else>
                 <h2>User Information</h2>
                 <div>
-                    <p><strong>Cmuitaccount Name:</strong> {{ userInfo.cmuitaccount_name }}</p>
-                    <p><strong>CMU IT Account:</strong> {{ userInfo.cmuitaccount }}</p>
-                    <p><strong>Student ID:</strong> {{ userInfo.student_id }}</p>
-                    <p><strong>Name (Thai):</strong> {{ userInfo.firstname_TH }} {{ userInfo.lastname_TH }}</p>
-                    <p><strong>Name (English):</strong> {{ userInfo.firstname_EN }} {{ userInfo.lastname_EN }}</p>
-                    <p><strong>Organization Name:</strong> {{ userInfo.organization_name_TH }}</p>
-                    <p><strong>Organization Name:</strong> {{ userInfo.organization_name_EN }}</p>
+                    <p class="white"><strong>Cmuitaccount Name:</strong> {{ userInfo.cmuitaccount_name }}</p>
+                    <p class="white"><strong>CMU IT Account:</strong> {{ userInfo.cmuitaccount }}</p>
+                    <p class="white"><strong>Student ID:</strong> {{ userInfo.student_id }}</p>
+                    <p class="white"><strong>Name (Thai):</strong> {{ userInfo.firstname_TH }} {{ userInfo.lastname_TH }}</p>
+                    <p class="white"><strong>Name (English):</strong> {{ userInfo.firstname_EN }} {{ userInfo.lastname_EN }}</p>
+                    <p class="white"><strong>Organization Name:</strong> {{ userInfo.organization_name_TH }}</p>
+                    <p class="white"><strong>Organization Name:</strong> {{ userInfo.organization_name_EN }}</p>
                 </div>
             </div>
         </div>

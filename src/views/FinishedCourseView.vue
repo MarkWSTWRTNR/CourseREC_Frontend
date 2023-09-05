@@ -159,6 +159,7 @@ export default {
       apiClient.get(`http://localhost:8080/users/${username}/completedCourses`)
         .then(response => {
           this.finishedCourses = response.data;
+          this.calculateGPAAndCreditForEachGroup();
           console.log("Finished Courses:", this.finishedCourses);
         }).catch(error => {
           if (error.response && error.response.status === 404) {
@@ -179,12 +180,14 @@ export default {
       apiClient
         .post(`http://localhost:8080/users/${this.cmuitaccount_name}/completedCourses`, courseToAdd)
         .then(response => {
+          alert('Add finished group course successfully');
           console.log('Finished course added:', response.data);
           this.fetchCompletedCourses(this.cmuitaccount_name);
           this.clearForm();
           this.showForm = false;
         })
         .catch(error => {
+          alert('Error finished group course');
           console.error('Error adding finished course:', error);
         }).finally(() => {
           this.isSubmitting = false; // Reset the submission flag
@@ -224,12 +227,14 @@ export default {
       apiClient
         .put(`http://localhost:8080/users/${this.cmuitaccount_name}/completedCourses/${this.selectedFinishedCourse.id}`, updatedFinishedCourse)
         .then(response => {
+          alert('Updated finished group course successfully');
           console.log('Finished course updated:', response.data);
           this.fetchCompletedCourses(this.cmuitaccount_name);
           this.clearForm();
           this.showForm = false;
         })
         .catch(error => {
+          alert('Error Updated finished group course');
           console.error('Error updating finished course:', error);
         })
         .finally(() => {
@@ -244,19 +249,26 @@ export default {
         apiClient
           .put(`http://localhost:8080/users/${this.cmuitaccount_name}/completedCourses/${finishedCourse.id}`, finishedCourse)
           .then(response => {
+            alert('Course removed from finished group course');
             console.log('Course removed from finished course:', response.data);
             this.fetchCompletedCourses(this.cmuitaccount_name);
           })
           .catch(error => {
+            alert('Error removing course from finished group course');
             console.error('Error removing course from finished course:', error);
           });
       }
     },
     removeGroupFinishedCourse(groupId) {
+      const confirmDelete = confirm("Are you sure you want to delete this finished group course?");
+            if (!confirmDelete) {
+                return;
+            }
       // Send a DELETE request to the server to delete the group of finished courses
       apiClient
         .delete(`http://localhost:8080/users/${this.cmuitaccount_name}/completedCourses/${groupId}`)
         .then(response => {
+          alert('Group of finished courses deleted');
           console.log('url', groupId)
           console.log('Group of finished courses deleted:', response.data);
           // After successful deletion, fetch the updated list of finished courses

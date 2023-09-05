@@ -1,3 +1,3 @@
 <template>
-    Welcome Page
+    <h1 class="white">This Home page</h1>
 </template>
