@@ -16,7 +16,7 @@
 
 		<h3>Menu</h3>
 		<div class="menu">
-			<router-link to="/home" class="button">
+			<router-link to="/" class="button">
 				<span class="material-symbols-outlined"><lord-icon src="https://cdn.lordicon.com/etqbfrgp.json"
 						trigger="hover"
 						colors="outline:#131432,primary:#667179,secondary:#6d1225,tertiary:#b2937a,quaternary:#adb2b8"

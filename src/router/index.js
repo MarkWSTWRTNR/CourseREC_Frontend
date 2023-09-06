@@ -16,7 +16,7 @@ import ForbiddenPage from "../components/ForbiddenPage.vue"
 import { userRole, ROLES } from "@/service/roles";
 const routes = [
   {
-    path: "/home",
+    path: "/",
     name: "home",
     component: HomeListView,
   }
