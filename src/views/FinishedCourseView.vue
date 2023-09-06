@@ -124,8 +124,8 @@ export default {
       isSubmitting: false,
       cmuitaccount_name: '',
       selectedGrade: {},
-      gpax: null,
-      credit: null
+      gpax: 0,
+      credit: 0
     };
   },
   components: {
@@ -160,6 +160,7 @@ export default {
         .then(response => {
           this.finishedCourses = response.data;
           this.calculateGPAAndCreditForEachGroup();
+          this.calculateGPAXAndAccumulateCredit();
           console.log("Finished Courses:", this.finishedCourses);
         }).catch(error => {
           if (error.response && error.response.status === 404) {
@@ -273,6 +274,8 @@ export default {
           console.log('Group of finished courses deleted:', response.data);
           // After successful deletion, fetch the updated list of finished courses
           this.fetchCompletedCourses(this.cmuitaccount_name);
+          this.calculateGPAXAndAccumulateCredit()
+          window.location.reload();
         })
         .catch(error => {
           console.error('Error deleting group of finished courses:', error);
@@ -324,7 +327,7 @@ export default {
         const result = response.data;
         this.gpax = result.gpa;
         this.credit = result.earnedCredit;
-        this.fetchCompletedCourses(this.cmuitaccount_name);
+        
         this.calculateGPAAndCreditForEachGroup()
       }).catch(error => {
         console.error("Error getting gpax and credit", error);
