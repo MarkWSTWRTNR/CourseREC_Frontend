@@ -12,7 +12,7 @@
       <p>
         <strong class="white">Programs:</strong>
         <li class="white" v-for="program in course.groupCourses" :key="program.id">
-          {{ program.programs.name }} ({{ program.programs.programId }})
+          {{ program.programs.name }} ({{ program.groupName }})
         </li>
       </p>
       </p>
