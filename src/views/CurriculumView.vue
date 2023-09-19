@@ -57,7 +57,7 @@
                       <option>General Education | Elective courses | Active Citizen</option>
                       <option>Field of Specialization| Core Courses</option>
                       <option>Field of Specialization | Major Courses | Required Courses</option>
-                      <option>Field of Specialization | Major Elective</option>
+                      <option>Field of Specialization | Major Courses | Free Elective</option>
                       <option>Free Electives</option>
                     </select><br>
                     <!-- Add the text and credit fields -->

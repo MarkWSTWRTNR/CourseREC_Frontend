@@ -102,6 +102,14 @@
     </div>
     <p class="white">GPAX : {{ gpax }}</p>
     <p class="white">Accumulate credit: {{ credit }}</p>
+    <div class="white">
+      <h3>Course Credit Tracking</h3>
+      <ul>
+        <li v-for="(credit, program) in courseCreditTracking" :key="program">
+          {{ program }}: {{ credit }}
+        </li>
+      </ul>
+    </div>
   </div>
 </template>
 
@@ -125,19 +133,22 @@ export default {
       cmuitaccount_name: '',
       selectedGrade: {},
       gpax: 0,
-      credit: 0
+      credit: 0,
+      courseCreditTracking: {},
     };
   },
   components: {
     'v-select': vSelect,
   },
   mounted() {
-    this.fetchData();
+
     const storedUserInfo = localStorage.getItem('userInfo');
     if (storedUserInfo) {
       const userInfo = JSON.parse(storedUserInfo);
       this.cmuitaccount_name = userInfo.cmuitaccount_name; // Store cmuitaccount_name as a data property
       this.fetchCompletedCourses(this.cmuitaccount_name); // Fetch completed courses using cmuitaccount_name as username
+      this.fetchCourseCreditTracking();
+      this.fetchData();
     } else {
       // Handle other cases or leave as is
     }
@@ -145,6 +156,17 @@ export default {
     this.calculateGPAXAndAccumulateCredit()
   },
   methods: {
+    fetchCourseCreditTracking() {
+      // Make an API request to fetch the course credit tracking data
+      apiClient.get(`http://localhost:8080/users/${this.cmuitaccount_name}/course-credit-tracking`)
+        .then(response => {
+          this.courseCreditTracking = response.data;
+          console.log("Course Credit Tracking Data:", this.courseCreditTracking);
+        })
+        .catch(error => {
+          console.error("Error fetching course credit tracking data:", error);
+        });
+    },
     fetchData() {
       apiClient.get('http://localhost:8080/allCourse')
         .then(response => {
@@ -262,9 +284,9 @@ export default {
     },
     removeGroupFinishedCourse(groupId) {
       const confirmDelete = confirm("Are you sure you want to delete this finished group course?");
-            if (!confirmDelete) {
-                return;
-            }
+      if (!confirmDelete) {
+        return;
+      }
       // Send a DELETE request to the server to delete the group of finished courses
       apiClient
         .delete(`http://localhost:8080/users/${this.cmuitaccount_name}/completedCourses/${groupId}`)
@@ -327,7 +349,7 @@ export default {
         const result = response.data;
         this.gpax = result.gpa;
         this.credit = result.earnedCredit;
-        
+
         this.calculateGPAAndCreditForEachGroup()
       }).catch(error => {
         console.error("Error getting gpax and credit", error);
