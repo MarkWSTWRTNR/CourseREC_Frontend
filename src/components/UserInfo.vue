@@ -75,8 +75,8 @@ export default {
             }
             return [];
         },
-    },mounted() {
-        
+    }, mounted() {
+
         const storedUserInfo = localStorage.getItem('userInfo');
         const accessToken = localStorage.getItem('access_token');
         if (storedUserInfo) {
@@ -143,12 +143,11 @@ export default {
             // Make an HTTP POST request to set the program
             apiClient.post(`http://localhost:8080/users/${this.cmuitaccount_name}/set-program`, program)
                 .then((response) => {
-                    // Handle the response if needed
+                    this.fetchData();
                     console.log('Program set successfully', response.data);
                 })
                 .catch((error) => {
-                    // Handle any errors that occur during the request
-                    console.error('Error setting program:', error);
+                    alert("Something went wrong");
                 });
         },
         handleRedirectWithCode(code) {
@@ -187,6 +186,6 @@ export default {
                 });
         }
     },
-    
+
 }
 </script>
