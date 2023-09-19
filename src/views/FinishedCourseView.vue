@@ -181,6 +181,7 @@ export default {
       apiClient.get(`http://localhost:8080/users/${username}/completedCourses`)
         .then(response => {
           this.finishedCourses = response.data;
+          this.fetchCourseCreditTracking();
           this.calculateGPAAndCreditForEachGroup();
           this.calculateGPAXAndAccumulateCredit();
           console.log("Finished Courses:", this.finishedCourses);
