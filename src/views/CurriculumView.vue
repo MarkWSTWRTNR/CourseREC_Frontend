@@ -6,7 +6,7 @@
   </div>
 
   <h3 class="white">Select Faculty:</h3>
-  <select v-model="selectedFaculty">
+  <select v-model="selectedFaculty" class="form-control">
     <option value="">-- Select Faculty --</option>
     <option v-for="faculty in faculties" :value="faculty.name" :key="faculty.facultyId">
       {{ faculty.name }}
@@ -14,7 +14,7 @@
   </select>
 
   <h3 v-if="selectedFaculty" class="white">Select Program:</h3>
-  <select v-if="selectedFaculty" v-model="selectedProgram">
+  <select v-if="selectedFaculty" v-model="selectedProgram" class="form-control">
     <option value="">-- Select Program --</option>
     <option v-for="program in filteredPrograms" :value="program.programId" :key="program.programId">
       {{ program.name }}
