@@ -71,6 +71,17 @@
                   <option value="D_PLUS">D+</option>
                   <option value="D">D</option>
                   <option value="F">F</option>
+                  <option value="S">S</option>
+                  <option value="U">U</option>
+                  <option value="V">V</option>
+                  <option value="W">W</option>
+                  <option value="CE">CE</option>
+                  <option value="CP">CP</option>
+                  <option value="CS">CS</option>
+                  <option value="CT">CT</option>
+                  <option value="CX">CX</option>
+                  <option value="I">I</option>
+                  <option value="P">P</option>
                 </select>
                 <button class="btn btn-outline-danger"
                   @click="removeCourseFromFinishedCourse(finishedCourse, course.courseId)">
