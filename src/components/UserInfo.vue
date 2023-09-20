@@ -22,25 +22,26 @@
                 </div>
             </div>
         </div>
-        <h2>Set User to Program</h2>
-        <h3 class="white">Select Faculty:</h3>
-        <select v-model="selectedFaculty" class="form-control">
-            <option value="">-- Select Faculty --</option>
-            <option v-for="faculty in faculties" :value="faculty.name" :key="faculty.facultyId">
-                {{ faculty.name }}
-            </option>
-        </select>
+        <div class="white">
+            <h2>Set User to Program</h2>
+            <h3>Select Faculty:</h3>
+            <select v-model="selectedFaculty" class="form-control">
+                <option value="">-- Select Faculty --</option>
+                <option v-for="faculty in faculties" :value="faculty.name" :key="faculty.facultyId">
+                    {{ faculty.name }}
+                </option>
+            </select>
 
-        <h3 v-if="selectedFaculty" class="white">Select Program:</h3>
-        <select v-if="selectedFaculty" v-model="selectedProgram" class="form-control">
-            <option value="">-- Select Program --</option>
-            <option v-for="program in filteredPrograms" :value="program.programId" :key="program.programId">
-                {{ program.name }}
-            </option>
-        </select>
+            <h3 v-if="selectedFaculty">Select Program:</h3>
+            <select v-if="selectedFaculty" v-model="selectedProgram" class="form-control">
+                <option value="">-- Select Program --</option>
+                <option v-for="program in filteredPrograms" :value="program.programId" :key="program.programId">
+                    {{ program.name }}
+                </option>
+            </select>
 
-        <button @click="setUserToProgram(selectedProgram)" class="btn btn-primary">Set User to Program</button>
-
+            <button @click="setUserToProgram(selectedProgram)" class="btn btn-primary">Set User to Program</button>
+        </div>
         <pre>
         <!-- {{ userInfo }} -->
     </pre>
