@@ -106,7 +106,7 @@ export default {
             this.newRating = 1;
           })
           .catch(error => {
-            console.log(error);
+            alert('You has already commented on this course');
           });
       }
     },
