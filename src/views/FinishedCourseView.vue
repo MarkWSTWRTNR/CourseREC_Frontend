@@ -123,8 +123,6 @@
 import apiClient from '@/service/AxiosClient';
 import vSelect from 'vue-select';
 import { userRole, ROLES } from '@/service/roles';
-import { watchEffect } from 'vue';
-
 export default {
   data() {
     return {
@@ -160,12 +158,9 @@ export default {
     } else {
       // Handle other cases or leave as is
     }
+    this.calculateGPAAndCreditForEachGroup();
+    this.calculateGPAXAndAccumulateCredit();
 
-
-    watchEffect(() => {
-      this.calculateGPAAndCreditForEachGroup();
-      this.calculateGPAXAndAccumulateCredit();
-    });
   },
   methods: {
     fetchCourseCreditTracking() {
@@ -190,43 +185,48 @@ export default {
 
     },
     fetchCompletedCourses(username) {
-      apiClient.get(`http://localhost:8080/users/${username}/completedCourses`)
-        .then(response => {
-          this.finishedCourses = response.data;
+  apiClient.get(`http://localhost:8080/users/${username}/completedCourses`)
+    .then(response => {
+      this.finishedCourses = response.data;
 
-          this.finishedCourses.forEach(finishedCourse => {
-            finishedCourse.courses.forEach(course => {
-              const uniqueKey = `${finishedCourse.id}-${course.courseId}`;
+      this.finishedCourses.forEach(finishedCourse => {
+        finishedCourse.courses.forEach(course => {
+          const uniqueKey = `${finishedCourse.id}-${course.courseId}`;
 
-              // Filter userCourseGrades for the logged-in user
-              const userSpecificGrade = course.userCourseGrades.find(gradeEntry => gradeEntry.user.username === username);
+          // Filter userCourseGrades for the logged-in user
+          const userSpecificGrade = course.userCourseGrades.find(gradeEntry => gradeEntry.user.username === username);
 
-              if (userSpecificGrade) {
-                this.selectedGrade = { ...this.selectedGrade, [uniqueKey]: userSpecificGrade.grade || 'N/A' };
-              } else {
-                this.selectedGrade = { ...this.selectedGrade, [uniqueKey]: 'N/A' };
-              }
-            });
-          });
-
-          console.log(this.selectedGrade); // Print to console for debugging
-          this.finishedCourses = response.data;
-          this.fetchCourseCreditTracking();
-          this.calculateGPAAndCreditForEachGroup();
-          this.calculateGPAXAndAccumulateCredit();
-          console.log("Finished Courses:", this.finishedCourses);
-        }).catch(error => {
-          if (error.response && error.response.status === 404) {
-            this.showNoCoursesMessage = true;
+          if (userSpecificGrade) {
+            this.selectedGrade[uniqueKey] = userSpecificGrade.grade || 'N/A';
+          } else {
+            this.selectedGrade[uniqueKey] = 'N/A';
           }
-          console.log(error);
         });
-    },
+      });
+
+      console.log(this.selectedGrade); // Print to console for debugging
+      this.finishedCourses = response.data;
+      this.fetchCourseCreditTracking();
+      this.calculateGPAAndCreditForEachGroup();
+      this.calculateGPAXAndAccumulateCredit();
+      console.log("Finished Courses:", this.finishedCourses);
+    }).catch(error => {
+      if (error.response && error.response.status === 404) {
+        this.showNoCoursesMessage = true;
+      }
+      console.log(error);
+    });
+},
+
     getGrade(finishedCourseId, courseId) {
       const key = `${finishedCourseId}-${courseId}`;
       return this.selectedGrade[key] || 'N/A';
     },
     setGradeForCourse(finishedGroupCourseId, courseId, grade) {
+      const uniqueKey = `${finishedGroupCourseId}-${courseId}`;
+      this.selectedGrade[uniqueKey] = grade; // Directly set the grade
+      console.log(`Setting grade for key ${uniqueKey} to ${grade}`);
+
       apiClient.post(`http://localhost:8080/users/${this.cmuitaccount_name}/finishedGroupCourses/${finishedGroupCourseId}/courses/${courseId}/setGrade`, {
         grade: grade
       })
