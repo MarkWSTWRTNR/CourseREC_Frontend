@@ -53,15 +53,17 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="course in finishedCourse.courses" :key="course.id">
+            <tr v-for="course in finishedCourse.courses" :key="`${finishedCourse.id}-${course.courseId}`">
               <td>{{ course.courseId }}</td>
               <td>{{ course.name }}</td>
               <td>{{ course.credit }}</td>
               <td>
-                {{ findUserGrade(course.userCourseGrades, cmuitaccount_name) || 'N/A' }}
+                {{ getGrade(finishedCourse.id, course.courseId) }}
+
               </td>
               <td>
-                <select v-model="selectedGrade[course.courseId]">
+                <select v-model="selectedGrade[`${finishedCourse.id}-${course.courseId}`]"
+                  @change="setGradeForCourse(finishedCourse.id, course.courseId, selectedGrade[`${finishedCourse.id}-${course.courseId}`])">
                   <option value="">-- Select Grade --</option>
                   <option value="A">A</option>
                   <option value="B_PLUS">B+</option>
@@ -88,13 +90,6 @@
                   Remove
                 </button>
                 <router-link :to="'/courseByCourseId/' + course.courseId">Description</router-link>
-              </td>
-            </tr>
-            <tr>
-              <td colspan="4"></td>
-              <td>
-                <button type="button" class="btn btn-dark" @click="setGradeForCourses(finishedCourse.courses)">Set
-                  Grades</button>
               </td>
             </tr>
           </tbody>
@@ -128,6 +123,8 @@
 import apiClient from '@/service/AxiosClient';
 import vSelect from 'vue-select';
 import { userRole, ROLES } from '@/service/roles';
+import { watchEffect } from 'vue';
+
 export default {
   data() {
     return {
@@ -163,8 +160,12 @@ export default {
     } else {
       // Handle other cases or leave as is
     }
-    this.calculateGPAAndCreditForEachGroup()
-    this.calculateGPAXAndAccumulateCredit()
+
+
+    watchEffect(() => {
+      this.calculateGPAAndCreditForEachGroup();
+      this.calculateGPAXAndAccumulateCredit();
+    });
   },
   methods: {
     fetchCourseCreditTracking() {
@@ -192,6 +193,24 @@ export default {
       apiClient.get(`http://localhost:8080/users/${username}/completedCourses`)
         .then(response => {
           this.finishedCourses = response.data;
+
+          this.finishedCourses.forEach(finishedCourse => {
+            finishedCourse.courses.forEach(course => {
+              const uniqueKey = `${finishedCourse.id}-${course.courseId}`;
+
+              // Filter userCourseGrades for the logged-in user
+              const userSpecificGrade = course.userCourseGrades.find(gradeEntry => gradeEntry.user.username === username);
+
+              if (userSpecificGrade) {
+                this.selectedGrade = { ...this.selectedGrade, [uniqueKey]: userSpecificGrade.grade || 'N/A' };
+              } else {
+                this.selectedGrade = { ...this.selectedGrade, [uniqueKey]: 'N/A' };
+              }
+            });
+          });
+
+          console.log(this.selectedGrade); // Print to console for debugging
+          this.finishedCourses = response.data;
           this.fetchCourseCreditTracking();
           this.calculateGPAAndCreditForEachGroup();
           this.calculateGPAXAndAccumulateCredit();
@@ -201,6 +220,23 @@ export default {
             this.showNoCoursesMessage = true;
           }
           console.log(error);
+        });
+    },
+    getGrade(finishedCourseId, courseId) {
+      const key = `${finishedCourseId}-${courseId}`;
+      return this.selectedGrade[key] || 'N/A';
+    },
+    setGradeForCourse(finishedGroupCourseId, courseId, grade) {
+      apiClient.post(`http://localhost:8080/users/${this.cmuitaccount_name}/finishedGroupCourses/${finishedGroupCourseId}/courses/${courseId}/setGrade`, {
+        grade: grade
+      })
+        .then(response => {
+          alert('Grade set successfully');
+          this.fetchCompletedCourses(this.cmuitaccount_name);
+        })
+        .catch(error => {
+          alert('Error setting grade');
+          console.error('Error setting grade:', error);
         });
     },
     addCourseToFinishedCourse() {
@@ -315,24 +351,6 @@ export default {
           console.error('Error deleting group of finished courses:', error);
         });
     },
-    setGradeForCourses(courses) {
-      courses.forEach(course => {
-        const courseId = course.courseId;
-        const grade = this.selectedGrade[courseId];
-        const gradeRequestBody = { grade }; // Create the request body with the selected grade
-
-        apiClient.post(`http://localhost:8080/users/${this.cmuitaccount_name}/courses/${courseId}/setGrade`, gradeRequestBody)
-          .then(response => {
-            console.log("Grade set successfully:", response.data);
-            this.fetchCompletedCourses(this.cmuitaccount_name);
-            this.calculateGPAAndCreditForEachGroup()
-            this.calculateGPAXAndAccumulateCredit()
-          })
-          .catch(error => {
-            console.error("Error setting grade:", error);
-          });
-      });
-    },
     calculateGPAAndCreditForEachGroup() {
       apiClient.get(`http://localhost:8080/calculateAllGroupGPAAndCredit`)
         .then(response => {
@@ -367,10 +385,6 @@ export default {
         console.error("Error getting gpax and credit", error);
       })
 
-    },
-    findUserGrade(userCourseGrades, username) {
-      const userGrade = userCourseGrades.find(grade => grade.user.username === username);
-      return userGrade ? userGrade.grade : null;
     },
     openForm() {
       this.showForm = true;
