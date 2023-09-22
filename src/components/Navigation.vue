@@ -12,17 +12,24 @@
                 <!-- only Admin can see -->
                 <li v-if="isAdmin"><router-link class="link" :to="{ name: 'curriculum' }"> Course list</router-link></li>
                 <li v-if="isAdmin"><router-link class="link" :to="{ name: 'courselist' }"> Curriculum</router-link></li>
-                <li v-if="isAdmin"><router-link class="link" :to="{ name: 'home' }"> UserInfo: {{ cmuitaccount_name
-                }}</router-link></li>
+
+
                 <!-- only student can see -->
-                <li v-if="isStudent"><router-link class="link" :to="{ name: 'curriculum' }"> Dashboard</router-link></li>
+                <li v-if="isStudent"><router-link class="link" :to="{ name: 'dashboard' }"> Dashboard</router-link></li>
                 <li v-if="isStudent"><router-link class="link" :to="{ name: 'courselist' }"> Course List</router-link></li>
                 <li v-if="isStudent"><router-link class="link" :to="{ name: 'curriculum' }"> Curriculum</router-link></li>
-                <li v-if="isStudent"><router-link class="link" :to="{ name: 'courselist' }"> Recommend Course</router-link>
+                <li v-if="isStudent"><router-link class="link" :to="{ name: 'recommendcourse' }"> Recommend
+                        Course</router-link>
                 </li>
-                <li v-if="isStudent"><router-link class="link" :to="{ name: 'curriculum' }"> Finished Course</router-link>
+                <li v-if="isStudent"><router-link class="link" :to="{ name: 'finishedcourse' }"> Finished
+                        Course</router-link>
                 </li>
-                <li v-if="isStudent"><router-link class="link" :to="{ name: 'courselist' }"> Study Guide</router-link></li>
+                <li v-if="isStudent"><router-link class="link" :to="{ name: 'studyguide' }"> Study Guide</router-link></li>
+                <li v-if="isStudent"><router-link class="link" :to="{ name: 'UserInfo' }"> UserInfo: {{ cmuitaccount_name
+                }}</router-link></li>
+                <!-- only Admin can see -->
+                <li v-if="isAdmin"><router-link class="link" :to="{ name: 'UserInfo' }"> UserInfo: {{ cmuitaccount_name
+                }}</router-link></li>
                 <!-- Everyone can see -->
                 <li v-if="isLoggedIn">
                     <router-link class="link" to="#" @click.native="logout">
@@ -49,17 +56,17 @@
                             </lord-icon> Home</router-link></li>
 
                     <!-- only Admin can see -->
-                    <li v-if="isAdmin"><router-link class="link" :to="{ name: 'curriculum' }"><lord-icon
+                    <li v-if="isAdmin"><router-link class="link" :to="{ name: 'courselist' }"><lord-icon
                                 src="https://cdn.lordicon.com/iqocwzif.json" trigger="hover"
                                 colors="primary:#6d1225,secondary:#b2937a" style="width:50px;height:50px">
                             </lord-icon> Course list</router-link></li>
-                    <li v-if="isAdmin"><router-link class="link" :to="{ name: 'courselist' }"><lord-icon
+                    <li v-if="isAdmin"><router-link class="link" :to="{ name: 'curriculum' }"><lord-icon
                                 src="https://cdn.lordicon.com/sjtkwowv.json" trigger="morph"
                                 colors="primary:#6d1225,secondary:#121331,tertiary:#b2937a,quaternary:#667179"
                                 style="width:50px;height:50px">
                             </lord-icon> Curriculum</router-link></li>
                     <!-- only student can see -->
-                    <li v-if="isStudent"><router-link class="link" :to="{ name: 'curriculum' }"><lord-icon
+                    <li v-if="isStudent"><router-link class="link" :to="{ name: 'dashboard' }"><lord-icon
                                 src="https://cdn.lordicon.com/hbwqfgcf.json" trigger="hover"
                                 colors="outline:#121331,primary:#667179,secondary:#b2937a,tertiary:#6d1225"
                                 style="width:50px;height:50px">
@@ -76,11 +83,11 @@
                                 style="width:50px;height:50px">
                             </lord-icon> Curriculum</router-link>
                     </li>
-                    <li v-if="isStudent"><router-link class="link" :to="{ name: 'courselist' }"><lord-icon
+                    <li v-if="isStudent"><router-link class="link" :to="{ name: 'recommendcourse' }"><lord-icon
                                 src="https://cdn.lordicon.com/snnvmbic.json" trigger="morph"
                                 colors="outline:#121331,primary:#6d1225,secondary:#B2937A" style="width:50px;height:50px">
                             </lord-icon> Recommend Course</router-link></li>
-                    <li v-if="isStudent"><router-link class="link" :to="{ name: 'curriculum' }"><lord-icon
+                    <li v-if="isStudent"><router-link class="link" :to="{ name: 'finishedcourse' }"><lord-icon
                                 src="https://cdn.lordicon.com/ttioogfl.json" trigger="morph"
                                 colors="primary:#121331,secondary:#667179,tertiary:#6d1225,quaternary:#b2937a,quinary:#adb2b8"
                                 style="width:50px;height:50px">
@@ -91,7 +98,12 @@
                                 style="width:50px;height:50px">
                             </lord-icon> Study Guide</router-link>
                     </li>
-                    <li v-if="isStudent"><router-link class="link" :to="{ name: 'home' }"><lord-icon
+                    <li v-if="isStudent"><router-link class="link" :to="{ name: 'UserInfo' }"><lord-icon
+                                src="https://cdn.lordicon.com/dqxvvqzi.json" trigger="hover"
+                                colors="outline:#121331,primary:#b2937a,secondary:#6d1225" style="width:50px;height:50px;">
+                            </lord-icon> UserInfo: {{ cmuitaccount_name }}</router-link></li>
+                     <!-- only Admin can see -->       
+                    <li v-if="isAdmin"><router-link class="link" :to="{ name: 'UserInfo' }"><lord-icon
                                 src="https://cdn.lordicon.com/dqxvvqzi.json" trigger="hover"
                                 colors="outline:#121331,primary:#b2937a,secondary:#6d1225" style="width:50px;height:50px;">
                             </lord-icon> UserInfo: {{ cmuitaccount_name }}</router-link></li>
