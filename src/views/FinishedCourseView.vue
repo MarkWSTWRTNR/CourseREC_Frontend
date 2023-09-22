@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="home hero-text container">
     <button class="btn btn-outline-primary" @click="openForm">Add Finished Course</button>
     <div v-if="showForm">
       <div class="overlay">
@@ -437,7 +437,10 @@ export default {
 };
 </script>
 
-<style scoped>
+<style scoped lang="scss">
+.home {
+    padding-top: 200px;
+}
 .popup {
   border: 1px solid #ccc;
   padding: 20px;

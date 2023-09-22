@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="home hero-text container">
     <div>
       <!-- <div>
       <input type="text" v-model="searchQuery" placeholder="Search program">
@@ -39,7 +39,8 @@
           </div>
         </div>
         <div>
-          <button v-if="userRole === ROLES.ROLE_ADMIN" class="btn btn-outline-primary" @click="openForm">Add Program</button>
+          <button v-if="userRole === ROLES.ROLE_ADMIN" class="btn btn-outline-primary" @click="openForm">Add
+            Program</button>
           <div v-if="showForm">
             <div class="overlay">
               <div class="popup">
@@ -212,3 +213,8 @@ export default {
   }
 };
 </script>
+<style lang="scss" scoped>
+.home {
+  padding-top: 200px; // or whatever value is needed to push the content below the navbar
+}
+</style>

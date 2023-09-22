@@ -1,5 +1,5 @@
 <template>
-    <div class="container">
+    <div class="home hero-text container">
         <div>
             <div v-if="loading">
                 Loading user info...
@@ -181,3 +181,8 @@ export default {
 
 }
 </script>
+<style lang="scss" scoped>
+.home {
+    padding-top: 200px; // or whatever value is needed to push the content below the navbar
+}
+</style>

@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="home hero-text container">
     <div>
       <div class="row">
         <div class="col-md-12">
@@ -27,7 +27,8 @@
         </div>
       </div>
       <div>
-        <button v-if="userRole === ROLES.ROLE_ADMIN" class="btn btn-outline-primary" @click="openForm">Add Faculty</button>
+        <button v-if="userRole === ROLES.ROLE_ADMIN" class="btn btn-outline-primary" @click="openForm">Add
+          Faculty</button>
         <div v-if="showForm">
           <div class="overlay">
             <div class="popup">
@@ -111,9 +112,9 @@ export default {
     },
     deleteFaculty(id) {
       const confirmDelete = confirm("Are you sure you want to delete this faculty?");
-            if (!confirmDelete) {
-                return;
-            }
+      if (!confirmDelete) {
+        return;
+      }
       axios
         .delete(`http://localhost:8080/deleteFaculty/${id}`)
         .then(response => {
@@ -177,3 +178,8 @@ export default {
   }
 };
 </script>
+<style lang="scss" scoped>
+.home {
+  padding-top: 200px; // or whatever value is needed to push the content below the navbar
+}
+</style>

@@ -1,113 +1,120 @@
 <!-- CourseListView.vue -->
 <template>
-    <div class="container">
-        <!-- <div>
+    <div class="home">
+        <section class="hero">
+            <div class="hero-text container">
+                <!-- <div>
     <input type="text" v-model="searchQuery" placeholder="Search courses">
     <button @click="searchCourses">Search</button>
   </div> -->
-        <div class="row">
-            <div class="col-md-12">
-                <table class="table table-striped table-bordered">
-                    <thead>
-                        <tr>
-                            <th>Course ID</th>
-                            <th>Course Name</th>
-                            <th>Course Credit</th>
-                            <th>Grading Type</th>
-                            <th>Course Prerequisite</th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <!-- <tr v-if="displayCourses.length === 0">
+                <div class="row">
+                    <div class="col-md-12">
+                        <table class="table table-striped table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Course ID</th>
+                                    <th>Course Name</th>
+                                    <th>Course Credit</th>
+                                    <th>Grading Type</th>
+                                    <th>Course Prerequisite</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- <tr v-if="displayCourses.length === 0">
                         <td colspan="6" class="text-center">No courses found</td>
                     </tr> -->
-                        <tr v-for="record in records" :key="record.courseId">
-                            <td>{{ record.courseId }}</td>
-                            <td>{{ record.name }}</td>
-                            <td>{{ record.credit }}</td>
-                            <td>{{ record.gradingtype }}</td>
-                            <td>
-                                <li style="text-align: left;" v-for="prerequisite in record.prerequisite"
-                                    :key="prerequisite.courseId">
-                                    {{ prerequisite.courseId }} - {{ prerequisite.name }}
-                                </li>
-                            </td>
-                            <td>
-                                <button v-if="userRole === ROLES.ROLE_ADMIN" class="btn btn-outline-danger"
-                                    @click="deleteCourse(record.id)">Delete</button>
-                                <button v-if="userRole === ROLES.ROLE_ADMIN" class="btn btn-outline-info"
-                                    @click="editCourse(record); openForm()">Edit</button><br>
-                                <router-link :to="'/courseByCourseId/' + record.courseId">Description</router-link>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-            <div class="pagination-buttons">
-                <button class="custom-btn btn-5 left-button" @click="changePage(-1)" :disabled="currentPage === 1">
-                    <b>Previous</b>
-                </button>
-                <button class="custom-btn btn-5 right-button" @click="changePage(1)" :disabled="currentPage === totalPages">
-                    <b>Next</b>
-                </button>
-            </div>
-        </div>
+                                <tr v-for="record in records" :key="record.courseId">
+                                    <td>{{ record.courseId }}</td>
+                                    <td>{{ record.name }}</td>
+                                    <td>{{ record.credit }}</td>
+                                    <td>{{ record.gradingtype }}</td>
+                                    <td>
+                                        <li style="text-align: left;" v-for="prerequisite in record.prerequisite"
+                                            :key="prerequisite.courseId">
+                                            {{ prerequisite.courseId }} - {{ prerequisite.name }}
+                                        </li>
+                                    </td>
+                                    <td>
+                                        <button v-if="userRole === ROLES.ROLE_ADMIN" class="btn btn-outline-danger"
+                                            @click="deleteCourse(record.id)">Delete</button>
+                                        <button v-if="userRole === ROLES.ROLE_ADMIN" class="btn btn-outline-info"
+                                            @click="editCourse(record); openForm()">Edit</button><br>
+                                        <router-link :to="'/courseByCourseId/' + record.courseId">Description</router-link>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="pagination-buttons">
+                        <button class="custom-btn btn-5 left-button" @click="changePage(-1)" :disabled="currentPage === 1">
+                            <b>Previous</b>
+                        </button>
+                        <button class="custom-btn btn-5 right-button" @click="changePage(1)"
+                            :disabled="currentPage === totalPages">
+                            <b>Next</b>
+                        </button>
+                    </div>
+                </div>
+                <div>
+                    <button v-if="userRole === ROLES.ROLE_ADMIN" class="btn btn-outline-primary" @click="openForm">Add
+                        courses</button>
+                    <div v-if="showForm">
+                        <div class="overlay">
+                            <div class="popup">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <h3>{{ selectedCourse ? 'Edit Course' : 'Add Course' }}</h3>
+                                        <form @submit.prevent="addCourse">
+                                            <div class="form-group">
+                                                <label for="courseId">Course ID</label>
+                                                <input type="text" class="form-control" id="courseId" v-model="courseId"
+                                                    required>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="courseName">Course Name</label>
+                                                <input type="text" class="form-control" id="courseName" v-model="name"
+                                                    required>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="courseCredit">Course Credit</label>
+                                                <input type="text" class="form-control" id="courseCredit" v-model="credit"
+                                                    required>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="gradingType">Grading Type</label>
+                                                <input type="text" class="form-control" id="gradingType"
+                                                    v-model="gradingtype" required>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="coursePrerequisite">Course Prerequisite</label>
+                                                <v-select class="form-control left-align" id="coursePrerequisite"
+                                                    v-model="selectedPrerequisites" :options="allCourse.map(allcourse => ({
+                                                        label: allcourse.courseId + ' - ' + allcourse.name,
+                                                        value: { courseId: allcourse.courseId, name: allcourse.name } // Include both courseId and name
+                                                    }))" multiple :reduce="option => option.value"
+                                                    :placeholder="'Select prerequisite courses'">
+                                                </v-select>
 
-        <div>
-            <button v-if="userRole === ROLES.ROLE_ADMIN" class="btn btn-outline-primary" @click="openForm">Add
-                courses</button>
-            <div v-if="showForm">
-                <div class="overlay">
-                    <div class="popup">
-                        <div class="row">
-                            <div class="col-md-12">
-                                <h3>{{ selectedCourse ? 'Edit Course' : 'Add Course' }}</h3>
-                                <form @submit.prevent="addCourse">
-                                    <div class="form-group">
-                                        <label for="courseId">Course ID</label>
-                                        <input type="text" class="form-control" id="courseId" v-model="courseId" required>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="description">Description</label>
+                                                <input type="text" class="form-control" id="description"
+                                                    v-model="description" required>
+                                            </div>
+                                            <button v-if="selectedCourse" class="btn btn-outline-success"
+                                                @click="updateCourse">Update</button>
+                                            <button v-else class="btn btn-primary" type="submit">Create</button>
+                                            <button @click="cancelForm">Cancel</button>
+                                        </form>
                                     </div>
-                                    <div class="form-group">
-                                        <label for="courseName">Course Name</label>
-                                        <input type="text" class="form-control" id="courseName" v-model="name" required>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="courseCredit">Course Credit</label>
-                                        <input type="text" class="form-control" id="courseCredit" v-model="credit" required>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="gradingType">Grading Type</label>
-                                        <input type="text" class="form-control" id="gradingType" v-model="gradingtype"
-                                            required>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="coursePrerequisite">Course Prerequisite</label>
-                                        <v-select class="form-control left-align" id="coursePrerequisite"
-                                            v-model="selectedPrerequisites" :options="allCourse.map(allcourse => ({
-                                                label: allcourse.courseId + ' - ' + allcourse.name,
-                                                value: { courseId: allcourse.courseId, name: allcourse.name } // Include both courseId and name
-                                            }))" multiple :reduce="option => option.value"
-                                            :placeholder="'Select prerequisite courses'">
-                                        </v-select>
-
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="description">Description</label>
-                                        <input type="text" class="form-control" id="description" v-model="description"
-                                            required>
-                                    </div>
-                                    <button v-if="selectedCourse" class="btn btn-outline-success"
-                                        @click="updateCourse">Update</button>
-                                    <button v-else class="btn btn-primary" type="submit">Create</button>
-                                    <button @click="cancelForm">Cancel</button>
-                                </form>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
+        </section>
     </div>
 </template>
   
@@ -311,7 +318,11 @@ export default {
 }
 </script>
   
-<style>
+<style lang="scss" scoped>
+.home {
+    padding-top: 200px; // or whatever value is needed to push the content below the navbar
+}
+
 .overlay {
     position: fixed;
     top: 0;

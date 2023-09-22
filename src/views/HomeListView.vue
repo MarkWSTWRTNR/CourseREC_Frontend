@@ -2,11 +2,11 @@
     <div class="home">
         <section class="hero">
             <div class="hero-text container">
-                <h4>Vue Responsive Nav Menu</h4>
+                <h4>Project</h4>
                 <hr />
                 <h2>
-                    With Vue <br />
-                    Animations
+                    CourseREC <br />
+                    SYSTEM
                 </h2>
                 <hr />
             </div>
@@ -30,7 +30,7 @@ export default {
   
 <style lang="scss" scoped>
 .hero {
-    background-color: rgb(119, 160, 223);
+    background: var(--background-page);
     background-attachment: fixed;
     position: relative;
     height: 100vh;

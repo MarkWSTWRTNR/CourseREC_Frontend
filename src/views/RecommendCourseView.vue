@@ -1,5 +1,5 @@
 <template>
-    <div class="container white">
+    <div class="home hero-text container">
         <h1>Recommended Courses</h1>
         <div v-if="isLoading">Loading...</div>
         <div v-else>
@@ -73,7 +73,9 @@ export default {
 };
 </script>
   
-<style>
-/* Add your CSS styles here if needed */
+<style lang="scss" scoped>
+.home {
+    padding-top: 200px; // or whatever value is needed to push the content below the navbar
+}
 </style>
   

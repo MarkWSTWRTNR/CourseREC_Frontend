@@ -44,4 +44,15 @@ export default {
 	max-width: 1140px;
 	margin: 0 auto;
 }
+
+:root {
+	--primary: #E1D084;
+	--primary-alt: #ADB2B8;
+	--grey: #64748b;
+	--dark: #001C2D;
+	--dark-alt: #334155;
+	--light: #f1f5f9;
+	--sidebar-width: 300px;
+	--background-page: #23282c;
+}
 </style>

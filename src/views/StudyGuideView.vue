@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="home hero-text container">
     <h2 class="white">Study Guide Recommendations by ChatGPT</h2>
     <button class="btn btn-info" @click="getRecommendation">Get Study Guide Recommendation</button>
 
@@ -76,3 +76,8 @@ export default {
   }
 };
 </script>
+<style lang="scss" scoped>
+.home {
+  padding-top: 200px; // or whatever value is needed to push the content below the navbar
+}
+</style>

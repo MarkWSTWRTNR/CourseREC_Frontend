@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="home hero-text container">
     <div>
       <h2 class="white">{{ course.name }}</h2>
       <p class="white"><strong>Course ID:</strong> {{ course.courseId }}</p>
@@ -79,9 +79,9 @@ export default {
     },
     deleteComment(commentId) {
       const confirmDelete = confirm("Are you sure you want to delete this comment?");
-            if (!confirmDelete) {
-                return;
-            }
+      if (!confirmDelete) {
+        return;
+      }
       axios.delete(`http://localhost:8080/users/${this.cmuitaccount_name}/comments/${commentId}`)
         .then(response => {
           this.course.comments = this.course.comments.filter(comment => comment.id !== commentId);
@@ -124,8 +124,11 @@ export default {
   }
 };
 </script>
+<style lang="scss" scoped>
+.home {
+  padding-top: 200px; // or whatever value is needed to push the content below the navbar
+}
 
-<style scoped>
 .comment-box {
   border: 1px solid #ccc;
   padding: 10px;
