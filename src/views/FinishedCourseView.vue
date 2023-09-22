@@ -247,7 +247,7 @@ export default {
       })
         .then(response => {
           alert('Grade set successfully');
-
+          this.fetchCompletedCourses(this.cmuitaccount_name);
           // Update the userCourseGrades array
           const gradeEntryIndex = this.userCourseGrades.findIndex(entry =>
             entry.finishedGroupCourse.id === finishedGroupCourseId &&
@@ -349,21 +349,17 @@ export default {
         });
     },
     removeCourseFromFinishedCourse(finishedCourse, courseId) {
-      const courseIndex = finishedCourse.courses.findIndex(course => course.courseId === courseId);
-      if (courseIndex !== -1) {
-        finishedCourse.courses.splice(courseIndex, 1);
-        apiClient
-          .put(`http://localhost:8080/users/${this.cmuitaccount_name}/completedCourses/${finishedCourse.id}`, finishedCourse)
-          .then(response => {
-            alert('Course removed from finished group course');
-            console.log('Course removed from finished course:', response.data);
-            this.fetchCompletedCourses(this.cmuitaccount_name);
-          })
-          .catch(error => {
-            alert('Error removing course from finished group course');
-            console.error('Error removing course from finished course:', error);
-          });
-      }
+      apiClient
+        .delete(`http://localhost:8080/users/${this.cmuitaccount_name}/finishedGroupCourses/${finishedCourse.id}/courses/${courseId}/removeCourse`)
+        .then(response => {
+          alert('Course and its grade removed from finished group course');
+          console.log('Course and its grade removed:', response.data);
+          this.fetchCompletedCourses(this.cmuitaccount_name);
+        })
+        .catch(error => {
+          alert('Error removing course or its grade from finished group course');
+          console.error('Error:', error);
+        });
     },
     removeGroupFinishedCourse(groupId) {
       const confirmDelete = confirm("Are you sure you want to delete this finished group course?");
