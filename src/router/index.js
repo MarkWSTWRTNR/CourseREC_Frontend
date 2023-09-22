@@ -2,7 +2,6 @@ import { createRouter, createWebHistory } from "vue-router";
 import CurriculumView from "../views/CurriculumView.vue";
 import CourseListView from "@/views/CourseListView.vue";
 import DashboardView from "../views/DashboardView.vue";
-import StudentStudyPlanView from "../views/StudentStudyPlanView.vue";
 import RecommendCourseView from "../views/RecommendCourseView.vue";
 import StudyGuideView from "../views/StudyGuideView.vue";
 import FinishedCourseView from "../views/FinishedCourseView.vue";
@@ -37,12 +36,6 @@ const routes = [
     path: "/dashboard",
     name: "dashboard",
     component: DashboardView,
-    meta: { roles: [ROLES.ROLE_STUDENT] }
-  },
-  {
-    path: "/studentstudyplan",
-    name: "studentstudyplan",
-    component: StudentStudyPlanView,
     meta: { roles: [ROLES.ROLE_STUDENT] }
   },
   {
