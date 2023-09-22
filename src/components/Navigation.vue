@@ -8,6 +8,7 @@
                 <!-- Everyone can see -->
                 <li><router-link class="link" :to="{ name: 'home' }"> Home</router-link></li>
 
+
                 <!-- only Admin can see -->
                 <li v-if="isAdmin"><router-link class="link" :to="{ name: 'curriculum' }"> Course list</router-link></li>
                 <li v-if="isAdmin"><router-link class="link" :to="{ name: 'courselist' }"> Curriculum</router-link></li>
@@ -22,6 +23,17 @@
                 <li v-if="isStudent"><router-link class="link" :to="{ name: 'curriculum' }"> Finished Course</router-link>
                 </li>
                 <li v-if="isStudent"><router-link class="link" :to="{ name: 'courselist' }"> Study Guide</router-link></li>
+                <!-- Everyone can see -->
+                <li v-if="isLoggedIn">
+                    <router-link class="link" to="#" @click.native="logout">
+                        <span class="text">Logout</span>
+                    </router-link>
+                </li>
+                <li v-else>
+                    <router-link class="link" to="#" @click.native="login">
+                        <span class="text">Login with CMU account</span>
+                    </router-link>
+                </li>
             </ul>
             <!-- Hamburger bar -->
             <div class="icon">
@@ -35,6 +47,7 @@
                                 colors="outline:#131432,primary:#667179,secondary:#6d1225,tertiary:#b2937a,quaternary:#adb2b8"
                                 style="width:50px;height:50px">
                             </lord-icon> Home</router-link></li>
+
                     <!-- only Admin can see -->
                     <li v-if="isAdmin"><router-link class="link" :to="{ name: 'curriculum' }"><lord-icon
                                 src="https://cdn.lordicon.com/iqocwzif.json" trigger="hover"
@@ -82,6 +95,23 @@
                                 src="https://cdn.lordicon.com/dqxvvqzi.json" trigger="hover"
                                 colors="outline:#121331,primary:#b2937a,secondary:#6d1225" style="width:50px;height:50px;">
                             </lord-icon> UserInfo: {{ cmuitaccount_name }}</router-link></li>
+                    <!-- Everyone can see -->
+                    <li v-if="isLoggedIn">
+                        <router-link class="link" to="#" @click.native="logout">
+                            <lord-icon src="https://cdn.lordicon.com/qsacmnwj.json" trigger="hover"
+                                colors="outline:#121331,primary:#6d1225,secondary:#b2937a" style="width:50px;height:50px">
+                            </lord-icon>
+                            <span class="text">Logout</span>
+                        </router-link>
+                    </li>
+                    <li v-else>
+                        <router-link class="link" to="#" @click.native="login">
+                            <lord-icon src="https://cdn.lordicon.com/qsacmnwj.json" trigger="hover"
+                                colors="outline:#121331,primary:#b2937a,secondary:#6d1225" style="width:50px;height:50px">
+                            </lord-icon>
+                            <span class="text">Login with CMU account</span>
+                        </router-link>
+                    </li>
                 </ul>
             </transition>
         </nav>
@@ -90,7 +120,8 @@
   
 <script>
 import { userRole, ROLES } from '@/service/roles';
-
+import LoginService from '@/service/LoginService';
+import router from '@/router';
 export default {
     name: "navigation",
     data() {
@@ -99,7 +130,10 @@ export default {
             scrollPosition: null,
             mobile: null,
             mobileNav: null,
-            widowWidth: null
+            widowWidth: null,
+            accessToken: null,
+            userInfo: null,
+            cmuitaccount_name: null,
         }
     },
     computed: {
@@ -108,14 +142,23 @@ export default {
         },
         isStudent() {
             return userRole.value === ROLES.ROLE_STUDENT;
+        },
+        isLoggedIn() {
+            return !!this.accessToken;
         }
     },
     created() {
+        this.accessToken = LoginService.getStoredAccessToken();
         window.addEventListener('resize', this.checkScreen);
         this.checkScreen();
     },
     mounted() {
         window.addEventListener("scroll", this.updateScroll);
+        const storedUserInfo = localStorage.getItem('userInfo');
+        if (storedUserInfo) {
+            const userInfo = JSON.parse(storedUserInfo);
+            this.cmuitaccount_name = userInfo.cmuitaccount_name;
+        }
     },
     methods: {
         toggleMobileNav() {
@@ -130,14 +173,28 @@ export default {
             this.scrolledNav = false;
         },
         checkScreen() {
-            this.widowWidth = window.innerWidth;
-            if (this.widowWidth <= 750) {
+            this.windowWidth = window.innerWidth;
+            if (this.windowWidth <= 750) {
                 this.mobile = true;
                 return;
             }
             this.mobile = false;
             this.mobileNav = false;
-        }
+        },
+        login() {
+            LoginService.login().then((response) => {
+                this.accessToken = response.data;
+                window.location.href = response.data; // Redirect for authentication
+            });
+        },
+        logout() {
+            localStorage.removeItem('access_token');
+            localStorage.removeItem('userInfo');
+            this.accessToken = null;
+            this.userInfo = null;
+            this.cmuitaccount_name = null;
+            router.push({ name: 'home' });
+        },
     }
 };
 </script>
