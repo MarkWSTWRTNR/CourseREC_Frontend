@@ -141,6 +141,7 @@ export default {
       gpax: 0,
       credit: 0,
       courseCreditTracking: {},
+      userCourseGrades: [],
     };
   },
   components: {
@@ -155,12 +156,13 @@ export default {
       this.fetchCompletedCourses(this.cmuitaccount_name); // Fetch completed courses using cmuitaccount_name as username
       this.fetchCourseCreditTracking();
       this.fetchData();
+
     } else {
       // Handle other cases or leave as is
     }
     this.calculateGPAAndCreditForEachGroup();
     this.calculateGPAXAndAccumulateCredit();
-
+    this.fetchUserCourseGrades();
   },
   methods: {
     fetchCourseCreditTracking() {
@@ -184,43 +186,55 @@ export default {
         });
 
     },
-    fetchCompletedCourses(username) {
-  apiClient.get(`http://localhost:8080/users/${username}/completedCourses`)
-    .then(response => {
-      this.finishedCourses = response.data;
-
-      this.finishedCourses.forEach(finishedCourse => {
-        finishedCourse.courses.forEach(course => {
-          const uniqueKey = `${finishedCourse.id}-${course.courseId}`;
-
-          // Filter userCourseGrades for the logged-in user
-          const userSpecificGrade = course.userCourseGrades.find(gradeEntry => gradeEntry.user.username === username);
-
-          if (userSpecificGrade) {
-            this.selectedGrade[uniqueKey] = userSpecificGrade.grade || 'N/A';
-          } else {
-            this.selectedGrade[uniqueKey] = 'N/A';
-          }
+    fetchUserCourseGrades() {
+      apiClient.get('http://localhost:8080/users/userCourseGrades')
+        .then(response => {
+          this.userCourseGrades = response.data;
+        })
+        .catch(error => {
+          console.error("Error fetching user course grades:", error);
         });
-      });
+    },
+    fetchCompletedCourses(username) {
+      apiClient.get(`http://localhost:8080/users/${username}/completedCourses`)
+        .then(response => {
+          this.finishedCourses = response.data;
 
-      console.log(this.selectedGrade); // Print to console for debugging
-      this.finishedCourses = response.data;
-      this.fetchCourseCreditTracking();
-      this.calculateGPAAndCreditForEachGroup();
-      this.calculateGPAXAndAccumulateCredit();
-      console.log("Finished Courses:", this.finishedCourses);
-    }).catch(error => {
-      if (error.response && error.response.status === 404) {
-        this.showNoCoursesMessage = true;
-      }
-      console.log(error);
-    });
-},
+          this.finishedCourses.forEach(finishedCourse => {
+            finishedCourse.courses.forEach(course => {
+              const uniqueKey = `${finishedCourse.id}-${course.courseId}`;
 
+              // Filter userCourseGrades for the logged-in user
+              const userSpecificGrade = course.userCourseGrades.find(gradeEntry => gradeEntry.user.username === username);
+
+              if (userSpecificGrade) {
+                this.selectedGrade[uniqueKey] = userSpecificGrade.grade;
+              } else {
+                this.selectedGrade[uniqueKey] = 'N/A';
+              }
+            });
+          });
+
+          console.log(this.selectedGrade); // Print to console for debugging
+          this.fetchUserCourseGrades();
+          this.fetchCourseCreditTracking();
+          this.calculateGPAAndCreditForEachGroup();
+          this.calculateGPAXAndAccumulateCredit();
+          console.log("Finished Courses:", this.finishedCourses);
+        }).catch(error => {
+          if (error.response && error.response.status === 404) {
+            this.showNoCoursesMessage = true;
+          }
+          console.log(error);
+        });
+    }
+    ,
     getGrade(finishedCourseId, courseId) {
-      const key = `${finishedCourseId}-${courseId}`;
-      return this.selectedGrade[key] || 'N/A';
+      const gradeEntry = this.userCourseGrades.find(entry =>
+        entry.finishedGroupCourse.id === finishedCourseId &&
+        entry.course.courseId === courseId
+      );
+      return gradeEntry ? gradeEntry.grade : 'N/A';
     },
     setGradeForCourse(finishedGroupCourseId, courseId, grade) {
       const uniqueKey = `${finishedGroupCourseId}-${courseId}`;
