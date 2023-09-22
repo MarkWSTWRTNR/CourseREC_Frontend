@@ -204,19 +204,21 @@ export default {
             finishedCourse.courses.forEach(course => {
               const uniqueKey = `${finishedCourse.id}-${course.courseId}`;
 
-              // Filter userCourseGrades for the logged-in user
-              const userSpecificGrade = course.userCourseGrades.find(gradeEntry => gradeEntry.user.username === username);
+              // Find the grade for the specific course and finished group
+              const gradeEntry = this.userCourseGrades.find(entry =>
+                entry.finishedGroupCourse.id === finishedCourse.id &&
+                entry.course.courseId === course.courseId
+              );
 
-              if (userSpecificGrade) {
-                this.selectedGrade[uniqueKey] = userSpecificGrade.grade;
-              } else {
-                this.selectedGrade[uniqueKey] = 'N/A';
-              }
+              // Set the grade in the selectedGrade object
+              this.selectedGrade[uniqueKey] = gradeEntry ? gradeEntry.grade : '';
+
             });
           });
 
           console.log(this.selectedGrade); // Print to console for debugging
           this.fetchUserCourseGrades();
+          this.getGrade();
           this.fetchCourseCreditTracking();
           this.calculateGPAAndCreditForEachGroup();
           this.calculateGPAXAndAccumulateCredit();
@@ -238,7 +240,6 @@ export default {
     },
     setGradeForCourse(finishedGroupCourseId, courseId, grade) {
       const uniqueKey = `${finishedGroupCourseId}-${courseId}`;
-      this.selectedGrade[uniqueKey] = grade; // Directly set the grade
       console.log(`Setting grade for key ${uniqueKey} to ${grade}`);
 
       apiClient.post(`http://localhost:8080/users/${this.cmuitaccount_name}/finishedGroupCourses/${finishedGroupCourseId}/courses/${courseId}/setGrade`, {
@@ -246,7 +247,27 @@ export default {
       })
         .then(response => {
           alert('Grade set successfully');
-          this.fetchCompletedCourses(this.cmuitaccount_name);
+
+          // Update the userCourseGrades array
+          const gradeEntryIndex = this.userCourseGrades.findIndex(entry =>
+            entry.finishedGroupCourse.id === finishedGroupCourseId &&
+            entry.course.courseId === courseId
+          );
+
+          if (gradeEntryIndex !== -1) {
+            this.userCourseGrades[gradeEntryIndex].grade = grade;
+          } else {
+            // If the grade entry doesn't exist, add a new one
+            this.userCourseGrades.push({
+              finishedGroupCourse: { id: finishedGroupCourseId },
+              course: { courseId: courseId },
+              grade: grade
+            });
+          }
+
+          // Update the selectedGrade object
+          this.selectedGrade[uniqueKey] = grade;
+
         })
         .catch(error => {
           alert('Error setting grade');
