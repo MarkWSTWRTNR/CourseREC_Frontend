@@ -76,32 +76,29 @@ export default {
             }
             return [];
         },
-    }, mounted() {
-
+    }, watch: {
+        cmuitaccount_name(newValue, oldValue) {
+            if (newValue !== oldValue) {
+                this.fetchData();
+            }
+        }
+    },
+    async mounted() {
         const storedUserInfo = localStorage.getItem('userInfo');
         const accessToken = localStorage.getItem('access_token');
         if (storedUserInfo) {
-            const userInfo = JSON.parse(storedUserInfo);
-            this.cmuitaccount_name = userInfo.cmuitaccount_name; // Store cmuitaccount_name as a data property
-            this.fetchData();
-        } else {
-            // Handle other cases or leave as is
-        }
-        if (storedUserInfo) {
             this.userInfo = JSON.parse(storedUserInfo);
+            this.cmuitaccount_name = this.userInfo.cmuitaccount_name;
             this.loading = false;
         }
 
         if (accessToken) {
-            this.fetchUserInfo(accessToken);
+            await this.fetchUserInfo(accessToken);
         } else {
-            // If the user is redirected back to this component with a code in the URL, handle it
             const urlParams = new URLSearchParams(window.location.search);
             const code = urlParams.get('code');
-            console.log("Authorization Code:", code);
-
             if (code) {
-                this.handleRedirectWithCode(code);
+                await this.handleRedirectWithCode(code);
             } else {
                 this.loading = false;
             }
@@ -137,11 +134,9 @@ export default {
                 });
         },
         setUserToProgram(selectedProgramId) {
-            // Create an object with the selected programId
             const program = {
                 programId: selectedProgramId,
             };
-            // Make an HTTP POST request to set the program
             apiClient.post(`http://localhost:8080/users/${this.cmuitaccount_name}/set-program`, program)
                 .then((response) => {
                     this.fetchData();
@@ -151,40 +146,36 @@ export default {
                     alert("Something went wrong");
                 });
         },
-        handleRedirectWithCode(code) {
-            // Exchange the authorization code for an access token
-            LoginService.getAccessToken({ code: code })
-                .then((response) => {
-                    const accessToken = response.data.access_token;
-                    localStorage.setItem('access_token', accessToken);
-
-                    // Fetch user info using the access token
-                    this.fetchUserInfo(accessToken);
-                })
-                .catch((error) => {
-                    console.error("Error fetching access token:", error);
-                }).finally(() => {
-                    window.location.reload()
-                });
-        },
-        fetchUserInfo(accessToken) {
+        async handleRedirectWithCode(code) {
+            try {
+                const response = await LoginService.getAccessToken({ code: code });
+                const accessToken = response.data.access_token;
+                localStorage.setItem('access_token', accessToken);
+                await this.fetchUserInfo(accessToken);
+            } catch (error) {
+                console.error("Error fetching access token:", error);
+            } finally {
+                window.location.reload();
+            }
+        }
+        ,
+        async fetchUserInfo(accessToken) {
             // Fetch user info using the access token
-            LoginService.fetchUserInfo(accessToken)
-                .then((response) => {
-                    const userData = response.data; // Extract user data from the response
-                    this.userInfo = userData.userInfo; // Update userInfo with user data
-                    userRole.value = userData.role;
-                    console.log(userRole.value)
-                    console.log("cmuitaccount", this.userInfo.cmuitaccount);
-                    this.loading = false;
+            try {
+                const response = await LoginService.fetchUserInfo(accessToken);
+                const userData = response.data; // Extract user data from the response
+                this.userInfo = userData.userInfo; // Update userInfo with user data
+                userRole.value = userData.role;
+                console.log(userRole.value);
+                console.log("cmuitaccount", this.userInfo.cmuitaccount);
+                this.loading = false;
 
-                    // Store user info in localStorage
-                    localStorage.setItem('userInfo', JSON.stringify(this.userInfo));
-                })
-                .catch((error) => {
-                    console.error("Error fetching user info:", error);
-                    this.loading = false;
-                });
+                // Store user info in localStorage
+                localStorage.setItem('userInfo', JSON.stringify(this.userInfo));
+            } catch (error) {
+                console.error("Error fetching user info:", error);
+                this.loading = false;
+            }
         }
     },
 
