@@ -238,7 +238,7 @@ export default {
   
 <style lang="scss" scoped>
 header {
-    background-color: black;
+    background-color: rgb(255, 255, 255);
     z-index: 99;
     width: 100%;
     position: fixed;
@@ -261,7 +261,7 @@ header {
         ul,
         .link {
             font-weight: 500;
-            color: #fff;
+            color: #000000;
             list-style: none;
             text-decoration: none;
         }
@@ -359,6 +359,10 @@ header {
 .scrolled-nav {
     background-color: #000;
     box-shadow: 0 4px 6px -1 rgba(0, 0, 0, 1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+
+    .link {
+        color: white;
+    }
 
     nav {
         padding: 8px 0;
