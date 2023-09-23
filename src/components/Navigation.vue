@@ -25,11 +25,10 @@
                         Course</router-link>
                 </li>
                 <li v-if="isStudent"><router-link class="link" :to="{ name: 'studyguide' }"> Study Guide</router-link></li>
-                <li v-if="isStudent"><router-link class="link" :to="{ name: 'UserInfo' }"> UserInfo: {{ cmuitaccount_name
-                }}</router-link></li>
-                <!-- only Admin can see -->
-                <li v-if="isAdmin"><router-link class="link" :to="{ name: 'UserInfo' }"> UserInfo: {{ cmuitaccount_name
-                }}</router-link></li>
+                <!-- Admin and student can see -->
+                <li v-if="isEitherAdminOrStudent">
+                    <router-link class="link" :to="{ name: 'UserInfo' }">UserInfo: {{ cmuitaccount_name }}</router-link>
+                </li>
                 <!-- Everyone can see -->
                 <li v-if="isLoggedIn">
                     <router-link class="custom-btn btn-5 form-control " to="#" @click.native="logout">
@@ -98,15 +97,12 @@
                                 style="width:50px;height:50px">
                             </lord-icon> Study Guide</router-link>
                     </li>
-                    <li v-if="isStudent"><router-link class="link" :to="{ name: 'UserInfo' }"><lord-icon
+                    <!-- Admin and student can see -->
+                    <li v-if="isEitherAdminOrStudent"><router-link class="link" :to="{ name: 'UserInfo' }"><lord-icon
                                 src="https://cdn.lordicon.com/dqxvvqzi.json" trigger="hover"
                                 colors="outline:#121331,primary:#b2937a,secondary:#6d1225" style="width:50px;height:50px;">
                             </lord-icon> UserInfo: {{ cmuitaccount_name }}</router-link></li>
-                     <!-- only Admin can see -->       
-                    <li v-if="isAdmin"><router-link class="link" :to="{ name: 'UserInfo' }"><lord-icon
-                                src="https://cdn.lordicon.com/dqxvvqzi.json" trigger="hover"
-                                colors="outline:#121331,primary:#b2937a,secondary:#6d1225" style="width:50px;height:50px;">
-                            </lord-icon> UserInfo: {{ cmuitaccount_name }}</router-link></li>
+
                     <!-- Everyone can see -->
                     <li v-if="isLoggedIn">
                         <button class="custom-btn btn-5" to="#" @click.native="logout">
@@ -157,7 +153,10 @@ export default {
         },
         isLoggedIn() {
             return !!this.accessToken;
-        }
+        },
+        isEitherAdminOrStudent() {
+            return this.isAdmin || this.isStudent;
+        },
     },
     created() {
         this.accessToken = LoginService.getStoredAccessToken();
@@ -205,7 +204,7 @@ export default {
             this.accessToken = null;
             this.userInfo = null;
             this.cmuitaccount_name = null;
-            router.push({ name: 'home' }).then((response)=>{
+            router.push({ name: 'home' }).then((response) => {
                 window.location.reload();
             });
         },
