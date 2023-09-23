@@ -1,43 +1,45 @@
 <template>
     <div class="home hero-text container">
-        <h1>Recommended Courses</h1>
+        <h1>Recommended Courses: </h1>
         <div v-if="isLoading">Loading...</div>
         <div v-else>
-            <table class="table table-striped table-bordered">
-                <thead>
-                    <tr>
-                        <th>Course ID</th>
-                        <th>Course Name</th>
-                        <th>Course Credit</th>
-                        <th>Grading Type</th>
-                        <th>Course Prerequisite</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr v-for="course in recommendedCourses" :key="course.id">
-                        <td>{{ course.courseId }}</td>
-                        <td>{{ course.name }}</td>
-                        <td>{{ course.credit }}</td>
-                        <td>{{ course.gradingtype }}</td>
-                        <td>
-                            <ul>
-                                <li v-for="prerequisite in course.prerequisite" :key="prerequisite.id">
-                                    {{ prerequisite.courseId }} - {{ prerequisite.name }}
-                                </li>
-                            </ul>
-                        </td>
-                        <td>
-                            <router-link :to="'/courseByCourseId/' + course.courseId">Description</router-link>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+            <div v-for="(groupedCourses, groupName) in groupedByGroupCourse" :key="groupName">
+                <h2>{{ groupName }}</h2>
+                <table class="table table-striped table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Course ID</th>
+                            <th>Course Name</th>
+                            <th>Course Credit</th>
+                            <th>Grading Type</th>
+                            <th>Course Prerequisite</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-for="course in groupedCourses" :key="course.id">
+                            <td>{{ course.courseId }}</td>
+                            <td>{{ course.name }}</td>
+                            <td>{{ course.credit }}</td>
+                            <td>{{ course.gradingtype }}</td>
+                            <td>
+                                <ul>
+                                    <li v-for="prerequisite in course.prerequisite" :key="prerequisite.id">
+                                        {{ prerequisite.courseId }} - {{ prerequisite.name }}
+                                    </li>
+                                </ul>
+                            </td>
+                            <td>
+                                <router-link :to="'/courseByCourseId/' + course.courseId">Description</router-link>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 </template>
-  
-  
+
 <script>
 import apiClient from '@/service/AxiosClient';
 
@@ -49,12 +51,24 @@ export default {
             cmuitaccount_name: '',
         };
     },
+    computed: {
+        groupedByGroupCourse() {
+            return this.recommendedCourses.reduce((acc, course) => {
+                const groupName = course.groupCourses[0]?.groupName || 'Uncategorized';
+                if (!acc[groupName]) {
+                    acc[groupName] = [];
+                }
+                acc[groupName].push(course);
+                return acc;
+            }, {});
+        }
+    },
     mounted() {
         const storedUserInfo = localStorage.getItem('userInfo');
         if (storedUserInfo) {
             const userInfo = JSON.parse(storedUserInfo);
             this.cmuitaccount_name = userInfo.cmuitaccount_name;
-            this.fetchRecommendedCourses(); // Corrected method call
+            this.fetchRecommendedCourses();
         }
     },
     methods: {
@@ -62,8 +76,7 @@ export default {
             apiClient.get(`http://localhost:8080/users/${this.cmuitaccount_name}/recommended-courses`)
                 .then(response => {
                     this.recommendedCourses = response.data;
-                    this.isLoading = false; // Update isLoading when data is loaded
-                    console.log("Recommended Course Data:", this.recommendedCourses);
+                    this.isLoading = false;
                 })
                 .catch(error => {
                     console.error("Error fetching Recommended Course data:", error);
@@ -72,6 +85,7 @@ export default {
     }
 };
 </script>
+
   
 <style lang="scss" scoped>
 .home {
