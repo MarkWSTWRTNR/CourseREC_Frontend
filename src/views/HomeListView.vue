@@ -1,5 +1,4 @@
 <template>
-    <transition name="fae">
         <div class="home root">
             <img class="background" ref="background" src="../assets/tree-1.jpg" />
             <img class="foreground" ref="foreground" src="../assets/pngwing.com.png" />
@@ -21,7 +20,6 @@
                 </div>
             </div>
         </div>
-    </transition>
 </template>
   
 <script>
@@ -139,20 +137,6 @@ img.background {
 .section-2 p {
     line-height: 150%;
 }
-
-.fade-enter-active,
-.fade-leave-active {
-    transition: opacity 5s;
-}
-
-.fade-enter,
-.fade-leave-to
-
-/* .fade-leave-active in <2.1.8 */
-    {
-    opacity: 0;
-}
-
 .hero {
     background: var(--background-page);
     background-attachment: fixed;

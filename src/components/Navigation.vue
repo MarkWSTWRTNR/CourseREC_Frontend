@@ -162,6 +162,12 @@ export default {
         this.accessToken = LoginService.getStoredAccessToken();
         window.addEventListener('resize', this.checkScreen);
         this.checkScreen();
+
+        // Check for user role in local storage
+        const storedUserRole = localStorage.getItem('userRole');
+        if (storedUserRole) {
+            userRole.value = storedUserRole; // Assuming userRole is a ref or reactive variable
+        }
     },
     mounted() {
         window.addEventListener("scroll", this.updateScroll);
@@ -169,6 +175,15 @@ export default {
         if (storedUserInfo) {
             const userInfo = JSON.parse(storedUserInfo);
             this.cmuitaccount_name = userInfo.cmuitaccount_name;
+        }
+
+        // If userRole is not set, fetch it from the server
+        if (!userRole.value && this.accessToken) {
+            LoginService.fetchUserInfo(this.accessToken).then(response => {
+                const userData = response.data;
+                userRole.value = userData.role;
+                localStorage.setItem('userRole', userData.role);
+            });
         }
     },
     methods: {
@@ -196,11 +211,19 @@ export default {
             LoginService.login().then((response) => {
                 this.accessToken = response.data;
                 window.location.href = response.data; // Redirect for authentication
+
+                // After successful login, set the user role
+                LoginService.fetchUserInfo(this.accessToken).then(response => {
+                    const userData = response.data;
+                    userRole.value = userData.role;
+                    localStorage.setItem('userRole', userData.role);
+                });
             });
         },
         logout() {
             localStorage.removeItem('access_token');
             localStorage.removeItem('userInfo');
+            localStorage.removeItem('userRole'); // Clear user role
             this.accessToken = null;
             this.userInfo = null;
             this.cmuitaccount_name = null;

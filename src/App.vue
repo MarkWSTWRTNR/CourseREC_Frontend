@@ -1,7 +1,7 @@
 <template>
 	<div class="app">
 
-		<!-- <Slidebar /> -->
+
 		<Navigation />
 		<router-view />
 	</div>
@@ -10,12 +10,11 @@
 <script>
 
 import Navigation from "./components/Navigation.vue";
-import Slidebar from "../src/components/Slidebar.vue"
+
 
 export default {
 	name: 'App',
 	components: {
-		Slidebar,
 		Navigation
 	},
 	data() {
