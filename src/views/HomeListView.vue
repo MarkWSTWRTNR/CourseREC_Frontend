@@ -4,9 +4,9 @@
         <section class="hero">
             <div class="hero-text container">
                 <div class="content">
-                    <img src="../assets/statisfied.jpg" class="feature-img anim" alt="">
                     <h1 class="anim">CourseREC<br>SYSTEM</h1>
-                    <p class="anim">Lorem ipsum dolor sit amet consectetur adipisicing elit. Qui quos, eos sint est eius
+                    <img src="../assets/statisfied.jpg" class="feature-img anim" alt="">
+                    <p class="anim container">Lorem ipsum dolor sit amet consectetur adipisicing elit. Qui quos, eos sint est eius
                         ducimus, atque
                         ut
                         exercitationem consectetur tempore adipisci soluta ipsa iure doloribus! Nam, repellat! Dolor,
@@ -142,17 +142,22 @@ section {
 
 /* Media Query for Tablets */
 @media (max-width: 768px) {
+    .home {
+    padding-top: 50px;
+    overflow: hidden;
+}
     .content h1 {
         font-size: 50px;
     }
 
     .feature-img {
-        position: absolute;
-        top: 0;  /* Position at the top */
-        left: 50%;  /* Center it horizontally */
-        transform: translateX(-50%); /* Centering adjustment */
-        width: 100%;  /* Let it take full width */
-        bottom: auto; /* Reset the bottom property */
+        position: static;
+        top: 0;  
+        left: 50%; 
+        transform: translateX(-50%);
+        width: 100%;  
+        bottom: auto;
+        margin:auto;
     }
     
     .hero-text {
