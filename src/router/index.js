@@ -78,7 +78,6 @@ const routes = [
     path: '/userInfo',
     name: 'UserInfo',
     component: UserInfo,
-
   },
   {
     path: '/forbiddenPage',
@@ -100,7 +99,7 @@ router.beforeEach(async (to, from, next) => {
     // Check if user is not logged in
     if (!LoginService.isLoggedIn()) {
       // Redirect to login page or another appropriate page
-      next({ name: 'UserInfo' });
+      next({ name: 'ForbiddenPage' });
     } else {
       // Fetch user data to get the role
       try {

@@ -32,12 +32,12 @@
                 }}</router-link></li>
                 <!-- Everyone can see -->
                 <li v-if="isLoggedIn">
-                    <router-link class="link" to="#" @click.native="logout">
+                    <router-link class="custom-btn btn-5 form-control " to="#" @click.native="logout">
                         <span class="text">Logout</span>
                     </router-link>
                 </li>
                 <li v-else>
-                    <router-link class="link" to="#" @click.native="login">
+                    <router-link class="custom-btn btn-5" to="#" @click.native="login">
                         <span class="text">Login with CMU account</span>
                     </router-link>
                 </li>
@@ -109,20 +109,20 @@
                             </lord-icon> UserInfo: {{ cmuitaccount_name }}</router-link></li>
                     <!-- Everyone can see -->
                     <li v-if="isLoggedIn">
-                        <router-link class="link" to="#" @click.native="logout">
+                        <button class="custom-btn btn-5" to="#" @click.native="logout">
                             <lord-icon src="https://cdn.lordicon.com/qsacmnwj.json" trigger="hover"
                                 colors="outline:#121331,primary:#6d1225,secondary:#b2937a" style="width:50px;height:50px">
                             </lord-icon>
                             <span class="text">Logout</span>
-                        </router-link>
+                        </button>
                     </li>
                     <li v-else>
-                        <router-link class="link" to="#" @click.native="login">
+                        <button class="custom-btn btn-5" to="#" @click.native="login">
                             <lord-icon src="https://cdn.lordicon.com/qsacmnwj.json" trigger="hover"
                                 colors="outline:#121331,primary:#b2937a,secondary:#6d1225" style="width:50px;height:50px">
                             </lord-icon>
                             <span class="text">Login with CMU account</span>
-                        </router-link>
+                        </button>
                     </li>
                 </ul>
             </transition>
@@ -186,7 +186,7 @@ export default {
         },
         checkScreen() {
             this.windowWidth = window.innerWidth;
-            if (this.windowWidth <= 750) {
+            if (this.windowWidth <= 1025) {
                 this.mobile = true;
                 return;
             }
@@ -205,7 +205,9 @@ export default {
             this.accessToken = null;
             this.userInfo = null;
             this.cmuitaccount_name = null;
-            router.push({ name: 'home' });
+            router.push({ name: 'home' }).then((response)=>{
+                window.location.reload();
+            });
         },
     }
 };
