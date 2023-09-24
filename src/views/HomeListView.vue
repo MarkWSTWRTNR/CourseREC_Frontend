@@ -259,7 +259,7 @@ section {
     }
 
     .hero2 {
-        height: 210vh;
+        height: 250vh;
     }
 
     .hero-text2 {
@@ -279,9 +279,9 @@ section {
     }
 
     .cards-nowrapper {
-        margin-top: 20%;
+        margin-top: 30%;
         display: flex;
-        gap: 20rem;
+        gap: 15rem;
         flex-wrap: wrap;
         z-index: 1;
     }

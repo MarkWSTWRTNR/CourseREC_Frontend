@@ -107,6 +107,9 @@ export default {
     bottom: 0;
     /* added */
     left: 0;
+    color: white;
+    font-weight: bold;
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
 }
 
 .card:hover .title {
