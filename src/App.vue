@@ -54,7 +54,7 @@ export default {
 	--light: #f1f5f9;
 	--sidebar-width: 300px;
 	--background-page: #23282c;
-	--card-height: 300px;
+	--card-height: 500px;
     --card-width: calc(var(--card-height) / 1.5);
 }
 </style>

@@ -36,30 +36,30 @@
 
                 <div class="cards-nowrapper">
                     <CardComponent :card="{
-                        coverImage: require('@/assets/A.jpg'),
-                        titleImage: require('@/assets/A.jpg'),
-                        characterImage: require('@/assets/A.jpg')
+                        coverImage: require('@/assets/CourseList1.jpg'),
+                        titleImage: '<h1>COURSE LIST</h1>',
+                        characterImage: require('@/assets/CourseList2_1.png')
                     }" routeName="courselist" />
                     <CardComponent :card="{
-                        coverImage: require('@/assets/A.jpg'),
-                        titleImage: require('@/assets/A.jpg'),
-                        characterImage: require('@/assets/A.jpg')
+                        coverImage: require('@/assets/curriculum1.jpg'),
+                        titleImage: '<h1>CURRICULUM</h1>',
+                        characterImage: require('@/assets/curriculum2.png')
                     }" routeName="curriculum" />
 
                     <CardComponent :card="{
-                        coverImage: require('@/assets/A.jpg'),
-                        titleImage: require('@/assets/A.jpg'),
-                        characterImage: require('@/assets/A.jpg')
+                        coverImage: require('@/assets/finishedCourse1.jpg'),
+                        titleImage: '<h1>COMPLETE COURSE</h1>',
+                        characterImage: require('@/assets/finishedCourse2_1.jpg')
                     }" routeName="finishedcourse" />
                     <CardComponent :card="{
-                        coverImage: require('@/assets/A.jpg'),
-                        titleImage: require('@/assets/A.jpg'),
-                        characterImage: require('@/assets/A.jpg')
+                        coverImage: require('@/assets/Recommendation1.jpg'),
+                        titleImage: '<h1>RECOMMEND COURSE</h1>',
+                        characterImage: require('@/assets/Recommendation2_1.jpg')
                     }" routeName="recommendcourse" />
                     <CardComponent :card="{
-                        coverImage: require('@/assets/A.jpg'),
-                        titleImage: require('@/assets/A.jpg'),
-                        characterImage: require('@/assets/A.jpg')
+                        coverImage: require('@/assets/AI1.jpg'),
+                        titleImage: '<h1>CHATGPT GUIDE</h1>',
+                        characterImage: require('@/assets/AI2.jpg')
                     }" routeName="studyguide" />
 
 
@@ -281,7 +281,7 @@ section {
     .cards-nowrapper {
         margin-top: 20%;
         display: flex;
-        gap: 12rem;
+        gap: 20rem;
         flex-wrap: wrap;
         z-index: 1;
     }

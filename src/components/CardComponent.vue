@@ -4,7 +4,7 @@
         <div class="card">
             <div class="wrapper">
                 <img :src="card.coverImage" class="cover-image" />
-                <img :src="card.titleImage" class="title" />
+                <div class="title" v-html="card.titleImage"></div>
             </div>
             <img :src="card.characterImage" class="character" />
         </div>
