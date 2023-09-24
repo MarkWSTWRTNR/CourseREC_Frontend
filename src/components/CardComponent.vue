@@ -37,8 +37,6 @@ export default {
     padding: 0 36px;
     perspective: 2500px;
     margin: 0 50px;
-    margin-top: 15rem;
-    margin-bottom: 15rem;
 
 }
 
@@ -128,11 +126,4 @@ export default {
     transform: translate3d(0%, -30%, 100px);
 }
 
-@media (max-width: 1140px) {
-
-    .card {
-        justify-content: space-between;
-        margin-top: 2.5rem;
-    }
-}
 </style>

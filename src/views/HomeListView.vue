@@ -33,7 +33,8 @@
             <div class="hero-text2 container">
                 <h4>Features</h4>
                 <h1>All the features you need to decide the best course for you.</h1>
-                <div class="cards-wrapper">
+
+                <div class="cards-nowrapper">
                     <CardComponent :card="{
                         coverImage: require('@/assets/A.jpg'),
                         titleImage: require('@/assets/A.jpg'),
@@ -44,18 +45,23 @@
                         coverImage: require('@/assets/A.jpg'),
                         titleImage: require('@/assets/A.jpg'),
                         characterImage: require('@/assets/A.jpg')
-                    }" routeName="curriculum" />
-                     <CardComponent :card="{
+                    }" routeName="finishedcourse" />
+                    <CardComponent :card="{
                         coverImage: require('@/assets/A.jpg'),
                         titleImage: require('@/assets/A.jpg'),
                         characterImage: require('@/assets/A.jpg')
-                    }" routeName="curriculum" />
-                     <CardComponent :card="{
+                    }" routeName="recommendcourse" />
+                    <CardComponent :card="{
                         coverImage: require('@/assets/A.jpg'),
                         titleImage: require('@/assets/A.jpg'),
                         characterImage: require('@/assets/A.jpg')
-                    }" routeName="curriculum" />
-                
+                    }" routeName="studyguide" />
+                    <CardComponent :card="{
+                        coverImage: require('@/assets/A.jpg'),
+                        titleImage: require('@/assets/A.jpg'),
+                        characterImage: require('@/assets/A.jpg')
+                    }" routeName="studyguide" />
+
                 </div>
             </div>
         </section>
@@ -125,11 +131,11 @@ export default {
     /* Center the items horizontally */
     height: 100vh;
     /* Giving it some padding so it doesn't look too tight */
+    overflow: hidden;
 }
 
 .hero-text2 {
     text-align: center;
-    width: 100%;
     /* Allow it to take full width */
 }
 
@@ -199,14 +205,15 @@ section {
 .anim .hero-text .content {
     opacity: 0;
     transform: translateY(30px);
-    animation: moveup 0.5s linear forwards;
+    animation: moveup 1.2s linear forwards;
 }
 
-.cards-wrapper {
+.cards-nowrapper {
+    margin-top: 10%;
     display: flex;
     gap: 2rem;
     justify-content: center;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
     width: 100%;
 }
 
@@ -250,11 +257,31 @@ section {
 
     }
 
+    .hero2 {
+        height:210vh;
+    }
+
     .hero-text2 {
         display: flex;
         flex-direction: column;
         align-items: center;
 
+
     }
-}
-</style>
+
+    .hero-text2 h1 {
+        font-size: 45px;
+    }
+
+    .hero-text2 h4 {
+        font-size: 20px;
+    }
+
+    .cards-nowrapper {
+        margin-top: 20%;
+        display: flex;
+        gap: 12rem;
+        flex-wrap: wrap;
+        z-index: 1;
+    }
+}</style>
