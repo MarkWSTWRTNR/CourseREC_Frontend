@@ -6,21 +6,22 @@
                 <div class="content">
                     <h1 class="anim">CourseREC<br>SYSTEM</h1>
                     <img src="../assets/statisfied.jpg" class="feature-img anim" alt="">
-                    <p class="anim container">Lorem ipsum dolor sit amet consectetur adipisicing elit. Qui quos, eos sint est eius
+                    <p class="anim container">Lorem ipsum dolor sit amet consectetur adipisicing elit. Qui quos, eos sint
+                        est eius
                         ducimus, atque
                         ut
                         exercitationem consectetur tempore adipisci soluta ipsa iure doloribus! Nam, repellat! Dolor,
                         labore
                         incidunt.</p>
                     <a href="#" class="btn anim">Get Start</a>
-                    
+
                 </div>
             </div>
         </section>
         <hr>
         <section>
             <div class="container content">
-                <h1>lorem</h1>
+                <h1>Aim</h1>
                 <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Unde earum sed quis excepturi asperiores
                     corporis
                     aliquid quod harum cum a accusantium iusto nulla placeat quas officia ratione perspiciatis porro
@@ -37,13 +38,74 @@
                     accusamus
                     delectus sed dolorum sequi deleniti, temporibus quisquam asperiores nemo, iusto neque autem odio
                     adipisci
-                    qui ea aspernatur ullam dolor blanditiis totam?</p>
+                    qui ea aspernatur ullam dolor blanditiis totam? Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                    Quasi necessitatibus repellat id sapiente saepe architecto mollitia voluptate praesentium quas nam qui
+                    molestias quae quis similique quidem, cupiditate consequuntur! Iure aspernatur qui illum, necessitatibus
+                    consequatur quo quod soluta, rem magnam dolor aut, rerum ea repellendus vero nobis doloremque
+                    reprehenderit dignissimos. Nesciunt aliquam incidunt optio ipsa ipsum rerum earum, sint mollitia facilis
+                    odio! Atque, esse! Doloremque quae commodi totam praesentium quasi, soluta minus temporibus alias neque,
+                    beatae laudantium. Eius magni dolorum aliquid esse, nobis possimus, voluptatibus deleniti rerum soluta
+                    culpa voluptates iure quis aliquam expedita placeat deserunt veritatis odit cumque molestiae vero
+                    voluptatem. Obcaecati molestiae, itaque culpa natus magnam aliquam soluta deserunt non repellendus
+                    sapiente quas nihil, sint laboriosam dolorem quibusdam illo ab cum molestias est cupiditate aperiam
+                    nesciunt. Et earum aperiam numquam debitis quod a soluta recusandae sapiente totam aut ipsum quae enim
+                    asperiores accusantium quasi magnam, voluptates cum ea quaerat reiciendis omnis pariatur perspiciatis.
+                    Eos, aspernatur incidunt corrupti qui eveniet a voluptates totam reprehenderit sapiente quia accusantium
+                    natus! Architecto in consequatur commodi atque saepe facere quia, rem quo culpa et quae illo officia
+                    ipsa facilis impedit maiores dolores. Aut debitis tenetur quibusdam excepturi. Qui ea modi perferendis
+                    eaque vel! Iste soluta deleniti odit consequatur inventore quam, unde sit delectus explicabo
+                    voluptatibus dignissimos consequuntur doloremque fugit. Recusandae quo molestias nulla magnam odit
+                    aliquam voluptate eius dolores alias, aspernatur et voluptatibus sunt maiores fugit praesentium a.
+                    Dolore rem nesciunt perferendis dignissimos sed?</p>
+            </div>
+        </section>
+        <hr>
+        <section>
+            <div class="container content">
+                <h1>Feature</h1>
+                <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Unde earum sed quis excepturi asperiores
+                    corporis
+                    aliquid quod harum cum a accusantium iusto nulla placeat quas officia ratione perspiciatis porro
+                    iste
+                    delectus rem, perferendis esse! Earum sapiente rem, laboriosam a quas eaque nihil in necessitatibus
+                    optio
+                    molestias amet esse veniam, eum tempora velit quos voluptatem cumque error ut, doloribus officia
+                    sunt.
+                    Repudiandae perspiciatis quibusdam minima labore id iste eaque consequuntur, illo dolore nemo a
+                    laboriosam
+                    quis! Ea facilis adipisci recusandae praesentium quisquam, repellat mollitia blanditiis ipsum
+                    tenetur
+                    tempore! Aliquid natus eum molestias consequuntur harum. Molestias officia obcaecati at nisi
+                    accusamus
+                    delectus sed dolorum sequi deleniti, temporibus quisquam asperiores nemo, iusto neque autem odio
+                    adipisci
+                    qui ea aspernatur ullam dolor blanditiis totam? Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                    Quasi necessitatibus repellat id sapiente saepe architecto mollitia voluptate praesentium quas nam qui
+                    molestias quae quis similique quidem, cupiditate consequuntur! Iure aspernatur qui illum, necessitatibus
+                    consequatur quo quod soluta, rem magnam dolor aut, rerum ea repellendus vero nobis doloremque
+                    reprehenderit dignissimos. Nesciunt aliquam incidunt optio ipsa ipsum rerum earum, sint mollitia facilis
+                    odio! Atque, esse! Doloremque quae commodi totam praesentium quasi, soluta minus temporibus alias neque,
+                    beatae laudantium. Eius magni dolorum aliquid esse, nobis possimus, voluptatibus deleniti rerum soluta
+                    culpa voluptates iure quis aliquam expedita placeat deserunt veritatis odit cumque molestiae vero
+                    voluptatem. Obcaecati molestiae, itaque culpa natus magnam aliquam soluta deserunt non repellendus
+                    sapiente quas nihil, sint laboriosam dolorem quibusdam illo ab cum molestias est cupiditate aperiam
+                    nesciunt. Et earum aperiam numquam debitis quod a soluta recusandae sapiente totam aut ipsum quae enim
+                    asperiores accusantium quasi magnam, voluptates cum ea quaerat reiciendis omnis pariatur perspiciatis.
+                    Eos, aspernatur incidunt corrupti qui eveniet a voluptates totam reprehenderit sapiente quia accusantium
+                    natus! Architecto in consequatur commodi atque saepe facere quia, rem quo culpa et quae illo officia
+                    ipsa facilis impedit maiores dolores. Aut debitis tenetur quibusdam excepturi. Qui ea modi perferendis
+                    eaque vel! Iste soluta deleniti odit consequatur inventore quam, unde sit delectus explicabo
+                    voluptatibus dignissimos consequuntur doloremque fugit. Recusandae quo molestias nulla magnam odit
+                    aliquam voluptate eius dolores alias, aspernatur et voluptatibus sunt maiores fugit praesentium a.
+                    Dolore rem nesciunt perferendis dignissimos sed?</p>
             </div>
         </section>
     </div>
 </template>
 <script>
-
+export default {
+    name: "HomeListView"
+}
 </script>
 <style>
 .home {
@@ -138,28 +200,26 @@ section {
     }
 }
 
-/* ... existing styles ... */
-
-/* Media Query for Tablets */
-@media (max-width: 768px) {
+@media (max-width: 1140px) {
     .home {
-    padding-top: 50px;
-    overflow: hidden;
-}
+        padding-top: 50px;
+        overflow: hidden;
+    }
+
     .content h1 {
         font-size: 50px;
     }
 
     .feature-img {
         position: static;
-        top: 0;  
-        left: 50%; 
+        top: 0;
+        left: 50%;
         transform: translateX(-50%);
-        width: 100%;  
+        width: 100%;
         bottom: auto;
-        margin:auto;
+        margin: auto;
     }
-    
+
     .hero-text {
         display: flex;
         flex-direction: column;

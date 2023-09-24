@@ -30,7 +30,7 @@
         <i class="fa fa-chevron-down" :class="{ 'fa-rotate-180': isActive(1) }"></i>
 
 
-        <div v-show="isActive(1, index)" class="content">
+        <div v-show="isActive(1, index)" class="container">
           <button v-if="userRole === ROLES.ROLE_ADMIN" class="btn btn-outline-primary" @click="openForm">Add Courses To
             Curriculum</button>
           <div v-if="showForm">
@@ -131,7 +131,7 @@
         </div>
         <i class="fa fa-chevron-down" :class="{ 'fa-rotate-180': isActive(3) }"></i>
 
-        <div v-show="isActive(3)" class="content">
+        <div v-show="isActive(3)" class="container">
           <button v-if="userRole === ROLES.ROLE_ADMIN" class="btn btn-outline-primary" @click="openForm2">Add
             courses</button>
           <div v-if="showForm2">
