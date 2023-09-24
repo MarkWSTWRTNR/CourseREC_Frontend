@@ -35,7 +35,7 @@ export default {
 .app {
 	min-height: 100vh;
 	position: relative;
-	background-color: #f1f1f1;
+	background-color: #ffffff;
 }
 
 .container {

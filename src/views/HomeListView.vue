@@ -6,105 +6,57 @@
                 <div class="content">
                     <h1 class="anim">CourseREC<br>SYSTEM</h1>
                     <img src="../assets/statisfied.jpg" class="feature-img anim" alt="">
-                    <p class="anim container">Lorem ipsum dolor sit amet consectetur adipisicing elit. Qui quos, eos sint
-                        est eius
-                        ducimus, atque
-                        ut
-                        exercitationem consectetur tempore adipisci soluta ipsa iure doloribus! Nam, repellat! Dolor,
-                        labore
-                        incidunt.</p>
+                    <p class="anim container">Decision Supporting System for CMU Students</p>
                     <a href="#" class="btn anim">Get Start</a>
 
                 </div>
             </div>
         </section>
         <hr>
-        <section>
-            <div class="container content">
-                <h1>Aim</h1>
-                <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Unde earum sed quis excepturi asperiores
-                    corporis
-                    aliquid quod harum cum a accusantium iusto nulla placeat quas officia ratione perspiciatis porro
-                    iste
-                    delectus rem, perferendis esse! Earum sapiente rem, laboriosam a quas eaque nihil in necessitatibus
-                    optio
-                    molestias amet esse veniam, eum tempora velit quos voluptatem cumque error ut, doloribus officia
-                    sunt.
-                    Repudiandae perspiciatis quibusdam minima labore id iste eaque consequuntur, illo dolore nemo a
-                    laboriosam
-                    quis! Ea facilis adipisci recusandae praesentium quisquam, repellat mollitia blanditiis ipsum
-                    tenetur
-                    tempore! Aliquid natus eum molestias consequuntur harum. Molestias officia obcaecati at nisi
-                    accusamus
-                    delectus sed dolorum sequi deleniti, temporibus quisquam asperiores nemo, iusto neque autem odio
-                    adipisci
-                    qui ea aspernatur ullam dolor blanditiis totam? Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                    Quasi necessitatibus repellat id sapiente saepe architecto mollitia voluptate praesentium quas nam qui
-                    molestias quae quis similique quidem, cupiditate consequuntur! Iure aspernatur qui illum, necessitatibus
-                    consequatur quo quod soluta, rem magnam dolor aut, rerum ea repellendus vero nobis doloremque
-                    reprehenderit dignissimos. Nesciunt aliquam incidunt optio ipsa ipsum rerum earum, sint mollitia facilis
-                    odio! Atque, esse! Doloremque quae commodi totam praesentium quasi, soluta minus temporibus alias neque,
-                    beatae laudantium. Eius magni dolorum aliquid esse, nobis possimus, voluptatibus deleniti rerum soluta
-                    culpa voluptates iure quis aliquam expedita placeat deserunt veritatis odit cumque molestiae vero
-                    voluptatem. Obcaecati molestiae, itaque culpa natus magnam aliquam soluta deserunt non repellendus
-                    sapiente quas nihil, sint laboriosam dolorem quibusdam illo ab cum molestias est cupiditate aperiam
-                    nesciunt. Et earum aperiam numquam debitis quod a soluta recusandae sapiente totam aut ipsum quae enim
-                    asperiores accusantium quasi magnam, voluptates cum ea quaerat reiciendis omnis pariatur perspiciatis.
-                    Eos, aspernatur incidunt corrupti qui eveniet a voluptates totam reprehenderit sapiente quia accusantium
-                    natus! Architecto in consequatur commodi atque saepe facere quia, rem quo culpa et quae illo officia
-                    ipsa facilis impedit maiores dolores. Aut debitis tenetur quibusdam excepturi. Qui ea modi perferendis
-                    eaque vel! Iste soluta deleniti odit consequatur inventore quam, unde sit delectus explicabo
-                    voluptatibus dignissimos consequuntur doloremque fugit. Recusandae quo molestias nulla magnam odit
-                    aliquam voluptate eius dolores alias, aspernatur et voluptatibus sunt maiores fugit praesentium a.
-                    Dolore rem nesciunt perferendis dignissimos sed?</p>
+        <section class="hero " id="animate-section">
+            <div class="hero-text container">
+                <img src="../assets/home-sec2.jpg" class="feature-img2 anim" alt="">
+                <div class="text-left content">
+                    <h1>Make your decision easier</h1>
+                    <p class="anim container">CourseRec System is a web-based decision support tool designed to aid students
+                        in study planning. It provides features like tracking grades and credit scores, offering curriculum
+                        details, suggesting course recommendations, offering a general study guide, and hosting student
+                        reviews.</p>
+                </div>
             </div>
+
         </section>
         <hr>
         <section>
             <div class="container content">
                 <h1>Feature</h1>
-                <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Unde earum sed quis excepturi asperiores
-                    corporis
-                    aliquid quod harum cum a accusantium iusto nulla placeat quas officia ratione perspiciatis porro
-                    iste
-                    delectus rem, perferendis esse! Earum sapiente rem, laboriosam a quas eaque nihil in necessitatibus
-                    optio
-                    molestias amet esse veniam, eum tempora velit quos voluptatem cumque error ut, doloribus officia
-                    sunt.
-                    Repudiandae perspiciatis quibusdam minima labore id iste eaque consequuntur, illo dolore nemo a
-                    laboriosam
-                    quis! Ea facilis adipisci recusandae praesentium quisquam, repellat mollitia blanditiis ipsum
-                    tenetur
-                    tempore! Aliquid natus eum molestias consequuntur harum. Molestias officia obcaecati at nisi
-                    accusamus
-                    delectus sed dolorum sequi deleniti, temporibus quisquam asperiores nemo, iusto neque autem odio
-                    adipisci
-                    qui ea aspernatur ullam dolor blanditiis totam? Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                    Quasi necessitatibus repellat id sapiente saepe architecto mollitia voluptate praesentium quas nam qui
-                    molestias quae quis similique quidem, cupiditate consequuntur! Iure aspernatur qui illum, necessitatibus
-                    consequatur quo quod soluta, rem magnam dolor aut, rerum ea repellendus vero nobis doloremque
-                    reprehenderit dignissimos. Nesciunt aliquam incidunt optio ipsa ipsum rerum earum, sint mollitia facilis
-                    odio! Atque, esse! Doloremque quae commodi totam praesentium quasi, soluta minus temporibus alias neque,
-                    beatae laudantium. Eius magni dolorum aliquid esse, nobis possimus, voluptatibus deleniti rerum soluta
-                    culpa voluptates iure quis aliquam expedita placeat deserunt veritatis odit cumque molestiae vero
-                    voluptatem. Obcaecati molestiae, itaque culpa natus magnam aliquam soluta deserunt non repellendus
-                    sapiente quas nihil, sint laboriosam dolorem quibusdam illo ab cum molestias est cupiditate aperiam
-                    nesciunt. Et earum aperiam numquam debitis quod a soluta recusandae sapiente totam aut ipsum quae enim
-                    asperiores accusantium quasi magnam, voluptates cum ea quaerat reiciendis omnis pariatur perspiciatis.
-                    Eos, aspernatur incidunt corrupti qui eveniet a voluptates totam reprehenderit sapiente quia accusantium
-                    natus! Architecto in consequatur commodi atque saepe facere quia, rem quo culpa et quae illo officia
-                    ipsa facilis impedit maiores dolores. Aut debitis tenetur quibusdam excepturi. Qui ea modi perferendis
-                    eaque vel! Iste soluta deleniti odit consequatur inventore quam, unde sit delectus explicabo
-                    voluptatibus dignissimos consequuntur doloremque fugit. Recusandae quo molestias nulla magnam odit
-                    aliquam voluptate eius dolores alias, aspernatur et voluptatibus sunt maiores fugit praesentium a.
-                    Dolore rem nesciunt perferendis dignissimos sed?</p>
+                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Saepe cum debitis quos sequi mollitia, non
+                    eveniet animi illum ab error perspiciatis iste magni autem fugiat nam, sint quas nobis quis?</p>
             </div>
         </section>
     </div>
 </template>
 <script>
 export default {
-    name: "HomeListView"
+    name: "HomeListView",
+    mounted() {
+        this.initAnimation();
+    },
+    methods: {
+        initAnimation() {
+            const section = document.getElementById('animate-section');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        section.classList.add('anim');
+                    } else {
+                        section.classList.remove('anim');
+                    }
+                });
+            });
+            observer.observe(section);
+        }
+    }
 }
 </script>
 <style>
@@ -137,21 +89,10 @@ section {
     z-index: 2;
 }
 
-.btn {
-    display: inline-block;
-    text-decoration: none;
-    padding: 14px 40px;
-    color: #fff;
-    background-image: linear-gradient(45deg, #df4881, #c430d7);
-    font-size: 14px;
-    border-radius: 30px;
-    border-top-right-radius: 0;
-    transition: 0.5s;
-}
-
 .content {
     margin-top: 10%;
     max-width: 600px;
+
 }
 
 .content h1 {
@@ -171,12 +112,9 @@ section {
     animation-delay: 1s;
 }
 
-.btn:hover {
-    border-top-right-radius: 30px;
-}
 
 .feature-img {
-    width: 700px;
+    width: 800px;
     position: absolute;
     bottom: 200px;
     right: 10%;
@@ -187,7 +125,29 @@ section {
     animation-delay: 1.5s;
 }
 
+.feature-img2 {
+    width: 800px;
+    position: absolute;
+    bottom: 200px;
+    left: 10%;
+    z-index: -1;
+}
+
+.feature-img2.anim {
+    animation-delay: 1.5s;
+}
+
+.text-left {
+    margin-left: 700px;
+}
+
 .anim {
+    opacity: 0;
+    transform: translateY(30px);
+    animation: moveup 0.5s linear forwards;
+}
+
+.anim .hero-text .content {
     opacity: 0;
     transform: translateY(30px);
     animation: moveup 0.5s linear forwards;
@@ -214,10 +174,24 @@ section {
         position: static;
         top: 0;
         left: 50%;
-        transform: translateX(-50%);
+        transform: translateY(50%);
         width: 100%;
         bottom: auto;
         margin: auto;
+    }
+
+    .feature-img2 {
+        position: static;
+        top: 0;
+        left: 50%;
+        transform: translateX(50%);
+        width: 100%;
+        bottom: auto;
+        margin: auto;
+    }
+
+    .text-left {
+        margin-left: 0px;
     }
 
     .hero-text {

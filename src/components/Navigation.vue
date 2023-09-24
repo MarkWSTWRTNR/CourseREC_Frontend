@@ -289,7 +289,7 @@ header {
             align-items: center;
 
             img {
-                width: 100px;
+                width: 150px;
                 transition: .5s ease all;
             }
         }
