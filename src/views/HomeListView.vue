@@ -1,3 +1,4 @@
+<!-- HomeListView -->
 <template>
     <div class="home">
 
@@ -32,16 +33,26 @@
             <div class="container content">
                 <h4>Features</h4>
                 <h1>All the features you need to decide the best course for you.</h1>
-                <div class="card text-bg-primary mb-3" style="max-width: 18rem;">
-                    <div class="card-header">Header</div>
-                    <div class="card-body">
-                        <h5 class="card-title">Primary card title</h5>
-                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the
-                            card's content.</p>
-                    </div>
+
+                <div class="cards-wrapper">
+                    <CardComponent :card="{
+                        link: 'https://www.mythrillfiction.com/the-dark-rider',
+                        coverImage: 'https://ggayane.github.io/css-experiments/cards/dark_rider-cover.jpg',
+                        titleImage: 'https://ggayane.github.io/css-experiments/cards/dark_rider-title.png',
+                        characterImage: 'https://ggayane.github.io/css-experiments/cards/dark_rider-character.webp'
+                    }" />
+
+                    <CardComponent :card="{
+                        link: 'https://www.mythrillfiction.com/force-mage',
+                        coverImage: 'https://ggayane.github.io/css-experiments/cards/force_mage-cover.jpg',
+                        titleImage: 'https://ggayane.github.io/css-experiments/cards/force_mage-title.png',
+                        characterImage: 'https://ggayane.github.io/css-experiments/cards/force_mage-character.webp'
+                    }" />
                 </div>
             </div>
         </section>
+        <hr>
+        <section></section>
     </div>
 </template>
 <script>
@@ -165,6 +176,16 @@ section {
     animation: moveup 0.5s linear forwards;
 }
 
+.cards-wrapper {
+    display: flex;
+    gap: 2rem;
+    /* spacing between cards */
+    justify-content: center;
+    /* center the cards horizontally */
+    flex-wrap: wrap;
+    /* allows the cards to wrap to the next line if necessary */
+}
+
 @keyframes moveup {
     100% {
         opacity: 1;
@@ -210,6 +231,12 @@ section {
         display: flex;
         flex-direction: column;
         align-items: center;
+    }
+
+    .cards-wrapper {
+        flex-direction: column;
+        align-items: center;
+        /* center the cards vertically on mobile devices */
     }
 }
 
