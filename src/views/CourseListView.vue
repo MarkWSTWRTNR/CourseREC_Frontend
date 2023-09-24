@@ -3,10 +3,11 @@
     <div class="home">
         <section class="hero">
             <div class="hero-text container">
-                <!-- <div>
-    <input type="text" v-model="searchQuery" placeholder="Search courses">
-    <button @click="searchCourses">Search</button>
-  </div> -->
+                <div>
+                    <input type="text" v-model="searchQuery" placeholder="Search courses">
+                    <button @click="searchCourses">Search</button>
+
+                </div>
                 <div class="row">
                     <div class="col-md-12">
                         <table class="table table-striped table-bordered">
@@ -21,9 +22,9 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <!-- <tr v-if="displayCourses.length === 0">
-                        <td colspan="6" class="text-center">No courses found</td>
-                    </tr> -->
+                                <tr v-if="displayCourses && displayCourses.length === 0">
+                                    <td colspan="6" class="text-center">No courses found</td>
+                                </tr>
                                 <tr v-for="record in records" :key="record.courseId">
                                     <td>{{ record.courseId }}</td>
                                     <td>{{ record.name }}</td>
@@ -147,6 +148,7 @@ export default {
             isSubmitting: false,
             currentPage: 1,
             totalPages: 0,
+            searchQuery: ''
         };
     },
     mounted() {
@@ -292,7 +294,16 @@ export default {
                     this.showForm = false;
                 });
         },
-
+        searchCourses() {
+            CourseService.searchCourses(this.searchQuery, 12, this.currentPage)
+                .then(response => {
+                    this.totalPages = Math.ceil(response.headers['x-total-count'] / 12);
+                    this.records = response.data;
+                })
+                .catch(error => {
+                    console.log(error);
+                });
+        },
 
         openForm() {
             this.showForm = true;

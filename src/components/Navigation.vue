@@ -15,7 +15,7 @@
 
 
                 <!-- only student can see -->
-                <li v-if="isStudent"><router-link class="link" :to="{ name: 'dashboard' }"> Dashboard</router-link></li>
+               
                 <li v-if="isStudent"><router-link class="link" :to="{ name: 'courselist' }"> Course List</router-link></li>
                 <li v-if="isStudent"><router-link class="link" :to="{ name: 'curriculum' }"> Curriculum</router-link></li>
                 <li v-if="isStudent"><router-link class="link" :to="{ name: 'recommendcourse' }"> Recommend
@@ -65,12 +65,6 @@
                                 style="width:50px;height:50px">
                             </lord-icon> Curriculum</router-link></li>
                     <!-- only student can see -->
-                    <li v-if="isStudent"><router-link class="link" :to="{ name: 'dashboard' }"><lord-icon
-                                src="https://cdn.lordicon.com/hbwqfgcf.json" trigger="hover"
-                                colors="outline:#121331,primary:#667179,secondary:#b2937a,tertiary:#6d1225"
-                                style="width:50px;height:50px">
-                            </lord-icon> Dashboard</router-link>
-                    </li>
                     <li v-if="isStudent"><router-link class="link" :to="{ name: 'courselist' }"><lord-icon
                                 src="https://cdn.lordicon.com/iqocwzif.json" trigger="hover"
                                 colors="primary:#6d1225,secondary:#b2937a" style="width:50px;height:50px">

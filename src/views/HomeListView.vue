@@ -39,6 +39,11 @@
                         coverImage: require('@/assets/A.jpg'),
                         titleImage: require('@/assets/A.jpg'),
                         characterImage: require('@/assets/A.jpg')
+                    }" routeName="courselist" />
+                    <CardComponent :card="{
+                        coverImage: require('@/assets/A.jpg'),
+                        titleImage: require('@/assets/A.jpg'),
+                        characterImage: require('@/assets/A.jpg')
                     }" routeName="curriculum" />
 
                     <CardComponent :card="{
@@ -56,11 +61,7 @@
                         titleImage: require('@/assets/A.jpg'),
                         characterImage: require('@/assets/A.jpg')
                     }" routeName="studyguide" />
-                    <CardComponent :card="{
-                        coverImage: require('@/assets/A.jpg'),
-                        titleImage: require('@/assets/A.jpg'),
-                        characterImage: require('@/assets/A.jpg')
-                    }" routeName="studyguide" />
+
 
                 </div>
             </div>
@@ -258,7 +259,7 @@ section {
     }
 
     .hero2 {
-        height:210vh;
+        height: 210vh;
     }
 
     .hero-text2 {
@@ -284,4 +285,5 @@ section {
         flex-wrap: wrap;
         z-index: 1;
     }
-}</style>
+}
+</style>

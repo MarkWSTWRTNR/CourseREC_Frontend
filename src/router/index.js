@@ -1,7 +1,6 @@
 import { createRouter, createWebHistory } from "vue-router";
 import CurriculumView from "../views/CurriculumView.vue";
 import CourseListView from "@/views/CourseListView.vue";
-import DashboardView from "../views/DashboardView.vue";
 import RecommendCourseView from "../views/RecommendCourseView.vue";
 import StudyGuideView from "../views/StudyGuideView.vue";
 import FinishedCourseView from "../views/FinishedCourseView.vue";
@@ -31,12 +30,6 @@ const routes = [
     name: "courselist",
     component: CourseListView,
     meta: { roles: [ROLES.ROLE_ADMIN, ROLES.ROLE_STUDENT] }
-  },
-  {
-    path: "/dashboard",
-    name: "dashboard",
-    component: DashboardView,
-    meta: { roles: [ROLES.ROLE_STUDENT] }
   },
   {
     path: "/recommendcourse",

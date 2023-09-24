@@ -4,7 +4,7 @@ const CourseService = {
   getCourses(perPage, page) {
     return apiClient.get(`http://localhost:8080/courses?_limit=${perPage}&_page=${page}`);
   },
-  getAllCourse(){
+  getAllCourse() {
     return apiClient.get('http://localhost:8080/allCourse')
   },
   addCourse(course) {
@@ -17,6 +17,9 @@ const CourseService = {
 
   updateCourse(updatedCourse) {
     return apiClient.put(`http://localhost:8080/updateCourse`, updatedCourse);
+  },
+  searchCourses(keyword, perPage, page) {
+    return apiClient.get(`http://localhost:8080/searchCourses?keyword=${keyword}&_limit=${perPage}&_page=${page}`);
   }
 }
 
