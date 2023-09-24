@@ -1,6 +1,5 @@
 <!-- CardComponent.vue -->
 <template>
-    
     <a :href="card.link" alt="Card" target="_blank">
         <div class="card">
             <div class="wrapper">
@@ -25,7 +24,6 @@ export default {
 </script>
 
 <style>
-
 .card {
     width: var(--card-width);
     height: var(--card-height);
@@ -36,7 +34,11 @@ export default {
     padding: 0 36px;
     perspective: 2500px;
     margin: 0 50px;
+    margin-top: 15rem ;
+    margin-bottom: 15rem;
+    
 }
+
 .cover-image {
     width: 100%;
     height: 100%;
@@ -121,5 +123,13 @@ export default {
 .card:hover .character {
     opacity: 1;
     transform: translate3d(0%, -30%, 100px);
+}
+
+@media (max-width: 1140px) {
+    
+    .card {
+         justify-content: space-between;
+         margin-top: 2.5rem;
+    }
 }
 </style>

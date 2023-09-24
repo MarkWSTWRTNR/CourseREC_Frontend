@@ -26,11 +26,11 @@
                         reviews.</p>
                 </div>
             </div>
-
         </section>
         <hr>
-        <section class="hero">
-            <div class="hero-text container">
+
+        <section class="hero2">
+            <div class="hero-text2 container">
                 <h4>Features</h4>
                 <h1>All the features you need to decide the best course for you.</h1>
                 <div class="cards-wrapper">
@@ -51,8 +51,6 @@
 
             </div>
         </section>
-        <hr>
-        <section></section>
     </div>
 </template>
 <script>
@@ -105,6 +103,26 @@ export default {
 .hero-text {
     text-align: center;
     /* Optional: for better presentation */
+}
+
+.hero2 {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    /* This will stack the items vertically */
+    justify-content: center;
+    /* Center the items vertically */
+    align-items: center;
+    /* Center the items horizontally */
+    height: 100vh;
+    /* Giving it some padding so it doesn't look too tight */
+}
+
+.hero-text2 {
+    text-align: center;
+    width: 100%;
+    /* Allow it to take full width */
 }
 
 section {
@@ -177,14 +195,11 @@ section {
 }
 
 .cards-wrapper {
-    display:flex;
+    display: flex;
     gap: 2rem;
-    /* spacing between cards */
     justify-content: center;
-    /* center the cards horizontally */
     flex-wrap: wrap;
-    /* allows the cards to wrap to the next line if necessary */
-    margin: 18rem;
+    width: 100%;
 }
 
 @keyframes moveup {
@@ -204,71 +219,33 @@ section {
         font-size: 50px;
     }
 
-    .feature-img {
-        position: static;
-        top: 0;
-        left: 50%;
-        transform: translateY(50%);
-        width: 100%;
-        bottom: auto;
-        margin: auto;
-    }
-
+    .feature-img,
     .feature-img2 {
-        position: static;
+        position: relative;
         top: 0;
-        left: 50%;
-        transform: translateX(50%);
-        width: 80%;
-        bottom: auto;
-        margin: auto;
+        left: 0;
+        width: 90%;
+        /* Adjust this for better sizing on smaller screens */
+        margin: 2em auto;
+        /* Center the images with some spacing */
     }
 
     .text-right {
         margin-left: 0px;
+        text-align: center;
     }
 
     .hero-text {
         display: flex;
         flex-direction: column;
         align-items: center;
+        
     }
-
-    .cards-wrapper {
+    .hero-text2 {
+        display: flex;
         flex-direction: column;
         align-items: center;
-        /* center the cards vertically on mobile devices */
+        
     }
 }
 </style>
-<!-- /* Media Query for Mobile devices */
-/* @media (max-width: 480px) {
-    .home {
-        padding-top: 50px;
-    }
-
-    .content {
-        margin-top: 5%;
-    }
-
-    .content h1 {
-        font-size: 30px;
-    }
-
-    .content p {
-        font-size: 16px;
-    }
-
-    .content .btn {
-        padding: 10px 40px;
-        font-size: 14px;
-    }
-
-    .btn {
-        padding: 10px 20px;
-    }
-
-    .feature-img {
-        width: 100%;
-    }
-} */ -->
