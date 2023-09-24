@@ -29,11 +29,10 @@
 
         </section>
         <hr>
-        <section>
-            <div class="container content">
+        <section class="hero">
+            <div class="hero-text container">
                 <h4>Features</h4>
                 <h1>All the features you need to decide the best course for you.</h1>
-
                 <div class="cards-wrapper">
                     <CardComponent :card="{
                         link: 'https://www.mythrillfiction.com/the-dark-rider',
@@ -49,6 +48,7 @@
                         characterImage: 'https://ggayane.github.io/css-experiments/cards/force_mage-character.webp'
                     }" />
                 </div>
+
             </div>
         </section>
         <hr>
@@ -177,13 +177,14 @@ section {
 }
 
 .cards-wrapper {
-    display: flex;
+    display:flex;
     gap: 2rem;
     /* spacing between cards */
     justify-content: center;
     /* center the cards horizontally */
     flex-wrap: wrap;
     /* allows the cards to wrap to the next line if necessary */
+    margin: 18rem;
 }
 
 @keyframes moveup {
@@ -239,9 +240,9 @@ section {
         /* center the cards vertically on mobile devices */
     }
 }
-
-/* Media Query for Mobile devices */
-@media (max-width: 480px) {
+</style>
+<!-- /* Media Query for Mobile devices */
+/* @media (max-width: 480px) {
     .home {
         padding-top: 50px;
     }
@@ -270,5 +271,4 @@ section {
     .feature-img {
         width: 100%;
     }
-}
-</style>
+} */ -->

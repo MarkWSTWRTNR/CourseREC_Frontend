@@ -1,15 +1,17 @@
 <!-- CardComponent.vue -->
 <template>
-    <a :href="card.link" alt="Mythrill" target="_blank">
+    
+    <a :href="card.link" alt="Card" target="_blank">
         <div class="card">
             <div class="wrapper">
                 <img :src="card.coverImage" class="cover-image" />
+                <img :src="card.titleImage" class="title" />
             </div>
-            <img :src="card.titleImage" class="title" />
             <img :src="card.characterImage" class="character" />
         </div>
     </a>
 </template>
+
 
 <script>
 export default {
@@ -23,11 +25,6 @@ export default {
 </script>
 
 <style>
-:root {
-    --card-height: 300px;
-    --card-width: calc(var(--card-height) / 1.5);
-}
-
 
 .card {
     width: var(--card-width);
@@ -35,12 +32,11 @@ export default {
     position: relative;
     display: flex;
     justify-content: center;
-    align-items: flex-end;
+    align-items: center;
     padding: 0 36px;
     perspective: 2500px;
     margin: 0 50px;
 }
-
 .cover-image {
     width: 100%;
     height: 100%;
@@ -75,6 +71,7 @@ export default {
 .wrapper::before {
     top: 0;
     height: 100%;
+    width: 100%;
     background-image: linear-gradient(to top,
             transparent 46%,
             rgba(12, 13, 19, 0.5) 68%,
@@ -102,6 +99,11 @@ export default {
 .title {
     width: 100%;
     transition: transform 0.5s;
+    position: absolute;
+    /* added */
+    bottom: 0;
+    /* added */
+    left: 0;
 }
 
 .card:hover .title {
@@ -119,4 +121,5 @@ export default {
 .card:hover .character {
     opacity: 1;
     transform: translate3d(0%, -30%, 100px);
-}</style>
+}
+</style>
