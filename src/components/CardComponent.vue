@@ -1,6 +1,6 @@
 <!-- CardComponent.vue -->
 <template>
-    <a :href="card.link" alt="Card" target="_blank">
+    <router-link :to="{ name: routeName }">
         <div class="card">
             <div class="wrapper">
                 <img :src="card.coverImage" class="cover-image" />
@@ -8,15 +8,18 @@
             </div>
             <img :src="card.characterImage" class="character" />
         </div>
-    </a>
+    </router-link>
 </template>
-
 
 <script>
 export default {
     props: {
         card: {
             type: Object,
+            required: true
+        },
+        routeName: {  // Step 3: Define a new prop for the route name.
+            type: String,
             required: true
         }
     }
@@ -34,9 +37,9 @@ export default {
     padding: 0 36px;
     perspective: 2500px;
     margin: 0 50px;
-    margin-top: 15rem ;
+    margin-top: 15rem;
     margin-bottom: 15rem;
-    
+
 }
 
 .cover-image {
@@ -126,10 +129,10 @@ export default {
 }
 
 @media (max-width: 1140px) {
-    
+
     .card {
-         justify-content: space-between;
-         margin-top: 2.5rem;
+        justify-content: space-between;
+        margin-top: 2.5rem;
     }
 }
 </style>

@@ -35,20 +35,28 @@
                 <h1>All the features you need to decide the best course for you.</h1>
                 <div class="cards-wrapper">
                     <CardComponent :card="{
-                        link: 'https://www.mythrillfiction.com/the-dark-rider',
-                        coverImage: 'https://ggayane.github.io/css-experiments/cards/dark_rider-cover.jpg',
-                        titleImage: 'https://ggayane.github.io/css-experiments/cards/dark_rider-title.png',
-                        characterImage: 'https://ggayane.github.io/css-experiments/cards/dark_rider-character.webp'
-                    }" />
+                        coverImage: require('@/assets/A.jpg'),
+                        titleImage: require('@/assets/A.jpg'),
+                        characterImage: require('@/assets/A.jpg')
+                    }" routeName="curriculum" />
 
                     <CardComponent :card="{
-                        link: 'https://www.mythrillfiction.com/force-mage',
-                        coverImage: 'https://ggayane.github.io/css-experiments/cards/force_mage-cover.jpg',
-                        titleImage: 'https://ggayane.github.io/css-experiments/cards/force_mage-title.png',
-                        characterImage: 'https://ggayane.github.io/css-experiments/cards/force_mage-character.webp'
-                    }" />
+                        coverImage: require('@/assets/A.jpg'),
+                        titleImage: require('@/assets/A.jpg'),
+                        characterImage: require('@/assets/A.jpg')
+                    }" routeName="curriculum" />
+                     <CardComponent :card="{
+                        coverImage: require('@/assets/A.jpg'),
+                        titleImage: require('@/assets/A.jpg'),
+                        characterImage: require('@/assets/A.jpg')
+                    }" routeName="curriculum" />
+                     <CardComponent :card="{
+                        coverImage: require('@/assets/A.jpg'),
+                        titleImage: require('@/assets/A.jpg'),
+                        characterImage: require('@/assets/A.jpg')
+                    }" routeName="curriculum" />
+                
                 </div>
-
             </div>
         </section>
     </div>
@@ -239,13 +247,14 @@ section {
         display: flex;
         flex-direction: column;
         align-items: center;
-        
+
     }
+
     .hero-text2 {
         display: flex;
         flex-direction: column;
         align-items: center;
-        
+
     }
 }
 </style>
