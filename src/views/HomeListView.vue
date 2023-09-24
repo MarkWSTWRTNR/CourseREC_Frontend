@@ -16,7 +16,8 @@
         <section class="hero " id="animate-section">
             <div class="hero-text container">
                 <img src="../assets/home-sec2.jpg" class="feature-img2 anim" alt="">
-                <div class="text-left content">
+                <div class="text-right content">
+                    <h4 class="anim">About us</h4>
                     <h1>Make your decision easier</h1>
                     <p class="anim container">CourseRec System is a web-based decision support tool designed to aid students
                         in study planning. It provides features like tracking grades and credit scores, offering curriculum
@@ -29,16 +30,27 @@
         <hr>
         <section>
             <div class="container content">
-                <h1>Feature</h1>
-                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Saepe cum debitis quos sequi mollitia, non
-                    eveniet animi illum ab error perspiciatis iste magni autem fugiat nam, sint quas nobis quis?</p>
+                <h4>Features</h4>
+                <h1>All the features you need to decide the best course for you.</h1>
+                <div class="card text-bg-primary mb-3" style="max-width: 18rem;">
+                    <div class="card-header">Header</div>
+                    <div class="card-body">
+                        <h5 class="card-title">Primary card title</h5>
+                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the
+                            card's content.</p>
+                    </div>
+                </div>
             </div>
         </section>
     </div>
 </template>
 <script>
+import CardComponent from '../components/CardComponent.vue';
 export default {
     name: "HomeListView",
+    components: {
+        CardComponent
+    },
     mounted() {
         this.initAnimation();
     },
@@ -126,7 +138,7 @@ section {
 }
 
 .feature-img2 {
-    width: 800px;
+    width: 700px;
     position: absolute;
     bottom: 200px;
     left: 10%;
@@ -137,7 +149,7 @@ section {
     animation-delay: 1.5s;
 }
 
-.text-left {
+.text-right {
     margin-left: 700px;
 }
 
@@ -185,12 +197,12 @@ section {
         top: 0;
         left: 50%;
         transform: translateX(50%);
-        width: 100%;
+        width: 80%;
         bottom: auto;
         margin: auto;
     }
 
-    .text-left {
+    .text-right {
         margin-left: 0px;
     }
 
@@ -231,4 +243,5 @@ section {
     .feature-img {
         width: 100%;
     }
-}</style>
+}
+</style>
