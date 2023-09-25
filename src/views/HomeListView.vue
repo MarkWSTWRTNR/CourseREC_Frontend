@@ -7,9 +7,10 @@
                 <div class="content">
                     <h1 class="anim">CourseREC<br>SYSTEM</h1>
                     <img src="../assets/statisfied.jpg" class="feature-img anim" alt="">
-                    <p class="anim container">Decision Supporting System for CMU Students</p>
-                    <a href="#" class="btn anim">Get Start</a>
-
+                    <p class="anim container" style="text-align: center;">Decision Supporting System for CMU Students</p>
+                    <a href="#animate-section3" class="custom-btn btn-5 form-control anim">GET START</a>
+                    <a href="#animate-section2" class="a-to-sec2  btn-light"><img src="../assets/fast-forward.gif" style="width: 25px;
+                transition: .5s ease all;" alt="">About us</a>
                 </div>
             </div>
         </section>
@@ -31,9 +32,9 @@
 
         <section class="hero2" id="animate-section3">
             <div class="hero-text2 container">
-                <h4 class="anim">Features</h4>
+                <h4 class="anim">WHAT WE DO</h4>
                 <h1 class="anim">All the features you need to decide the best course for you.</h1>
-
+                <h5 class="anim">These features can assist in selecting a course that facilitates graduation.</h5>
                 <div class="cards-nowrapper anim">
                     <CardComponent :card="{
                         coverImage: require('@/assets/CourseList1.jpg'),
@@ -58,7 +59,7 @@
                     }" routeName="recommendcourse" />
                     <CardComponent :card="{
                         coverImage: require('@/assets/AI1.jpg'),
-                        titleImage: '<h1>CHATGPT GUIDE</h1>',
+                        titleImage: '<h1>AI GUIDE</h1>',
                         characterImage: require('@/assets/AI2.jpg')
                     }" routeName="studyguide" />
 
@@ -106,19 +107,15 @@ export default {
     position: relative;
     z-index: 1;
     display: flex;
-    /* Make the container a Flex container */
     justify-content: center;
-    /* Center horizontally */
     align-items: center;
-    /* Center vertically */
     height: 100vh;
-    /* Set height to viewport height, adjust as needed */
     overflow: hidden;
 }
 
 .hero-text {
     text-align: center;
-    /* Optional: for better presentation */
+
 }
 
 .hero2 {
@@ -126,19 +123,21 @@ export default {
     z-index: 1;
     display: flex;
     flex-direction: column;
-    /* This will stack the items vertically */
     justify-content: center;
-    /* Center the items vertically */
     align-items: center;
-    /* Center the items horizontally */
     height: 100vh;
-    /* Giving it some padding so it doesn't look too tight */
     overflow: hidden;
 }
 
 .hero-text2 {
     text-align: center;
-    /* Allow it to take full width */
+}
+
+.a-to-sec2 {
+    display: flex;
+    position: relative;
+    color: #222;
+    margin-top: 10%;
 }
 
 section {
@@ -241,7 +240,7 @@ section {
         position: relative;
         top: 0;
         left: 0;
-        width: 90%;
+        width: 75%;
         /* Adjust this for better sizing on smaller screens */
         margin: 2em auto;
         /* Center the images with some spacing */

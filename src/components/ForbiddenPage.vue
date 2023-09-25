@@ -4,7 +4,7 @@
             <!-- <img src="@/assets/forbidden.svg" alt="Forbidden Access" /> -->
             <h1>403 - Forbidden</h1>
             <p>Sorry, you don't have access to this page.</p>
-            <p>please login</p>
+            <p>Please login</p>
             <router-link to="/" class="home-link">Return to Home Page</router-link>
         </div>
     </div>

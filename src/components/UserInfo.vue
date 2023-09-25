@@ -1,47 +1,57 @@
 <template>
-    <div class="home hero-text container">
-        <div>
-            <div v-if="loading">
-                Loading user info...
+    <div class="home container">
+        <div v-if="loading" class="loading-message">
+            Loading user info...
+        </div>
+        <div v-else>
+            <h2>Set User to Program</h2>
+            <div v-if="isStudent" class="program-select">
+                <div class="form-group">
+                    <label for="facultySelect">Select Faculty:</label>
+                    <select v-model="selectedFaculty" class="form-control" id="facultySelect">
+                        <option value="">-- Select Faculty --</option>
+                        <option v-for="faculty in faculties" :value="faculty.name" :key="faculty.facultyId">
+                            {{ faculty.name }}
+                        </option>
+                    </select>
+                </div>
+
+                <div v-if="selectedFaculty" class="form-group">
+                    <label for="programSelect">Select Program:</label>
+                    <select v-model="selectedProgram" class="form-control" id="programSelect">
+                        <option value="">-- Select Program --</option>
+                        <option v-for="program in filteredPrograms" :value="program.programId" :key="program.programId">
+                            {{ program.name }}
+                        </option>
+                    </select>
+                </div>
+
+                <button @click="setUserToProgram(selectedProgram)" class="btn btn-primary mt-3">Set User to Program</button>
             </div>
-            <div v-else>
+            <div class="user-info mt-5">
                 <h2>User Information</h2>
-                <div>
-                    <p class="white"><strong>Cmuitaccount Name:</strong> {{ userInfo.cmuitaccount_name }}</p>
-                    <p class="white"><strong>CMU IT Account:</strong> {{ userInfo.cmuitaccount }}</p>
-                    <p class="white"><strong>Student ID:</strong> {{ userInfo.student_id }}</p>
-                    <p class="white"><strong>Name (Thai):</strong> {{ userInfo.firstname_TH }} {{ userInfo.lastname_TH }}
-                    </p>
-                    <p class="white"><strong>Name (English):</strong> {{ userInfo.firstname_EN }} {{ userInfo.lastname_EN }}
-                    </p>
-                    <p class="white"><strong>Organization Name:</strong> {{ userInfo.organization_name_TH }}</p>
-                    <p class="white"><strong>Organization Name:</strong> {{ userInfo.organization_name_EN }}</p>
-                    <div v-if="userProgram">
-                        <p class="white"><strong>Program Name:</strong> {{ userProgram.name }}</p>
+                <div class="info-list">
+
+                    <div>
+                        <p class="white"><strong>Cmuitaccount Name:</strong> {{ userInfo.cmuitaccount_name }}</p>
+                        <p class="white"><strong>CMU IT Account:</strong> {{ userInfo.cmuitaccount }}</p>
+                        <p class="white"><strong>Student ID:</strong> {{ userInfo.student_id }}</p>
+                        <p class="white"><strong>Name (Thai):</strong> {{ userInfo.firstname_TH }} {{ userInfo.lastname_TH
+                        }}
+                        </p>
+                        <p class="white"><strong>Name (English):</strong> {{ userInfo.firstname_EN }} {{
+                            userInfo.lastname_EN }}
+                        </p>
+                        <p class="white"><strong>Organization Name:</strong> {{ userInfo.organization_name_TH }}</p>
+                        <p class="white"><strong>Organization Name:</strong> {{ userInfo.organization_name_EN }}</p>
+                        <div v-if="userProgram">
+                            <p class="white"><strong>Program Name:</strong> {{ userProgram.name }}</p>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-        <div v-if="isStudent" class="white">
-            <h2>Set User to Program</h2>
-            <h3>Select Faculty:</h3>
-            <select v-model="selectedFaculty" class="form-control">
-                <option value="">-- Select Faculty --</option>
-                <option v-for="faculty in faculties" :value="faculty.name" :key="faculty.facultyId">
-                    {{ faculty.name }}
-                </option>
-            </select>
 
-            <h3 v-if="selectedFaculty">Select Program:</h3>
-            <select v-if="selectedFaculty" v-model="selectedProgram" class="form-control">
-                <option value="">-- Select Program --</option>
-                <option v-for="program in filteredPrograms" :value="program.programId" :key="program.programId">
-                    {{ program.name }}
-                </option>
-            </select>
-
-            <button @click="setUserToProgram(selectedProgram)" class="btn btn-primary">Set User to Program</button>
-        </div>
         <pre>
         <!-- {{ userInfo }} -->
     </pre>
@@ -195,6 +205,34 @@ export default {
 </script>
 <style lang="scss" scoped>
 .home {
-    padding-top: 200px; // or whatever value is needed to push the content below the navbar
+    padding-top: 150px; // Adjust as needed
+    max-width: 800px; // Limit the width for readability
+    margin: 0 auto; // Center the content
+}
+
+.loading-message {
+    text-align: center;
+    font-size: 1.5em;
+    margin-bottom: 50px;
+}
+
+.program-select {
+    background-color: #f7f7f7; // A light background to distinguish the section
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.user-info {
+    .info-list {
+        background-color: #f7f7f7;
+        padding: 20px;
+        border-radius: 5px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
 }
 </style>

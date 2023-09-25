@@ -6,7 +6,7 @@
             </div>
             <ul v-show="!mobile" class="navigation">
                 <!-- Everyone can see -->
-                <li><router-link class="link" :to="{ name: 'home' }"> Home</router-link></li>
+                <li><router-link class="link " :to="{ name: 'home' }"> Home</router-link></li>
 
 
                 <!-- only Admin can see -->
@@ -15,7 +15,7 @@
 
 
                 <!-- only student can see -->
-               
+
                 <li v-if="isStudent"><router-link class="link" :to="{ name: 'courselist' }"> Course List</router-link></li>
                 <li v-if="isStudent"><router-link class="link" :to="{ name: 'curriculum' }"> Curriculum</router-link></li>
                 <li v-if="isStudent"><router-link class="link" :to="{ name: 'recommendcourse' }"> Recommend
@@ -30,16 +30,18 @@
                     <router-link class="link" :to="{ name: 'UserInfo' }">UserInfo: {{ cmuitaccount_name }}</router-link>
                 </li>
                 <!-- Everyone can see -->
-                <li v-if="isLoggedIn">
-                    <router-link class="custom-btn btn-5 form-control " to="#" @click.native="logout">
-                        <span class="text">Logout</span>
-                    </router-link>
-                </li>
-                <li v-else>
-                    <router-link class="custom-btn btn-5" to="#" @click.native="login">
-                        <span class="text">Login with CMU account</span>
-                    </router-link>
-                </li>
+                <div class="login-container">
+                    <li v-if="isLoggedIn">
+                        <router-link class="custom-btn btn-5 form-control" to="#" @click.native="logout">
+                            <span class="text">Logout</span>
+                        </router-link>
+                    </li>
+                    <li v-else>
+                        <router-link class="custom-btn btn-5 form-control" to="#" @click.native="login">
+                            <span class="text">Login with CMU account</span>
+                        </router-link>
+                    </li>
+                </div>
             </ul>
             <!-- Hamburger bar -->
             <div class="icon">
@@ -258,6 +260,9 @@ header {
             color: #000000;
             list-style: none;
             text-decoration: none;
+            white-space: nowrap;
+
+            text-overflow: ellipsis;
         }
 
         li {
@@ -273,7 +278,7 @@ header {
             border-bottom: 1px solid transparent;
 
             &:hover {
-                color: #00afea;
+                color: #ff7300;
                 border-color: #00afea;
             }
         }
@@ -307,6 +312,7 @@ header {
                 cursor: pointer;
                 font-size: 24px;
                 transition: .8s ease all;
+                color: black;
             }
         }
 
@@ -321,7 +327,7 @@ header {
             width: 100%;
             max-width: 250px;
             height: 100%;
-            background-color: #fff;
+            background-color: #ffffff;
             top: 0;
             left: 0;
 
@@ -356,6 +362,12 @@ header {
 
     .link {
         color: white;
+    }
+
+    .icon {
+        i {
+            color: white;
+        }
     }
 
     nav {

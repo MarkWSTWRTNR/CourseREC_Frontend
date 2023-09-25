@@ -1,22 +1,3 @@
-body {
-  background: #e0e5ec;
-}
-
-h1 {
-  position: relative;
-  text-align: center;
-  color: #353535;
-  font-size: 50px;
-  font-family: "Cormorant Garamond", serif;
-}
-
-p {
-  font-family: 'Lato', sans-serif;
-  font-weight: 300;
-  text-align: center;
-  font-size: 18px;
-  color: #676767;
-}
 
 .frame {
   width: 90%;
@@ -45,6 +26,7 @@ button {
     7px 7px 20px 0px rgba(0, 0, 0, .1),
     4px 4px 5px 0px rgba(0, 0, 0, .1);
   outline: none;
+  text-decoration: none;
 }
 
 /* 1 */
@@ -255,11 +237,11 @@ button {
   padding: 0;
   border: none;
   background: #6D1225;
-  background: linear-gradient(0deg, #b2937a8c 0%, #B2937A 100%);
+  background: linear-gradient(0deg, #ce6a199f 0%, #ff7300 100%);
 }
 
 .btn-5:hover {
-  color: #B2937A;
+  color: #00afea;
   background: transparent;
   box-shadow: none;
 }
@@ -272,7 +254,7 @@ button {
   right: 0;
   height: 2px;
   width: 0;
-  background: #B2937A;
+  background: #00afea;
   box-shadow:
     -1px -1px 5px 0px #fff,
     7px 7px 20px 0px #0003,

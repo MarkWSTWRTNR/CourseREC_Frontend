@@ -29,8 +29,12 @@ export default {
 	padding: 0;
 	margin: 0;
 	box-sizing: border-box;
-	font-family: "Raleway", sans-serif;
+	font-family: Georgia, 'Times New Roman', Times, serif;
 	font-weight: 400;
+	
+	p{
+		text-align: justify;
+	}
 }
 
 .app {
@@ -54,7 +58,7 @@ export default {
 	--light: #f1f5f9;
 	--sidebar-width: 300px;
 	--background-page: #23282c;
-	--card-height: 410px;
+	--card-height: 420px;
     --card-width: calc(var(--card-height) / 1.5);
 }
 </style>
