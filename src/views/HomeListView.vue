@@ -14,7 +14,7 @@
             </div>
         </section>
         <hr>
-        <section class="hero " id="animate-section">
+        <section class="hero " id="animate-section2">
             <div class="hero-text container">
                 <img src="../assets/home-sec2.jpg" class="feature-img2 anim" alt="">
                 <div class="text-right content">
@@ -29,12 +29,12 @@
         </section>
         <hr>
 
-        <section class="hero2">
+        <section class="hero2" id="animate-section3">
             <div class="hero-text2 container">
-                <h4>Features</h4>
-                <h1>All the features you need to decide the best course for you.</h1>
+                <h4 class="anim">Features</h4>
+                <h1 class="anim">All the features you need to decide the best course for you.</h1>
 
-                <div class="cards-nowrapper">
+                <div class="cards-nowrapper anim">
                     <CardComponent :card="{
                         coverImage: require('@/assets/CourseList1.jpg'),
                         titleImage: '<h1>COURSE LIST</h1>',
@@ -76,11 +76,12 @@ export default {
         CardComponent
     },
     mounted() {
-        this.initAnimation();
+        this.initAnimation('animate-section2');
+        this.initAnimation('animate-section3');
     },
     methods: {
-        initAnimation() {
-            const section = document.getElementById('animate-section');
+        initAnimation(sectionId) {
+            const section = document.getElementById(sectionId);
             const observer = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
@@ -212,9 +213,9 @@ section {
 .cards-nowrapper {
     margin-top: 10%;
     display: flex;
-    gap: 2rem;
+    gap: 15rem;
     justify-content: center;
-    flex-wrap: nowrap;
+    flex-wrap: wrap;
     width: 100%;
 }
 
@@ -266,8 +267,6 @@ section {
         display: flex;
         flex-direction: column;
         align-items: center;
-
-
     }
 
     .hero-text2 h1 {

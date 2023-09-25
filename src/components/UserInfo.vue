@@ -22,7 +22,7 @@
                 </div>
             </div>
         </div>
-        <div class="white">
+        <div v-if="isStudent" class="white">
             <h2>Set User to Program</h2>
             <h3>Select Faculty:</h3>
             <select v-model="selectedFaculty" class="form-control">
@@ -66,6 +66,7 @@ export default {
             userProgram: null,
         }
     },
+
     computed: {
         filteredPrograms() {
             if (this.selectedFaculty) {
@@ -75,6 +76,17 @@ export default {
                 return filteredPrograms;
             }
             return [];
+        }, isAdmin() {
+            return userRole.value === ROLES.ROLE_ADMIN;
+        },
+        isStudent() {
+            return userRole.value === ROLES.ROLE_STUDENT;
+        },
+        isLoggedIn() {
+            return !!this.accessToken;
+        },
+        isEitherAdminOrStudent() {
+            return this.isAdmin || this.isStudent;
         },
     }, watch: {
         cmuitaccount_name(newValue, oldValue) {
