@@ -3,10 +3,11 @@
     <div class="home">
         <section class="hero">
             <div class="hero-text container">
-                <div>
-                    <input type="text" v-model="searchQuery" placeholder="Search courses">
-                    <button @click="searchCourses">Search</button>
-
+                <div class="search-bar">
+                    <div class="form-group">
+                        <input type="text" v-model="searchQuery" placeholder="Search courses..." class="form-control">
+                    </div>
+                    <button @click="searchCourses" class="custom-btn btn-5_2">Search</button>
                 </div>
                 <div class="row">
                     <div class="col-md-12">
@@ -22,9 +23,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr v-if="displayCourses && displayCourses.length === 0">
-                                    <td colspan="6" class="text-center">No courses found</td>
-                                </tr>
+                                <!-- Course Rows -->
                                 <tr v-for="record in records" :key="record.courseId">
                                     <td>{{ record.courseId }}</td>
                                     <td>{{ record.name }}</td>
@@ -48,7 +47,8 @@
                         </table>
                     </div>
                     <div class="pagination-buttons">
-                        <button class="custom-btn btn-5_2 left-button" @click="changePage(-1)" :disabled="currentPage === 1">
+                        <button class="custom-btn btn-5_2 left-button" @click="changePage(-1)"
+                            :disabled="currentPage === 1">
                             <b>Previous</b>
                         </button>
                         <button class="custom-btn btn-5_2 right-button" @click="changePage(1)"
@@ -58,8 +58,7 @@
                     </div>
                 </div>
                 <div>
-                    <button v-if="userRole === ROLES.ROLE_ADMIN" class="btn btn-outline-primary" @click="openForm">Add
-                        courses</button>
+                    <button v-if="isAdmin" class="btn btn-outline-primary" @click="openForm">Add courses</button>
                     <div v-if="showForm">
                         <div class="overlay">
                             <div class="popup">
@@ -92,21 +91,22 @@
                                                 <v-select class="form-control left-align" id="coursePrerequisite"
                                                     v-model="selectedPrerequisites" :options="allCourse.map(allcourse => ({
                                                         label: allcourse.courseId + ' - ' + allcourse.name,
-                                                        value: { courseId: allcourse.courseId, name: allcourse.name } // Include both courseId and name
+                                                        value: { courseId: allcourse.courseId, name: allcourse.name }
                                                     }))" multiple :reduce="option => option.value"
-                                                    :placeholder="'Select prerequisite courses'">
-                                                </v-select>
-
+                                                    :placeholder="'Select prerequisite courses'"></v-select>
                                             </div>
                                             <div class="form-group">
                                                 <label for="description">Description</label>
-                                                <input type="text" class="form-control" id="description"
-                                                    v-model="description" required>
+                                                <textarea class="form-control" id="description" v-model="description"
+                                                    required></textarea>
                                             </div>
-                                            <button v-if="selectedCourse" class="btn btn-outline-success"
-                                                @click="updateCourse">Update</button>
-                                            <button v-else class="btn btn-primary" type="submit">Create</button>
-                                            <button @click="cancelForm">Cancel</button>
+                                            <div class="form-buttons">
+                                                <button v-if="selectedCourse"
+                                                    class="btn btn-outline-success">Update</button>
+                                                <button v-else class="btn btn-primary" type="submit">Create</button>
+                                                <button class="btn btn-outline-secondary"
+                                                    @click="cancelForm">Cancel</button>
+                                            </div>
                                         </form>
                                     </div>
                                 </div>
@@ -331,7 +331,7 @@ export default {
   
 <style lang="scss" scoped>
 .home {
-    padding-top: 200px; // or whatever value is needed to push the content below the navbar
+    padding-top: 150px; // or whatever value is needed to push the content below the navbar
 }
 
 .overlay {
@@ -378,5 +378,37 @@ export default {
 
 .right-button {
     justify-content: flex-end;
+}
+
+.search-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+
+    .form-group {
+        flex: 1;
+        margin-right: 10px;
+    }
+}
+
+.form-buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+
+
+.popup {
+    /* ... (rest of the styles remain unchanged) */
+    padding: 30px;
+    width: 80%;
+    max-width: 600px;
+}
+
+textarea.form-control {
+    resize: vertical;
+    min-height: 100px;
 }
 </style>

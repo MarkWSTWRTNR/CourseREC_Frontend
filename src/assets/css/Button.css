@@ -283,6 +283,7 @@ button {
   border: none;
   background: #6D1225;
   background: linear-gradient(0deg, #191cce9f 0%, #00a2ff 100%);
+  color: white;
 }
 
 .btn-5_2:hover {

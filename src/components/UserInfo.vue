@@ -26,7 +26,8 @@
                     </select>
                 </div>
 
-                <button @click="setUserToProgram(selectedProgram)" class="btn btn-primary mt-3">Set User to Program</button>
+                <button @click="setUserToProgram(selectedProgram)" class="btn btn-primary mt-3">Assign Program</button>
+                <div v-if="feedbackMessage" :class="feedbackClass" class="feedback mt-2">{{ feedbackMessage }}</div>
             </div>
             <div class="user-info mt-5">
                 <h2>User Information</h2>
@@ -74,6 +75,7 @@ export default {
             selectedFaculty: '',
             selectedProgram: '',
             userProgram: null,
+            feedbackMessage: '', feedbackType: '',
         }
     },
 
@@ -97,7 +99,12 @@ export default {
         },
         isEitherAdminOrStudent() {
             return this.isAdmin || this.isStudent;
-        },
+        }, feedbackClass() {
+            return {
+                'feedback-success': this.feedbackType === 'success',
+                'feedback-error': this.feedbackType === 'error'
+            };
+        }
     }, watch: {
         cmuitaccount_name(newValue, oldValue) {
             if (newValue !== oldValue) {
@@ -162,10 +169,12 @@ export default {
             apiClient.post(`http://localhost:8080/users/${this.cmuitaccount_name}/set-program`, program)
                 .then((response) => {
                     this.fetchData();
-                    console.log('Program set successfully', response.data);
+                    this.feedbackMessage = 'Program assigned successfully!';
+                    this.feedbackType = 'success'; // Set feedback type to success
                 })
                 .catch((error) => {
-                    alert("Something went wrong");
+                    this.feedbackMessage = 'Error assigning program. Please try again.';
+                    this.feedbackType = 'error'; // Set feedback type to error
                 });
         },
         async handleRedirectWithCode(code) {
@@ -234,5 +243,16 @@ export default {
         border-radius: 5px;
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     }
+}
+
+.feedback-success {
+    color: rgb(0, 161, 0); // You can adjust this color based on success or error
+    font-size: 0.9em;
+    font-weight: bold;
+}
+.feedback-error {
+    color: rgb(150, 3, 3); // You can adjust this color based on success or error
+    font-size: 0.9em;
+    font-weight: bold;
 }
 </style>

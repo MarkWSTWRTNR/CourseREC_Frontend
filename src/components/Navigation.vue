@@ -50,69 +50,36 @@
             <transition name="mobile-nav">
                 <ul v-show="mobileNav" class="dropdown-nav">
                     <!-- Everyone can see -->
-                    <li><router-link class="link" :to="{ name: 'home' }"><lord-icon
-                                src="https://cdn.lordicon.com/etqbfrgp.json" trigger="hover"
-                                colors="outline:#131432,primary:#667179,secondary:#6d1225,tertiary:#b2937a,quaternary:#adb2b8"
-                                style="width:50px;height:50px">
-                            </lord-icon> Home</router-link></li>
+                    <li><router-link class="link" :to="{ name: 'home' }"> Home</router-link></li>
 
                     <!-- only Admin can see -->
-                    <li v-if="isAdmin"><router-link class="link" :to="{ name: 'courselist' }"><lord-icon
-                                src="https://cdn.lordicon.com/iqocwzif.json" trigger="hover"
-                                colors="primary:#6d1225,secondary:#b2937a" style="width:50px;height:50px">
-                            </lord-icon> Course list</router-link></li>
-                    <li v-if="isAdmin"><router-link class="link" :to="{ name: 'curriculum' }"><lord-icon
-                                src="https://cdn.lordicon.com/sjtkwowv.json" trigger="morph"
-                                colors="primary:#6d1225,secondary:#121331,tertiary:#b2937a,quaternary:#667179"
-                                style="width:50px;height:50px">
-                            </lord-icon> Curriculum</router-link></li>
+                    <li v-if="isAdmin"><router-link class="link" :to="{ name: 'courselist' }">Course list</router-link></li>
+                    <li v-if="isAdmin"><router-link class="link" :to="{ name: 'curriculum' }"> Curriculum</router-link></li>
                     <!-- only student can see -->
-                    <li v-if="isStudent"><router-link class="link" :to="{ name: 'courselist' }"><lord-icon
-                                src="https://cdn.lordicon.com/iqocwzif.json" trigger="hover"
-                                colors="primary:#6d1225,secondary:#b2937a" style="width:50px;height:50px">
-                            </lord-icon> Course List</router-link>
+                    <li v-if="isStudent"><router-link class="link" :to="{ name: 'courselist' }">Course List</router-link>
                     </li>
-                    <li v-if="isStudent"><router-link class="link" :to="{ name: 'curriculum' }"><lord-icon
-                                src="https://cdn.lordicon.com/sjtkwowv.json" trigger="morph"
-                                colors="primary:#6d1225,secondary:#121331,tertiary:#b2937a,quaternary:#667179"
-                                style="width:50px;height:50px">
-                            </lord-icon> Curriculum</router-link>
+                    <li v-if="isStudent"><router-link class="link" :to="{ name: 'curriculum' }">Curriculum</router-link>
                     </li>
-                    <li v-if="isStudent"><router-link class="link" :to="{ name: 'recommendcourse' }"><lord-icon
-                                src="https://cdn.lordicon.com/snnvmbic.json" trigger="morph"
-                                colors="outline:#121331,primary:#6d1225,secondary:#B2937A" style="width:50px;height:50px">
-                            </lord-icon> Recommend Course</router-link></li>
-                    <li v-if="isStudent"><router-link class="link" :to="{ name: 'finishedcourse' }"><lord-icon
-                                src="https://cdn.lordicon.com/ttioogfl.json" trigger="morph"
-                                colors="primary:#121331,secondary:#667179,tertiary:#6d1225,quaternary:#b2937a,quinary:#adb2b8"
-                                style="width:50px;height:50px">
-                            </lord-icon> Finished Course</router-link></li>
-                    <li v-if="isStudent"><router-link class="link" :to="{ name: 'courselist' }"><lord-icon
-                                src="https://cdn.lordicon.com/zfuqnliu.json" trigger="hover"
-                                colors="outline:#121331,primary:#3a3347,secondary:#667179,tertiary:#e1d084,quaternary:#6d1225,quinary:#b2937a,senary:#e3c0ac"
-                                style="width:50px;height:50px">
-                            </lord-icon> Study Guide</router-link>
+                    <li v-if="isStudent"><router-link class="link" :to="{ name: 'recommendcourse' }">Recommend
+                            Course</router-link></li>
+                    <li v-if="isStudent"><router-link class="link" :to="{ name: 'finishedcourse' }"> Finished
+                            Course</router-link></li>
+                    <li v-if="isStudent"><router-link class="link" :to="{ name: 'courselist' }"> Study Guide</router-link>
                     </li>
                     <!-- Admin and student can see -->
-                    <li v-if="isEitherAdminOrStudent"><router-link class="link" :to="{ name: 'UserInfo' }"><lord-icon
-                                src="https://cdn.lordicon.com/dqxvvqzi.json" trigger="hover"
-                                colors="outline:#121331,primary:#b2937a,secondary:#6d1225" style="width:50px;height:50px;">
-                            </lord-icon> UserInfo: {{ cmuitaccount_name }}</router-link></li>
+                    <li v-if="isEitherAdminOrStudent"><router-link class="link" :to="{ name: 'UserInfo' }">UserInfo: {{
+                        cmuitaccount_name }}</router-link></li>
 
                     <!-- Everyone can see -->
                     <li v-if="isLoggedIn">
                         <button class="custom-btn btn-5" to="#" @click.native="logout">
-                            <lord-icon src="https://cdn.lordicon.com/qsacmnwj.json" trigger="hover"
-                                colors="outline:#121331,primary:#6d1225,secondary:#b2937a" style="width:50px;height:50px">
-                            </lord-icon>
+
                             <span class="text">Logout</span>
                         </button>
                     </li>
                     <li v-else>
                         <button class="custom-btn btn-5" to="#" @click.native="login">
-                            <lord-icon src="https://cdn.lordicon.com/qsacmnwj.json" trigger="hover"
-                                colors="outline:#121331,primary:#b2937a,secondary:#6d1225" style="width:50px;height:50px">
-                            </lord-icon>
+
                             <span class="text">Login with CMU account</span>
                         </button>
                     </li>
