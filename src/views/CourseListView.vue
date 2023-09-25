@@ -90,8 +90,12 @@
                                             </div>
                                             <div class="form-group">
                                                 <label for="gradingType">Grading Type</label>
-                                                <input type="text" class="form-control" id="gradingType"
+                                                <select type="text" class="form-control" id="gradingType"
                                                     v-model="gradingtype" required>
+                                                    <option value="">-- Select Grading Type --</option>
+                                                    <option>Letter Grading</option>
+                                                    <option>Non-Letter Grading</option>
+                                                </select>
                                             </div>
                                             <div class="form-group">
                                                 <label for="coursePrerequisite">Course Prerequisite</label>
@@ -427,4 +431,5 @@ textarea.form-control {
     display: flex;
     justify-content: center;
     gap: 1em;
-}</style>
+}
+</style>
