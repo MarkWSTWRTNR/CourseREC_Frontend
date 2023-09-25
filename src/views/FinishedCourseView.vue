@@ -1,6 +1,6 @@
 <template>
   <div class="home hero-text container">
-    <button class="btn btn-outline-primary" @click="openForm">Add Finished Course</button>
+    <button class="btn btn-primary" @click="openForm">Add Finished Course</button>
     <div v-if="showForm">
       <div class="overlay">
         <div class="popup">
@@ -20,7 +20,7 @@
                 <label for="semester">Semester:</label>
                 <input type="text" id="semester" v-model="semester" required>
 
-                <button v-if="selectedFinishedCourse" class="btn btn-outline-success" @click="updateFinishedCourse">
+                <button v-if="selectedFinishedCourse" class="btn btn-success" @click="updateFinishedCourse">
                   Update
                 </button>
 
@@ -36,7 +36,7 @@
     <div class="row">
       <div v-if="finishedCourses && finishedCourses.length > 0" class="col-md-12"
         v-for="finishedCourse in finishedCourses" :key="finishedCourse.id">
-        <button class="btn btn-outline-danger" @click="removeGroupFinishedCourse(finishedCourse.id)">
+        <button class="btn btn-danger" @click="removeGroupFinishedCourse(finishedCourse.id)">
           Delete Group
         </button>
         <p class="white">Year: {{ finishedCourse.year }}</p>
@@ -75,7 +75,7 @@
                   <option value="F">F</option>
                   <option value="S">S</option>
                   <option value="U">U</option>
-                  <option value="V">V</option>
+                  <!-- <option value="V">V</option>
                   <option value="W">W</option>
                   <option value="CE">CE</option>
                   <option value="CP">CP</option>
@@ -83,10 +83,9 @@
                   <option value="CT">CT</option>
                   <option value="CX">CX</option>
                   <option value="I">I</option>
-                  <option value="P">P</option>
+                  <option value="P">P</option> -->
                 </select>
-                <button class="btn btn-outline-danger"
-                  @click="removeCourseFromFinishedCourse(finishedCourse, course.courseId)">
+                <button class="btn btn-danger" @click="removeCourseFromFinishedCourse(finishedCourse, course.courseId)">
                   Remove
                 </button>
                 <router-link :to="'/courseByCourseId/' + course.courseId">Description</router-link>
@@ -96,7 +95,7 @@
         </table>
         <p class="white"> GPA: {{ finishedCourse.groupGPA }}</p>
         <p class="white"> Credit: {{ finishedCourse.groupEarnedCredit }}</p>
-        <button class="btn btn-outline-info" @click="editFinishedCourse(finishedCourse)">
+        <button class="btn btn-info" @click="editFinishedCourse(finishedCourse)">
           Edit
         </button>
 
@@ -439,8 +438,9 @@ export default {
 
 <style scoped lang="scss">
 .home {
-    padding-top: 200px;
+  padding-top: 200px;
 }
+
 .popup {
   border: 1px solid #ccc;
   padding: 20px;

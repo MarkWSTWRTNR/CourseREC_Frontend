@@ -10,8 +10,8 @@
 
 
                 <!-- only Admin can see -->
-                <li v-if="isAdmin"><router-link class="link" :to="{ name: 'curriculum' }"> Course list</router-link></li>
-                <li v-if="isAdmin"><router-link class="link" :to="{ name: 'courselist' }"> Curriculum</router-link></li>
+                <li v-if="isAdmin"><router-link class="link" :to="{ name: 'courselist' }"> Course list</router-link></li>
+                <li v-if="isAdmin"><router-link class="link" :to="{ name: 'curriculum' }"> Curriculum</router-link></li>
 
 
                 <!-- only student can see -->

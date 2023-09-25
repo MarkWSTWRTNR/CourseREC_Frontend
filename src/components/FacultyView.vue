@@ -16,9 +16,9 @@
                 <td>{{ record.facultyId }}</td>
                 <td>{{ record.name }}</td>
                 <td>
-                  <button v-if="userRole === ROLES.ROLE_ADMIN" class="btn btn-outline-danger"
+                  <button v-if="userRole === ROLES.ROLE_ADMIN" class="btn btn-danger"
                     @click="deleteFaculty(record.facultyId)">Delete</button>
-                  <button v-if="userRole === ROLES.ROLE_ADMIN" class="btn btn-outline-info"
+                  <button v-if="userRole === ROLES.ROLE_ADMIN" class="btn btn-info"
                     @click="editFaculty(record)">Edit</button>
                 </td>
               </tr>
@@ -27,7 +27,7 @@
         </div>
       </div>
       <div>
-        <button v-if="userRole === ROLES.ROLE_ADMIN" class="btn btn-outline-primary" @click="openForm">Add
+        <button v-if="userRole === ROLES.ROLE_ADMIN" class="btn btn-primary" @click="openForm">Add
           Faculty</button>
         <div v-if="showForm">
           <div class="overlay">
@@ -38,7 +38,7 @@
                   <form @submit.prevent="addFaculty">
                     <input type="text" v-model="facultyId" placeholder="Faculty ID" required>
                     <input type="text" v-model="name" placeholder="Faculty Name" required>
-                    <button v-if="selectedFaculty" class="btn btn-outline-success" @click="updateFaculty">Update</button>
+                    <button v-if="selectedFaculty" class="btn btn-success" @click="updateFaculty">Update</button>
                     <button v-else class="btn btn-primary" type="submit">Create</button>
                     <button @click="cancelForm">Cancel</button>
                   </form>

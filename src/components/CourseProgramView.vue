@@ -24,11 +24,11 @@
                   <td>{{ record.name }}</td>
                   <td>{{ record.faculty ? record.faculty.name : 'N/A' }}</td>
                   <td>
-                    <button v-if="userRole === ROLES.ROLE_ADMIN" class="btn btn-outline-danger"
+                    <button v-if="userRole === ROLES.ROLE_ADMIN" class="btn btn-danger"
                       @click="deleteProgram(record.id)">
                       Delete
                     </button>
-                    <button v-if="userRole === ROLES.ROLE_ADMIN" class="btn btn-outline-info"
+                    <button v-if="userRole === ROLES.ROLE_ADMIN" class="btn btn-info"
                       @click="editProgram(record); openForm()">
                       Edit
                     </button>
@@ -39,7 +39,7 @@
           </div>
         </div>
         <div>
-          <button v-if="userRole === ROLES.ROLE_ADMIN" class="btn btn-outline-primary" @click="openForm">Add
+          <button v-if="userRole === ROLES.ROLE_ADMIN" class="btn btn-primary" @click="openForm">Add
             Program</button>
           <div v-if="showForm">
             <div class="overlay">
@@ -57,7 +57,7 @@
                           {{ faculty.name }}
                         </option>
                       </select>
-                      <button v-if="selectedProgram" class="btn btn-outline-success"
+                      <button v-if="selectedProgram" class="btn btn-success"
                         @click="updateProgram">Update</button>
                       <button v-else class="btn btn-primary" type="submit">Create</button>
                       <button @click="cancelForm">Cancel</button>

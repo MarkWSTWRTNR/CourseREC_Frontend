@@ -4,8 +4,9 @@
             Loading user info...
         </div>
         <div v-else>
-            <h2>Set User to Program</h2>
+            
             <div v-if="isStudent" class="program-select">
+                <h2>Set User to Program</h2>
                 <div class="form-group">
                     <label for="facultySelect">Select Faculty:</label>
                     <select v-model="selectedFaculty" class="form-control" id="facultySelect">
@@ -26,7 +27,7 @@
                     </select>
                 </div>
 
-                <button @click="setUserToProgram(selectedProgram)" class="btn btn-primary mt-3">Assign Program</button>
+                <button @click="setUserToProgram(selectedProgram)" class="custom-btn btn-5_2">Assign Program</button>
                 <div v-if="feedbackMessage" :class="feedbackClass" class="feedback mt-2">{{ feedbackMessage }}</div>
             </div>
             <div class="user-info mt-5">

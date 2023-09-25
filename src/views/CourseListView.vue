@@ -36,9 +36,9 @@
                                         </li>
                                     </td>
                                     <td>
-                                        <button v-if="userRole === ROLES.ROLE_ADMIN" class="btn btn-outline-danger"
+                                        <button v-if="userRole === ROLES.ROLE_ADMIN" class="btn btn-danger"
                                             @click="deleteCourse(record.id)">Delete</button>
-                                        <button v-if="userRole === ROLES.ROLE_ADMIN" class="btn btn-outline-info"
+                                        <button v-if="userRole === ROLES.ROLE_ADMIN" class="btn btn-info"
                                             @click="editCourse(record); openForm()">Edit</button><br>
                                         <router-link :to="'/courseByCourseId/' + record.courseId">Description</router-link>
                                     </td>
@@ -58,7 +58,7 @@
                     </div>
                 </div>
                 <div>
-                    <button v-if="isAdmin" class="btn btn-outline-primary" @click="openForm">Add courses</button>
+                    <button v-if="isAdmin" class="btn btn-primary" @click="openForm">Add courses</button>
                     <div v-if="showForm">
                         <div class="overlay">
                             <div class="popup">
@@ -101,11 +101,9 @@
                                                     required></textarea>
                                             </div>
                                             <div class="form-buttons">
-                                                <button v-if="selectedCourse"
-                                                    class="btn btn-outline-success">Update</button>
+                                                <button v-if="selectedCourse" class="btn btn-success">Update</button>
                                                 <button v-else class="btn btn-primary" type="submit">Create</button>
-                                                <button class="btn btn-outline-secondary"
-                                                    @click="cancelForm">Cancel</button>
+                                                <button class="btn btn-secondary" @click="cancelForm">Cancel</button>
                                             </div>
                                         </form>
                                     </div>
