@@ -37,12 +37,15 @@ export default {
     padding: 0 36px;
     perspective: 2500px;
     margin: 0 50px;
+    border: none;
 }
 
 .cover-image {
     width: 100%;
     height: 100%;
     object-fit: cover;
+    border-radius: 30px;
+    
 }
 
 .wrapper {
@@ -106,8 +109,10 @@ export default {
     z-index: 1;
 
     color: white;
-    text-shadow: rgb(0, 0, 0) 10px 0 10px;
-    ;
+    text-shadow: -1px 1px 0 #000,
+                          1px 1px 0 #000,
+                         1px -1px 0 #000,
+                        -1px -1px 0 #000;
 }
 
 .card:hover .title {

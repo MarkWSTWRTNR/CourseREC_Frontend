@@ -5,7 +5,7 @@
       <router-link to="/courseprogram"><button> Create Program</button></router-link>
     </div>
 
-    <h3 class="white">Select Faculty:</h3>
+    <h3 class="">Select Faculty:</h3>
     <select v-model="selectedFaculty" class="form-control">
       <option value="">-- Select Faculty --</option>
       <option v-for="faculty in faculties" :value="faculty.name" :key="faculty.facultyId">
@@ -13,7 +13,7 @@
       </option>
     </select>
 
-    <h3 v-if="selectedFaculty" class="white">Select Program:</h3>
+    <h3 v-if="selectedFaculty" class="">Select Program:</h3>
     <select v-if="selectedFaculty" v-model="selectedProgram" class="form-control">
       <option value="">-- Select Program --</option>
       <option v-for="program in filteredPrograms" :value="program.programId" :key="program.programId">
@@ -25,9 +25,9 @@
     <div v-if="selectedProgram">
       <div>
         <div @click="toggleAccordion(1)" :class="{ 'accordion': true, 'active': isActive(1) }">
-          <h3>Curriculum</h3>
+          <h3>Curriculum<i class="fa fa-chevron-down" :class="{ 'fa-rotate-180': isActive(1) }"></i></h3>
         </div>
-        <i class="fa fa-chevron-down" :class="{ 'fa-rotate-180': isActive(1) }"></i>
+
 
 
         <div v-show="isActive(1, index)" class="container">
@@ -86,8 +86,8 @@
                 @click="removeGroupCourse(groupCourse.id)">
                 Delete Group
               </button>
-              <h4 class="white">{{ groupCourse.groupName }}</h4>
-              <h6 class="white">Mininum credit required:{{ groupCourse.credit }}</h6>
+              <h4 class="">{{ groupCourse.groupName }}</h4>
+              <h6 class="">Mininum credit required:{{ groupCourse.credit }}</h6>
               <table class="table table-striped table-bordered">
                 <thead>
                   <tr>
@@ -115,22 +115,20 @@
                   </tr>
                 </tbody>
               </table>
-              <h5 class="white">Description: {{ groupCourse.text }}</h5>
+              <h5 class="">Description: {{ groupCourse.text }}</h5>
               <button v-if="userRole === ROLES.ROLE_ADMIN" class="btn btn-outline-info"
                 @click="editGroupCourse(groupCourse)">
                 Edit
               </button>
-              <hr class="white">
+              <hr class="">
             </div>
           </div>
         </div>
       </div>
       <div>
         <div @click="toggleAccordion(3)" :class="{ 'accordion': true, 'active': isActive(3) }">
-          <h3>Standard Study Plan</h3>
+          <h3>Standard Study Plan<i class="fa fa-chevron-down" :class="{ 'fa-rotate-180': isActive(3) }"></i></h3>
         </div>
-        <i class="fa fa-chevron-down" :class="{ 'fa-rotate-180': isActive(3) }"></i>
-
         <div v-show="isActive(3)" class="container">
           <button v-if="userRole === ROLES.ROLE_ADMIN" class="btn btn-outline-primary" @click="openForm2">Add
             courses</button>
@@ -186,8 +184,8 @@
                 @click="removeStudyPlan(studyPlan.id)">
                 Delete Group
               </button>
-              <h4 class="white">{{ studyPlan.yearAndSemester }}</h4>
-              <h6 class="white">credit: {{ studyPlan.credit }}</h6>
+              <h4 class="">{{ studyPlan.yearAndSemester }}</h4>
+              <h6 class="">credit: {{ studyPlan.credit }}</h6>
               <table class="table table-striped table-bordered">
                 <thead>
                   <tr>
@@ -215,11 +213,11 @@
                   </tr>
                 </tbody>
               </table>
-              <h5 class="white">Description: {{ studyPlan.text }}</h5>
+              <h5 class="">Description: {{ studyPlan.text }}</h5>
               <button v-if="userRole === ROLES.ROLE_ADMIN" class="btn btn-outline-info" @click="editStudyPlan(studyPlan)">
                 Edit
               </button>
-              <hr class="white">
+              <hr class="">
             </div>
           </div>
         </div>
@@ -639,20 +637,17 @@ export default {
   padding-top: 200px; // or whatever value is needed to push the content below the navbar
 }
 
-.white {
-  color: rgb(0, 0, 0);
-}
 
 .accordion {
   border: 1px solid #ccc;
   margin-bottom: 10px;
   cursor: pointer;
   padding: 10px;
-  background-color: #a297c0;
+  background-color: #4c7bb9;
 }
 
 .accordion.active {
-  background-color: #0b6902;
+  background-color: #ff8800;
 }
 
 .accordion h3 {
