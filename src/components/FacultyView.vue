@@ -1,52 +1,52 @@
 <template>
-  <div class="home hero-text container">
-    <div>
-      <div class="row">
-        <div class="col-md-12">
-          <table class="table table-striped table-bordered">
-            <thead>
-              <tr>
-                <th>Faculty ID</th>
-                <th>Faculty Name</th>
-                <th v-if="userRole === ROLES.ROLE_ADMIN">Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-for="record in faculties" :key="record.facultyId">
-                <td>{{ record.facultyId }}</td>
-                <td>{{ record.name }}</td>
-                <td>
-                  <button v-if="userRole === ROLES.ROLE_ADMIN" class="btn btn-danger"
-                    @click="deleteFaculty(record.facultyId)">Delete</button>
-                  <button v-if="userRole === ROLES.ROLE_ADMIN" class="btn btn-info"
-                    @click="editFaculty(record)">Edit</button>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
+  <div class="faculty-page">
+    <div class="table-section">
+      <h2>Faculty List</h2>
+      <div class="back">
+        <button class="btn btn-secondary mb-3" @click="goBack">← Back to previous page</button>
       </div>
-      <div>
-        <button v-if="userRole === ROLES.ROLE_ADMIN" class="btn btn-primary" @click="openForm">Add
-          Faculty</button>
-        <div v-if="showForm">
-          <div class="overlay">
-            <div class="popup">
-              <div class="row">
-                <div class="col-md-12">
-                  <h3>{{ selectedFaculty ? 'Edit Faculty' : 'Create Faculty' }}</h3>
-                  <form @submit.prevent="addFaculty">
-                    <input type="text" v-model="facultyId" placeholder="Faculty ID" required>
-                    <input type="text" v-model="name" placeholder="Faculty Name" required>
-                    <button v-if="selectedFaculty" class="btn btn-success" @click="updateFaculty">Update</button>
-                    <button v-else class="btn btn-primary" type="submit">Create</button>
-                    <button @click="cancelForm">Cancel</button>
-                  </form>
-                </div>
+      <table class="table table-striped table-bordered">
+        <thead>
+          <tr>
+            <th>Faculty ID</th>
+            <th>Faculty Name</th>
+            <th v-if="userRole === ROLES.ROLE_ADMIN">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="record in faculties" :key="record.facultyId">
+            <td>{{ record.facultyId }}</td>
+            <td>{{ record.name }}</td>
+            <td>
+              <div class="e-d">
+                <button v-if="userRole === ROLES.ROLE_ADMIN" class="btn btn-danger"
+                  @click="deleteFaculty(record.facultyId)">Delete</button>
+                <button v-if="userRole === ROLES.ROLE_ADMIN" class="btn btn-info"
+                  @click="editFaculty(record)">Edit</button>
               </div>
-            </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <button v-if="userRole === ROLES.ROLE_ADMIN" class="btn btn-primary" @click="openForm">Add Faculty</button>
+    </div>
+
+    <div v-if="showForm" class="overlay">
+      <div class="popup">
+        <h3>{{ selectedFaculty ? 'Edit Faculty' : 'Create Faculty' }}</h3>
+        <form @submit.prevent="addFaculty">
+          <div class="form-group">
+            <input type="text" v-model="facultyId" placeholder="Faculty ID" required class="form-control">
           </div>
-        </div>
+          <div class="form-group">
+            <input type="text" v-model="name" placeholder="Faculty Name" required class="form-control">
+          </div>
+          <div class="form-actions">
+            <button v-if="selectedFaculty" class="btn btn-success" @click="updateFaculty">Update</button>
+            <button v-else class="btn btn-primary" type="submit">Create</button>
+            <button @click="cancelForm" class="btn btn-secondary">Cancel</button>
+          </div>
+        </form>
       </div>
     </div>
   </div>
@@ -159,6 +159,8 @@ export default {
           this.isSubmitting = false; // Reset the submission flag
           this.showForm = false;
         });
+    }, goBack() {
+      this.$router.go(-1);
     },
     openForm() {
       this.showForm = true;
@@ -179,7 +181,59 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-.home {
-  padding-top: 200px; // or whatever value is needed to push the content below the navbar
+.faculty-page {
+  padding: 150px;
+
+  h2 {
+    font-size: 1.5em;
+    margin-bottom: 20px;
+  }
+}
+
+.table-section {
+  margin-bottom: 30px;
+}
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.popup {
+  background-color: #fff;
+  padding: 20px;
+  width: 80%;
+  max-width: 500px;
+  border-radius: 10px;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: center;
+  gap: 1em;
+}
+
+.e-d {
+  display: flex;
+  justify-content: center;
+  gap: 1em;
+}
+
+.back {
+  display: flex;
+  justify-content: end;
 }
 </style>

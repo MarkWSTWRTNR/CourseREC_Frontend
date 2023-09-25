@@ -1,73 +1,62 @@
 <template>
-  <div class="home hero-text container">
-    <div>
-      <!-- <div>
-      <input type="text" v-model="searchQuery" placeholder="Search program">
-      <button @click="searchProgram">Search</button>
-    </div> -->
-
-      <div>
-        <div class="row">
-          <div class="col-md-12">
-            <table class="table table-striped table-bordered">
-              <thead>
-                <tr>
-                  <th>Program ID</th>
-                  <th>Program</th>
-                  <th>Faculty</th>
-                  <th v-if="userRole === ROLES.ROLE_ADMIN">Action</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr v-for="record in programs" :key="record.id">
-                  <td>{{ record.programId }}</td>
-                  <td>{{ record.name }}</td>
-                  <td>{{ record.faculty ? record.faculty.name : 'N/A' }}</td>
-                  <td>
-                    <button v-if="userRole === ROLES.ROLE_ADMIN" class="btn btn-danger"
-                      @click="deleteProgram(record.id)">
-                      Delete
-                    </button>
-                    <button v-if="userRole === ROLES.ROLE_ADMIN" class="btn btn-info"
-                      @click="editProgram(record); openForm()">
-                      Edit
-                    </button>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-        <div>
-          <button v-if="userRole === ROLES.ROLE_ADMIN" class="btn btn-primary" @click="openForm">Add
-            Program</button>
-          <div v-if="showForm">
-            <div class="overlay">
-              <div class="popup">
-                <div class="row">
-                  <div class="col-md-12">
-                    <h3>{{ selectedProgram ? 'Edit Program' : 'Create Program' }}</h3>
-                    <form @submit.prevent="addProgram">
-                      <input type="text" v-model="programId" placeholder="Program ID" required>
-                      <input type="text" v-model="name" placeholder="Program Name" required>
-                      <select v-model="selectedFaculty" required>
-                        <option value="" disabled selected>-- Select Faculty --</option>
-                        <option v-for="faculty in faculties" :key="faculty.facultyId"
-                          :value="{ facultyId: faculty.facultyId }">
-                          {{ faculty.name }}
-                        </option>
-                      </select>
-                      <button v-if="selectedProgram" class="btn btn-success"
-                        @click="updateProgram">Update</button>
-                      <button v-else class="btn btn-primary" type="submit">Create</button>
-                      <button @click="cancelForm">Cancel</button>
-                    </form>
-                  </div>
-                </div>
+  <div class="faculty-page">
+    <div class="table-section">
+      <h2>Program List</h2>
+      <div class="back">
+        <button class="btn btn-secondary mb-3" @click="goBack">← Back to previous page</button>
+      </div>
+      <table class="table table-striped table-bordered">
+        <thead>
+          <tr>
+            <th>Program ID</th>
+            <th>Program</th>
+            <th>Faculty</th>
+            <th v-if="userRole === ROLES.ROLE_ADMIN">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="record in programs" :key="record.id">
+            <td>{{ record.programId }}</td>
+            <td>{{ record.name }}</td>
+            <td>{{ record.faculty ? record.faculty.name : 'N/A' }}</td>
+            <td>
+              <div class="e-d">
+                <button v-if="userRole === ROLES.ROLE_ADMIN" class="btn btn-danger"
+                  @click="deleteProgram(record.id)">Delete</button>
+                <button v-if="userRole === ROLES.ROLE_ADMIN" class="btn btn-info"
+                  @click="editProgram(record); openForm()">Edit</button>
               </div>
-            </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <button v-if="userRole === ROLES.ROLE_ADMIN" class="btn btn-primary" @click="openForm">Add Program</button>
+    </div>
+
+    <div v-if="showForm" class="overlay">
+      <div class="popup">
+        <h3>{{ selectedProgram ? 'Edit Program' : 'Create Program' }}</h3>
+        <form @submit.prevent="addProgram">
+          <div class="form-group">
+            <input type="text" v-model="programId" placeholder="Program ID" required class="form-control">
           </div>
-        </div>
+          <div class="form-group">
+            <input type="text" v-model="name" placeholder="Program Name" required class="form-control">
+          </div>
+          <div class="form-group">
+            <select v-model="selectedFaculty" required class="form-control">
+              <option value="" disabled selected>-- Select Faculty --</option>
+              <option v-for="faculty in faculties" :key="faculty.facultyId" :value="{ facultyId: faculty.facultyId }">
+                {{ faculty.name }}
+              </option>
+            </select>
+          </div>
+          <div class="form-actions">
+            <button v-if="selectedProgram" class="btn btn-success" @click="updateProgram">Update</button>
+            <button v-else class="btn btn-primary" type="submit">Create</button>
+            <button @click="cancelForm" class="btn btn-secondary">Cancel</button>
+          </div>
+        </form>
       </div>
     </div>
   </div>
@@ -193,6 +182,8 @@ export default {
           this.isSubmitting = false; // Reset the submission flag
           this.showForm = false;
         });
+    }, goBack() {
+      this.$router.go(-1);
     },
     openForm() {
       this.showForm = true;
@@ -214,7 +205,59 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-.home {
-  padding-top: 200px; // or whatever value is needed to push the content below the navbar
+.faculty-page {
+  padding: 150px;
+
+  h2 {
+    font-size: 1.5em;
+    margin-bottom: 20px;
+  }
+}
+
+.table-section {
+  margin-bottom: 30px;
+}
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.popup {
+  background-color: #fff;
+  padding: 20px;
+  width: 80%;
+  max-width: 500px;
+  border-radius: 10px;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: center;
+  gap: 1em;
+}
+
+.e-d {
+  display: flex;
+  justify-content: center;
+  gap: 1em;
+}
+
+.back {
+  display: flex;
+  justify-content: end;
 }
 </style>
