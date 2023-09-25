@@ -40,11 +40,14 @@
                                         </li>
                                     </td>
                                     <td>
-                                        <button v-if="userRole === ROLES.ROLE_ADMIN" class="btn btn-danger"
-                                            @click="deleteCourse(record.id)">Delete</button>
-                                        <button v-if="userRole === ROLES.ROLE_ADMIN" class="btn btn-info"
-                                            @click="editCourse(record); openForm()">Edit</button><br>
-                                        <router-link :to="'/courseByCourseId/' + record.courseId">Description</router-link>
+                                        <div class="d-e-d">
+                                            <button v-if="userRole === ROLES.ROLE_ADMIN" class="btn btn-danger"
+                                                @click="deleteCourse(record.id)">Delete</button>
+                                            <button v-if="userRole === ROLES.ROLE_ADMIN" class="btn btn-info"
+                                                @click="editCourse(record); openForm()">Edit</button><br>
+                                            <router-link
+                                                :to="'/courseByCourseId/' + record.courseId">Description</router-link>
+                                        </div>
                                     </td>
                                 </tr>
                             </tbody>
@@ -419,4 +422,9 @@ textarea.form-control {
     justify-content: center;
     margin-bottom: 1em;
 }
-</style>
+
+.d-e-d {
+    display: flex;
+    justify-content: center;
+    gap: 1em;
+}</style>

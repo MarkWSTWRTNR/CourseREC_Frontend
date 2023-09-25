@@ -104,11 +104,13 @@
                     <td>{{ course.credit }}</td>
                     <td>{{ getPrerequisiteInfo(course.prerequisite) }}</td>
                     <td>
-                      <button v-if="userRole === ROLES.ROLE_ADMIN" class="btn btn-danger"
-                        @click="removeCourseFromGroupCourse(groupCourse, course.courseId)">
-                        Remove
-                      </button>
-                      <router-link :to="'/courseByCourseId/' + course.courseId">Description</router-link>
+                      <div class="e-d">
+                        <button v-if="userRole === ROLES.ROLE_ADMIN" class="btn btn-danger"
+                          @click="removeCourseFromGroupCourse(groupCourse, course.courseId)">
+                          Remove
+                        </button>
+                        <router-link :to="'/courseByCourseId/' + course.courseId">Description</router-link>
+                      </div>
                     </td>
 
                   </tr>
@@ -206,11 +208,13 @@
                     <td>{{ course.credit }}</td>
                     <td>{{ getPrerequisiteInfo(course.prerequisite) }}</td>
                     <td>
-                      <button v-if="userRole === ROLES.ROLE_ADMIN" class="btn btn-danger"
-                        @click="removeCourseFromStudyPlan(studyPlan, course.courseId)">
-                        Remove
-                      </button>
-                      <router-link :to="'/courseByCourseId/' + course.courseId">Description</router-link>
+                      <div class="e-d">
+                        <button v-if="userRole === ROLES.ROLE_ADMIN" class="btn btn-danger"
+                          @click="removeCourseFromStudyPlan(studyPlan, course.courseId)">
+                          Remove
+                        </button>
+                        <router-link :to="'/courseByCourseId/' + course.courseId">Description</router-link>
+                      </div>
                     </td>
 
                   </tr>
@@ -675,6 +679,7 @@ export default {
 .c-f-p {
   display: flex;
   justify-content: end;
+  gap: 1em;
 
 }
 
@@ -688,4 +693,5 @@ export default {
   display: flex;
   justify-content: end;
 
-}</style>
+}
+</style>
