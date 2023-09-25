@@ -274,7 +274,51 @@ button {
   width: 100%;
   transition: 800ms ease all;
 }
+/* 5_2 */
+.btn-5_2 {
+  width: 130px;
+  height: 40px;
+  line-height: 42px;
+  padding: 0;
+  border: none;
+  background: #6D1225;
+  background: linear-gradient(0deg, #191cce9f 0%, #00a2ff 100%);
+}
 
+.btn-5_2:hover {
+  color: #ff7300;
+  background: transparent;
+  box-shadow: none;
+}
+
+.btn-5_2:before,
+.btn-5_2:after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  height: 2px;
+  width: 0;
+  background: #ff7300;
+  box-shadow:
+    -1px -1px 5px 0px #fff,
+    7px 7px 20px 0px #0003,
+    4px 4px 5px 0px #0002;
+  transition: 400ms ease all;
+}
+
+.btn-5_2:after {
+  right: inherit;
+  top: inherit;
+  left: 0;
+  bottom: 0;
+}
+
+.btn-5_2:hover:before,
+.btn-5_2:hover:after {
+  width: 100%;
+  transition: 800ms ease all;
+}
 
 /* 6 */
 .btn-6 {

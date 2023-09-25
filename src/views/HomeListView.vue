@@ -8,7 +8,7 @@
                     <h1 class="anim">CourseREC<br>SYSTEM</h1>
                     <img src="../assets/statisfied.jpg" class="feature-img anim" alt="">
                     <p class="anim container" style="text-align: center;">Decision Supporting System for CMU Students</p>
-                    <a href="#animate-section3" class="custom-btn btn-5 form-control anim">GET START</a>
+                    <a href="#animate-section3" class="custom-btn btn-5_2 form-control anim">GET START</a>
                     <a href="#animate-section2" class="a-to-sec2  btn-light"><img src="../assets/fast-forward.gif" style="width: 25px;
                 transition: .5s ease all;" alt="">About us</a>
                 </div>
@@ -35,7 +35,7 @@
                 <h4 class="anim">WHAT WE DO</h4>
                 <h1 class="anim">All the features you need to decide the best course for you.</h1>
                 <h5 class="anim">These features can assist in selecting a course that facilitates graduation.</h5>
-                <div class="cards-nowrapper anim">
+                <div class="cards-wrap anim">
                     <CardComponent :card="{
                         coverImage: require('@/assets/CourseList1.jpg'),
                         titleImage: '<h1>COURSE LIST</h1>',
@@ -97,10 +97,10 @@ export default {
     }
 }
 </script>
-<style>
+<style scoped>
 .home {
     padding-top: 100px;
-    overflow: hidden;
+    
 }
 
 .hero {
@@ -109,8 +109,8 @@ export default {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
-    overflow: hidden;
+    min-height: 100vh;
+
 }
 
 .hero-text {
@@ -121,16 +121,17 @@ export default {
 .hero2 {
     position: relative;
     z-index: 1;
-    display: flex;
+    display: grid;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     height: 100vh;
-    overflow: hidden;
+    
 }
 
 .hero-text2 {
     text-align: center;
+    margin-top: 10%;
 }
 
 .a-to-sec2 {
@@ -209,10 +210,10 @@ section {
     animation: moveup 1.2s linear forwards;
 }
 
-.cards-nowrapper {
-    margin-top: 10%;
+.cards-wrap {
+    margin: 10%;
     display: flex;
-    gap: 15rem;
+    gap: 2rem;
     justify-content: center;
     flex-wrap: wrap;
     width: 100%;
@@ -228,7 +229,7 @@ section {
 @media (max-width: 1140px) {
     .home {
         padding-top: 50px;
-        overflow: hidden;
+        
     }
 
     .content h1 {
@@ -276,10 +277,10 @@ section {
         font-size: 20px;
     }
 
-    .cards-nowrapper {
+    .cards-wrap {
         margin-top: 30%;
         display: flex;
-        gap: 15rem;
+        gap: 2rem;
         flex-wrap: wrap;
         z-index: 1;
     }

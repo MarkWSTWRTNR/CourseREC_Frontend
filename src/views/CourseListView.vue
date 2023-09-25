@@ -48,10 +48,10 @@
                         </table>
                     </div>
                     <div class="pagination-buttons">
-                        <button class="custom-btn btn-5 left-button" @click="changePage(-1)" :disabled="currentPage === 1">
+                        <button class="custom-btn btn-5_2 left-button" @click="changePage(-1)" :disabled="currentPage === 1">
                             <b>Previous</b>
                         </button>
-                        <button class="custom-btn btn-5 right-button" @click="changePage(1)"
+                        <button class="custom-btn btn-5_2 right-button" @click="changePage(1)"
                             :disabled="currentPage === totalPages">
                             <b>Next</b>
                         </button>

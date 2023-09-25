@@ -26,18 +26,18 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
+
 .card {
     width: var(--card-width);
     height: var(--card-height);
-    position: relative;
-    display: flex;
+    position: relative ;
+    display: grid;
     justify-content: center;
-    align-items: center;
+    align-items: flex-end;
     padding: 0 36px;
     perspective: 2500px;
     margin: 0 50px;
-
 }
 
 .cover-image {
@@ -74,7 +74,6 @@ export default {
 .wrapper::before {
     top: 0;
     height: 100%;
-    width: 100%;
     background-image: linear-gradient(to top,
             transparent 46%,
             rgba(12, 13, 19, 0.5) 68%,
@@ -102,14 +101,6 @@ export default {
 .title {
     width: 100%;
     transition: transform 0.5s;
-    position: absolute;
-    /* added */
-    bottom: 0;
-    /* added */
-    left: 0;
-    color: white;
-    font-weight: bold;
-    text-shadow: 1px 1px 2px red, 0 0 1em blue, 0 0 0.2em blue;
 }
 
 .card:hover .title {
@@ -128,5 +119,4 @@ export default {
     opacity: 1;
     transform: translate3d(0%, -30%, 100px);
 }
-
 </style>
