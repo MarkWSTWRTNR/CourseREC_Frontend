@@ -27,11 +27,10 @@ export default {
 </script>
 
 <style scoped>
-
 .card {
     width: var(--card-width);
     height: var(--card-height);
-    position: relative ;
+    position: relative;
     display: grid;
     justify-content: center;
     align-items: flex-end;
@@ -99,8 +98,16 @@ export default {
 }
 
 .title {
+    position: absolute;
+    bottom: 0;
+
     width: 100%;
     transition: transform 0.5s;
+    z-index: 1;
+
+    color: white;
+    text-shadow: rgb(0, 0, 0) 10px 0 10px;
+    ;
 }
 
 .card:hover .title {
@@ -118,5 +125,4 @@ export default {
 .card:hover .character {
     opacity: 1;
     transform: translate3d(0%, -30%, 100px);
-}
-</style>
+}</style>

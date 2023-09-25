@@ -211,12 +211,14 @@ section {
 }
 
 .cards-wrap {
-    margin: 10%;
+    margin-top: 10%;
+    margin-bottom: 10%;
     display: flex;
     gap: 2rem;
     justify-content: center;
     flex-wrap: wrap;
     width: 100%;
+    
 }
 
 @keyframes moveup {
