@@ -29,7 +29,7 @@ export default {
 	padding: 0;
 	margin: 0;
 	box-sizing: border-box;
-	font-family: Georgia, 'Times New Roman', Times, serif;
+	font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 	font-weight: 400;
 	p{
 		text-align: justify;

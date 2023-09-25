@@ -1,6 +1,6 @@
 <template>
   <div class="home hero-text container">
-    <div v-if="userRole === ROLES.ROLE_ADMIN" class="c-f-p"> 
+    <div v-if="userRole === ROLES.ROLE_ADMIN" class="c-f-p">
       <router-link to="/faculty"><button class="custom-btn btn-5_2"> Create Faculty</button></router-link>
       <router-link to="/courseprogram"><button class="custom-btn btn-5_2"> Create Program</button></router-link>
     </div>
@@ -31,8 +31,10 @@
 
 
         <div v-show="isActive(1, index)" class="container">
-          <button v-if="userRole === ROLES.ROLE_ADMIN" class="btn btn-primary" @click="openForm">Add Courses To
-            Curriculum</button>
+          <div class="right-side">
+            <button v-if="userRole === ROLES.ROLE_ADMIN" class="btn btn-primary" @click="openForm">Add Courses To
+              Curriculum</button>
+          </div>
           <div v-if="showForm">
             <div class="overlay">
               <div class="popup">
@@ -82,10 +84,7 @@
           <div class="row">
             <div class="col-md-12" v-for="(groupCourse, groupCourseIndex) in filteredGroupCourses"
               :key="groupCourseIndex">
-              <button v-if="userRole === ROLES.ROLE_ADMIN"  class="btn btn-danger"
-                @click="removeGroupCourse(groupCourse.id)">
-                Delete Group
-              </button>
+
               <h4 class="">{{ groupCourse.groupName }}</h4>
               <h6 class="">Mininum credit required:{{ groupCourse.credit }}</h6>
               <table class="table table-striped table-bordered">
@@ -116,10 +115,15 @@
                 </tbody>
               </table>
               <h5 class="">Description: {{ groupCourse.text }}</h5>
-              <button v-if="userRole === ROLES.ROLE_ADMIN" class="btn btn-info"
-                @click="editGroupCourse(groupCourse)">
-                Edit
-              </button>
+              <div class="e-d">
+                <button v-if="userRole === ROLES.ROLE_ADMIN" class="btn btn-info" @click="editGroupCourse(groupCourse)">
+                  Edit
+                </button>
+                <button v-if="userRole === ROLES.ROLE_ADMIN" class="btn btn-danger"
+                  @click="removeGroupCourse(groupCourse.id)">
+                  Delete Group
+                </button>
+              </div>
               <hr class="">
             </div>
           </div>
@@ -130,8 +134,10 @@
           <h3>Standard Study Plan<i class="fa fa-chevron-down" :class="{ 'fa-rotate-180': isActive(3) }"></i></h3>
         </div>
         <div v-show="isActive(3)" class="container">
-          <button v-if="userRole === ROLES.ROLE_ADMIN" class="btn btn-primary" @click="openForm2">Add
-            courses</button>
+          <div class="right-side">
+            <button v-if="userRole === ROLES.ROLE_ADMIN" class="btn btn-primary" @click="openForm2">Add Courses To
+              StudyPlan</button>
+          </div>
           <div v-if="showForm2">
             <div class="overlay">
               <div class="popup">
@@ -180,10 +186,7 @@
           </div>
           <div class="row">
             <div class="col-md-12" v-for="(studyPlan, studyPlanIndex) in filteredStudyPlan" :key="studyPlanIndex">
-              <button v-if="userRole === ROLES.ROLE_ADMIN" class="btn btn-danger"
-                @click="removeStudyPlan(studyPlan.id)">
-                Delete Group
-              </button>
+
               <h4 class="">{{ studyPlan.yearAndSemester }}</h4>
               <h6 class="">credit: {{ studyPlan.credit }}</h6>
               <table class="table table-striped table-bordered">
@@ -217,6 +220,12 @@
               <button v-if="userRole === ROLES.ROLE_ADMIN" class="btn btn-info" @click="editStudyPlan(studyPlan)">
                 Edit
               </button>
+              <div class="e-d">
+                <button v-if="userRole === ROLES.ROLE_ADMIN" class="btn btn-danger"
+                  @click="removeStudyPlan(studyPlan.id)">
+                  Delete Group
+                </button>
+              </div>
               <hr class="">
             </div>
           </div>
@@ -662,9 +671,21 @@ export default {
 .accordion i.fa-rotate-180 {
   transform: rotate(180deg);
 }
-.c-f-p{
+
+.c-f-p {
   display: flex;
   justify-content: end;
 
 }
-</style>
+
+.e-d {
+  display: flex;
+  justify-content: center;
+  gap: 1em;
+}
+
+.right-side {
+  display: flex;
+  justify-content: end;
+
+}</style>

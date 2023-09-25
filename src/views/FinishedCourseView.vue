@@ -1,6 +1,8 @@
 <template>
   <div class="home hero-text container">
-    <button class="btn btn-primary" @click="openForm">Add Finished Course</button>
+    <div class="right-side">
+      <button class="btn btn-primary " @click="openForm">Add Finished Course</button>
+    </div>
     <div v-if="showForm">
       <div class="overlay">
         <div class="popup">
@@ -36,11 +38,9 @@
     <div class="row">
       <div v-if="finishedCourses && finishedCourses.length > 0" class="col-md-12"
         v-for="finishedCourse in finishedCourses" :key="finishedCourse.id">
-        <button class="btn btn-danger" @click="removeGroupFinishedCourse(finishedCourse.id)">
-          Delete Group
-        </button>
-        <p class="white">Year: {{ finishedCourse.year }}</p>
-        <p class="white">Semester: {{ finishedCourse.semester }}</p>
+
+        <p class="">Year: {{ finishedCourse.year }}</p>
+        <p class="">Semester: {{ finishedCourse.semester }}</p>
 
         <table class="table table-striped table-bordered">
           <thead>
@@ -61,7 +61,7 @@
                 {{ getGrade(finishedCourse.id, course.courseId) }}
 
               </td>
-              <td>
+              <td class="e-d">
                 <select v-model="selectedGrade[`${finishedCourse.id}-${course.courseId}`]"
                   @change="setGradeForCourse(finishedCourse.id, course.courseId, selectedGrade[`${finishedCourse.id}-${course.courseId}`])">
                   <option value="">-- Select Grade --</option>
@@ -93,21 +93,25 @@
             </tr>
           </tbody>
         </table>
-        <p class="white"> GPA: {{ finishedCourse.groupGPA }}</p>
-        <p class="white"> Credit: {{ finishedCourse.groupEarnedCredit }}</p>
-        <button class="btn btn-info" @click="editFinishedCourse(finishedCourse)">
-          Edit
-        </button>
-
-        <hr class="white">
+        <p class=""> GPA: {{ finishedCourse.groupGPA }}</p>
+        <p class=""> Credit: {{ finishedCourse.groupEarnedCredit }}</p>
+        <div class="e-d">
+          <button class="btn btn-info " @click="editFinishedCourse(finishedCourse)">
+            Edit Group
+          </button>
+          <button class="btn btn-danger" @click="removeGroupFinishedCourse(finishedCourse.id)">
+            Delete Group
+          </button>
+        </div>
+        <hr class="">
       </div>
       <div v-else class="col-md-12">
         <p>No finished courses available.</p>
       </div>
     </div>
-    <p class="white">GPAX : {{ gpax }}</p>
-    <p class="white">Accumulate credit: {{ credit }}</p>
-    <div class="white">
+    <p class="">GPAX : {{ gpax }}</p>
+    <p class="">Accumulate credit: {{ credit }}</p>
+    <div class="">
       <h3>Course Credit Tracking</h3>
       <ul>
         <li v-for="(credit, program) in courseCreditTracking" :key="program">
@@ -445,5 +449,17 @@ export default {
   border: 1px solid #ccc;
   padding: 20px;
   margin-top: 10px;
+}
+
+.right-side {
+  display: flex;
+  justify-content: end;
+
+}
+
+.e-d {
+  display: flex;
+  justify-content: center;
+  gap: 1em;
 }
 </style>

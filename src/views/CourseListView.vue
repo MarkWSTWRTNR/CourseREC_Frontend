@@ -9,6 +9,10 @@
                     </div>
                     <button @click="searchCourses" class="custom-btn btn-5_2">Search</button>
                 </div>
+                <div class="center-side">
+                    <button v-if="userRole === ROLES.ROLE_ADMIN" class="btn btn-primary" @click="openForm">Add
+                        courses</button>
+                </div>
                 <div class="row">
                     <div class="col-md-12">
                         <table class="table table-striped table-bordered">
@@ -58,7 +62,7 @@
                     </div>
                 </div>
                 <div>
-                    <button v-if="isAdmin" class="btn btn-primary" @click="openForm">Add courses</button>
+
                     <div v-if="showForm">
                         <div class="overlay">
                             <div class="popup">
@@ -408,5 +412,11 @@ export default {
 textarea.form-control {
     resize: vertical;
     min-height: 100px;
+}
+
+.center-side {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 1em;
 }
 </style>
