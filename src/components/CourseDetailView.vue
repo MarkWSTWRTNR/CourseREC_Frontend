@@ -1,5 +1,8 @@
 <template>
   <div class="course-detail">
+    <div class="back">
+      <button class="btn btn-secondary mb-3" @click="goBack">← Back to previous page</button>
+    </div>
     <div class="course-info">
       <h2>{{ course.name }}</h2>
       <ul>
@@ -132,6 +135,9 @@ export default {
       }
       return starIcons.join('');
     }
+    , goBack() {
+      this.$router.go(-1);
+    }
   }
 };
 </script>
@@ -203,5 +209,10 @@ export default {
 
 .star-filled {
   color: gold;
+}
+
+.back {
+  display: flex;
+  justify-content: end;
 }
 </style>
