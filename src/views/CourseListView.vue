@@ -10,8 +10,8 @@
                     <button @click="searchCourses" class="custom-btn btn-5_2">Search</button>
                 </div>
                 <div class="center-side">
-                    <button v-if="userRole === ROLES.ROLE_ADMIN" class="btn btn-primary" @click="openForm">Add
-                        courses</button>
+                    <button v-if="userRole === ROLES.ROLE_ADMIN" class="btn btn-primary" @click="openForm">Create
+                        course</button>
                 </div>
                 <div class="row">
                     <div class="col-md-12">
@@ -89,7 +89,7 @@
                                             </div>
                                             <div class="form-group">
                                                 <label for="courseCredit">Course Credit</label>
-                                                <input type="text" class="form-control" id="courseCredit" v-model="credit"
+                                                <input type="number" class="form-control" id="courseCredit" v-model="credit"
                                                     required>
                                             </div>
                                             <div class="form-group">

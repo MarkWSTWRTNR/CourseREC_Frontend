@@ -54,9 +54,9 @@
             </div>
         </div>
 
-        <pre>
-        <!-- {{ userInfo }} -->
-    </pre>
+        <!-- <pre>
+        {{ userInfo }}
+    </pre> -->
     </div>
 </template>
   

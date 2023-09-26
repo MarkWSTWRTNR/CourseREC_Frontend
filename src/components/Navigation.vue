@@ -78,7 +78,7 @@
                         </button>
                     </li>
                     <li v-else>
-                        <button class="custom-btn btn-5" to="#" @click.native="login">
+                        <button class="custom-btn btn-5 form-control" to="#" @click.native="login">
 
                             <span class="text">Login with CMU account</span>
                         </button>
