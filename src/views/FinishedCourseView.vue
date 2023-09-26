@@ -1,81 +1,95 @@
+<!-- FinishedCourseView.vue -->
 <template>
-  <div class="home hero-text container">
-    <div class="right-side">
-      <button class="btn btn-primary " @click="openForm">Add Finished Course</button>
-    </div>
-    <div v-if="showForm">
-      <div class="overlay">
-        <div class="popup">
-          <div class="row">
-            <div class="col-md-12">
-              <form @submit.prevent="addCourseToFinishedCourse">
-                <h3>{{ selectedFinishedCourse ? 'Edit FinishedCourse' : 'Add FinishedCourse' }}</h3>
-                <label for="courseId">Course</label>
-                <v-select class="form-control left-align" v-model="selectedCourse" :options="records.map(record => ({
-                  label: record.courseId + ' - ' + record.name,
-                  value: record.courseId
-                }))" multiple :reduce="option => option.value" :placeholder="'Select a course'">
-                </v-select>
+  <div class="home">
+    <section class="hero">
+      <div class="hero-text container">
 
-                <label for="year">Year:</label>
-                <input type="text" id="year" v-model="year" required>
-                <label for="semester">Semester:</label>
-                <input type="text" id="semester" v-model="semester" required>
+        <div class="right-side">
+          <button class="btn btn-primary " @click="openForm">Add Finished Course</button>
+        </div>
+        <div v-if="showForm">
+          <div class="overlay">
+            <div class="popup">
+              <div class="row">
+                <div class="col-md-12">
+                  <h3>{{ selectedFinishedCourse ? 'Edit FinishedCourse' : 'Add FinishedCourse' }}</h3>
+                  <form @submit.prevent="addCourseToFinishedCourse">
+                    <div class="form-group">
+                      <label for="courseId">Course</label>
+                      <v-select class="form-control left-align" v-model="selectedCourse" :options="records.map(record => ({
+                        label: record.courseId + ' - ' + record.name,
+                        value: record.courseId
+                      }))" multiple :reduce="option => option.value" :placeholder="'Select a course'">
+                      </v-select>
+                    </div>
 
-                <button v-if="selectedFinishedCourse" class="btn btn-success" @click="updateFinishedCourse">
-                  Update
-                </button>
+                    <div class="form-group">
+                      <label for="year">Year:</label>
+                      <input type="text" class="form-control" id="year" v-model="year" required>
+                    </div>
 
-                <button v-else class="btn btn-primary" type="submit">Add Course</button>
-                <button @click="cancelForm">Cancel</button>
-              </form>
+                    <div class="form-group">
+                      <label for="semester">Semester:</label>
+                      <input type="text" class="form-control" id="semester" v-model="semester" required>
+                    </div>
+
+                    <div class="form-bottons">
+                      <button v-if="selectedFinishedCourse" class="btn btn-success" @click="updateFinishedCourse">
+                        Update
+                      </button>
+                      <button v-else class="btn btn-primary" type="submit">Add Course</button>
+                      <button class="btn btn-secondary" @click="cancelForm">Cancel</button>
+                    </div>
+
+                  </form>
+
+                </div>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-    </div>
 
-    <div class="row">
-      <div v-if="finishedCourses && finishedCourses.length > 0" class="col-md-12"
-        v-for="finishedCourse in finishedCourses" :key="finishedCourse.id">
+        <div class="row">
+          <div v-if="finishedCourses && finishedCourses.length > 0" class="col-md-12"
+            v-for="finishedCourse in finishedCourses" :key="finishedCourse.id">
 
-        <p class="">Year: {{ finishedCourse.year }}</p>
-        <p class="">Semester: {{ finishedCourse.semester }}</p>
+            <p class="">Year: {{ finishedCourse.year }}</p>
+            <p class="">Semester: {{ finishedCourse.semester }}</p>
+            <div class="table-responsive">
+              <table class="table table-striped table-bordered">
+                <thead>
+                  <tr>
+                    <th>Course ID</th>
+                    <th>Course Name</th>
+                    <th>Course Credit</th>
+                    <th>Grade</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr v-for="course in finishedCourse.courses" :key="`${finishedCourse.id}-${course.courseId}`">
+                    <td>{{ course.courseId }}</td>
+                    <td>{{ course.name }}</td>
+                    <td>{{ course.credit }}</td>
+                    <td>
+                      {{ getGrade(finishedCourse.id, course.courseId) }}
 
-        <table class="table table-striped table-bordered">
-          <thead>
-            <tr>
-              <th>Course ID</th>
-              <th>Course Name</th>
-              <th>Course Credit</th>
-              <th>Grade</th>
-              <th>Action</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="course in finishedCourse.courses" :key="`${finishedCourse.id}-${course.courseId}`">
-              <td>{{ course.courseId }}</td>
-              <td>{{ course.name }}</td>
-              <td>{{ course.credit }}</td>
-              <td>
-                {{ getGrade(finishedCourse.id, course.courseId) }}
-
-              </td>
-              <td class="e-d">
-                <select v-model="selectedGrade[`${finishedCourse.id}-${course.courseId}`]"
-                  @change="setGradeForCourse(finishedCourse.id, course.courseId, selectedGrade[`${finishedCourse.id}-${course.courseId}`])">
-                  <option value="">-- Select Grade --</option>
-                  <option value="A">A</option>
-                  <option value="B_PLUS">B+</option>
-                  <option value="B">B</option>
-                  <option value="C_PLUS">C+</option>
-                  <option value="C">C</option>
-                  <option value="D_PLUS">D+</option>
-                  <option value="D">D</option>
-                  <option value="F">F</option>
-                  <option value="S">S</option>
-                  <option value="U">U</option>
-                  <!-- <option value="V">V</option>
+                    </td>
+                    <td class="e-d">
+                      <select v-model="selectedGrade[`${finishedCourse.id}-${course.courseId}`]"
+                        @change="setGradeForCourse(finishedCourse.id, course.courseId, selectedGrade[`${finishedCourse.id}-${course.courseId}`])">
+                        <option value="">-- Select Grade --</option>
+                        <option value="A">A</option>
+                        <option value="B_PLUS">B+</option>
+                        <option value="B">B</option>
+                        <option value="C_PLUS">C+</option>
+                        <option value="C">C</option>
+                        <option value="D_PLUS">D+</option>
+                        <option value="D">D</option>
+                        <option value="F">F</option>
+                        <option value="S">S</option>
+                        <option value="U">U</option>
+                        <!-- <option value="V">V</option>
                   <option value="W">W</option>
                   <option value="CE">CE</option>
                   <option value="CP">CP</option>
@@ -84,49 +98,54 @@
                   <option value="CX">CX</option>
                   <option value="I">I</option>
                   <option value="P">P</option> -->
-                </select>
-                <button class="btn btn-danger" @click="removeCourseFromFinishedCourse(finishedCourse, course.courseId)">
-                  Remove
-                </button>
-                <router-link :to="'/courseByCourseId/' + course.courseId">Description</router-link>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-        <p class=""> GPA: {{ finishedCourse.groupGPA }}</p>
-        <p class=""> Credit: {{ finishedCourse.groupEarnedCredit }}</p>
-        <div class="e-d">
-          <button class="btn btn-info " @click="editFinishedCourse(finishedCourse)">
-            Edit Group
-          </button>
-          <button class="btn btn-danger" @click="removeGroupFinishedCourse(finishedCourse.id)">
-            Delete Group
-          </button>
+
+                      </select>
+                      <button class="btn btn-danger"
+                        @click="removeCourseFromFinishedCourse(finishedCourse, course.courseId)">
+                        Remove
+                      </button>
+                      <router-link :to="'/courseByCourseId/' + course.courseId">Description</router-link>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <p class=""> GPA: {{ finishedCourse.groupGPA }}</p>
+            <p class=""> Credit: {{ finishedCourse.groupEarnedCredit }}</p>
+            <div class="e-d">
+              <button class="btn btn-info " @click="editFinishedCourse(finishedCourse)">
+                Edit Group
+              </button>
+              <button class="btn btn-danger" @click="removeGroupFinishedCourse(finishedCourse.id)">
+                Delete Group
+              </button>
+            </div>
+            <hr class="">
+          </div>
+          <div v-else class="col-md-12">
+            <p>No finished courses available.</p>
+          </div>
         </div>
-        <hr class="">
+        <p class="">GPAX : {{ gpax }}</p>
+        <p class="">Accumulate credit: {{ credit }}</p>
+        <div class="">
+          <h3>Course Credit Tracking</h3>
+          <ul>
+            <li v-for="(credit, program) in courseCreditTracking" :key="program">
+              {{ program }}: {{ credit }}
+            </li>
+          </ul>
+        </div>
       </div>
-      <div v-else class="col-md-12">
-        <p>No finished courses available.</p>
-      </div>
-    </div>
-    <p class="">GPAX : {{ gpax }}</p>
-    <p class="">Accumulate credit: {{ credit }}</p>
-    <div class="">
-      <h3>Course Credit Tracking</h3>
-      <ul>
-        <li v-for="(credit, program) in courseCreditTracking" :key="program">
-          {{ program }}: {{ credit }}
-        </li>
-      </ul>
-    </div>
+    </section>
   </div>
 </template>
-
 <script>
 import apiClient from '@/service/AxiosClient';
 import vSelect from 'vue-select';
 import { userRole, ROLES } from '@/service/roles';
 export default {
+  name: 'FinishedCourseView',
   data() {
     return {
       userRole: userRole,
@@ -445,16 +464,73 @@ export default {
   padding-top: 200px;
 }
 
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 999;
+}
+
 .popup {
-  border: 1px solid #ccc;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #fff;
   padding: 20px;
-  margin-top: 10px;
+  z-index: 1000;
+}
+
+.form-buttons {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+.pagination-buttons {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.pagination-buttons button:disabled {
+  opacity: 0.2;
+  cursor: not-allowed;
+}
+
+.left-button {
+  justify-content: flex-start;
+}
+
+.right-button {
+  justify-content: flex-end;
 }
 
 .right-side {
   display: flex;
   justify-content: end;
+}
 
+.popup {
+  /* ... (rest of the styles remain unchanged) */
+  padding: 30px;
+  width: 80%;
+  max-width: 600px;
+}
+
+textarea.form-control {
+  resize: vertical;
+  min-height: 100px;
+}
+
+.center-side {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 1em;
 }
 
 .e-d {
@@ -462,4 +538,9 @@ export default {
   justify-content: center;
   gap: 1em;
 }
-</style>
+
+.d-e-d {
+  display: flex;
+  justify-content: center;
+  gap: 1em;
+}</style>

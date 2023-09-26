@@ -56,22 +56,23 @@
     </footer>
 </template>
 <script>
-export default{
-    name:'Footer'
+export default {
+    name: 'Footer'
 }
 </script>
 <style scoped>
 .site-footer {
-   background-color: #26272b;
-  padding: 45px 0 20px;
-  font-size: 15px;
-  line-height: 24px;
-  color: #737373;
-  position: relative;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  z-index: 1000; /* Adjust as needed */
+    background-color: #26272b;
+    padding: 45px 0 20px;
+    font-size: 15px;
+    line-height: 24px;
+    color: #737373;
+    position: relative;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+    /* Adjust as needed */
 }
 
 .site-footer hr {
@@ -222,7 +223,7 @@ export default{
     background-color: #ea4c89;
 }
 
-@media (max-width: 767px) {
+@media (max-width: 1140px) {
     .social-icons li.title {
         display: block;
         margin-right: 0;

@@ -87,35 +87,37 @@
 
               <h4 class="">{{ groupCourse.groupName }}</h4>
               <h6 class="">Mininum credit required:{{ groupCourse.credit }}</h6>
-              <table class="table table-striped table-bordered">
-                <thead>
-                  <tr>
-                    <th>Course ID</th>
-                    <th>Course Name</th>
-                    <th>Course Credit</th>
-                    <th>Course Prerequisite</th>
-                    <th>Action</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr v-for="(course, courseIndex) in groupCourse.courses" :key="courseIndex">
-                    <td>{{ course.courseId }}</td>
-                    <td>{{ course.name }}</td>
-                    <td>{{ course.credit }}</td>
-                    <td>{{ getPrerequisiteInfo(course.prerequisite) }}</td>
-                    <td>
-                      <div class="e-d">
-                        <button v-if="userRole === ROLES.ROLE_ADMIN" class="btn btn-danger"
-                          @click="removeCourseFromGroupCourse(groupCourse, course.courseId)">
-                          Remove
-                        </button>
-                        <router-link :to="'/courseByCourseId/' + course.courseId">Description</router-link>
-                      </div>
-                    </td>
+              <div class="table-responsive">
+                <table class="table table-striped table-bordered">
+                  <thead>
+                    <tr>
+                      <th>Course ID</th>
+                      <th>Course Name</th>
+                      <th>Course Credit</th>
+                      <th>Course Prerequisite</th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr v-for="(course, courseIndex) in groupCourse.courses" :key="courseIndex">
+                      <td>{{ course.courseId }}</td>
+                      <td>{{ course.name }}</td>
+                      <td>{{ course.credit }}</td>
+                      <td>{{ getPrerequisiteInfo(course.prerequisite) }}</td>
+                      <td>
+                        <div class="e-d">
+                          <button v-if="userRole === ROLES.ROLE_ADMIN" class="btn btn-danger"
+                            @click="removeCourseFromGroupCourse(groupCourse, course.courseId)">
+                            Remove
+                          </button>
+                          <router-link :to="'/courseByCourseId/' + course.courseId">Description</router-link>
+                        </div>
+                      </td>
 
-                  </tr>
-                </tbody>
-              </table>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
               <h5 class="">Description: {{ groupCourse.text }}</h5>
               <div class="e-d">
                 <button v-if="userRole === ROLES.ROLE_ADMIN" class="btn btn-info" @click="editGroupCourse(groupCourse)">
@@ -191,35 +193,37 @@
 
               <h4 class="">{{ studyPlan.yearAndSemester }}</h4>
               <h6 class="">credit: {{ studyPlan.credit }}</h6>
-              <table class="table table-striped table-bordered">
-                <thead>
-                  <tr>
-                    <th>Course ID</th>
-                    <th>Course Name</th>
-                    <th>Course Credit</th>
-                    <th>Course Prerequisite</th>
-                    <th>Action</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr v-for="(course, courseIndex) in studyPlan.courses" :key="courseIndex">
-                    <td>{{ course.courseId }}</td>
-                    <td>{{ course.name }}</td>
-                    <td>{{ course.credit }}</td>
-                    <td>{{ getPrerequisiteInfo(course.prerequisite) }}</td>
-                    <td>
-                      <div class="e-d">
-                        <button v-if="userRole === ROLES.ROLE_ADMIN" class="btn btn-danger"
-                          @click="removeCourseFromStudyPlan(studyPlan, course.courseId)">
-                          Remove
-                        </button>
-                        <router-link :to="'/courseByCourseId/' + course.courseId">Description</router-link>
-                      </div>
-                    </td>
+              <div class="table-responsive">
+                <table class="table table-striped table-bordered">
+                  <thead>
+                    <tr>
+                      <th>Course ID</th>
+                      <th>Course Name</th>
+                      <th>Course Credit</th>
+                      <th>Course Prerequisite</th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr v-for="(course, courseIndex) in studyPlan.courses" :key="courseIndex">
+                      <td>{{ course.courseId }}</td>
+                      <td>{{ course.name }}</td>
+                      <td>{{ course.credit }}</td>
+                      <td>{{ getPrerequisiteInfo(course.prerequisite) }}</td>
+                      <td>
+                        <div class="e-d">
+                          <button v-if="userRole === ROLES.ROLE_ADMIN" class="btn btn-danger"
+                            @click="removeCourseFromStudyPlan(studyPlan, course.courseId)">
+                            Remove
+                          </button>
+                          <router-link :to="'/courseByCourseId/' + course.courseId">Description</router-link>
+                        </div>
+                      </td>
 
-                  </tr>
-                </tbody>
-              </table>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
               <h5 class="">Description: {{ studyPlan.text }}</h5>
               <button v-if="userRole === ROLES.ROLE_ADMIN" class="btn btn-info" @click="editStudyPlan(studyPlan)">
                 Edit

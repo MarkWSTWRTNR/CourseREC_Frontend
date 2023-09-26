@@ -15,43 +15,47 @@
                 </div>
                 <div class="row">
                     <div class="col-md-12">
-                        <table class="table table-striped table-bordered">
-                            <thead>
-                                <tr>
-                                    <th>Course ID</th>
-                                    <th>Course Name</th>
-                                    <th>Course Credit</th>
-                                    <th>Grading Type</th>
-                                    <th>Course Prerequisite</th>
-                                    <th>Action</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <!-- Course Rows -->
-                                <tr v-for="record in records" :key="record.courseId">
-                                    <td>{{ record.courseId }}</td>
-                                    <td>{{ record.name }}</td>
-                                    <td>{{ record.credit }}</td>
-                                    <td>{{ record.gradingtype }}</td>
-                                    <td>
-                                        <li style="text-align: left;" v-for="prerequisite in record.prerequisite"
-                                            :key="prerequisite.courseId">
-                                            {{ prerequisite.courseId }} - {{ prerequisite.name }}
-                                        </li>
-                                    </td>
-                                    <td>
-                                        <div class="d-e-d">
-                                            <button v-if="userRole === ROLES.ROLE_ADMIN" class="btn btn-danger"
-                                                @click="deleteCourse(record.id)">Delete</button>
-                                            <button v-if="userRole === ROLES.ROLE_ADMIN" class="btn btn-info"
-                                                @click="editCourse(record); openForm()">Edit</button><br>
-                                            <router-link
-                                                :to="'/courseByCourseId/' + record.courseId">Description</router-link>
-                                        </div>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
+                        <div class="table-responsive">
+                            <table class="table table-striped table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>Course ID</th>
+                                        <th>Course Name</th>
+                                        <th>Course Credit</th>
+                                        <th>Grading Type</th>
+                                        <th>Course Prerequisite</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- Course Rows -->
+                                    <tr v-for="record in records" :key="record.courseId">
+                                        <td>{{ record.courseId }}</td>
+                                        <td>{{ record.name }}</td>
+                                        <td>{{ record.credit }}</td>
+                                        <td>{{ record.gradingtype }}</td>
+                                        <td>
+                                            <ul>
+                                                <li v-for="prerequisite in record.prerequisite"
+                                                    :key="prerequisite.courseId">
+                                                    {{ prerequisite.courseId }} - {{ prerequisite.name }}
+                                                </li>
+                                            </ul>
+                                        </td>
+                                        <td>
+                                            <div class="d-e-d">
+                                                <button v-if="userRole === ROLES.ROLE_ADMIN" class="btn btn-danger"
+                                                    @click="deleteCourse(record.id)">Delete</button>
+                                                <button v-if="userRole === ROLES.ROLE_ADMIN" class="btn btn-info"
+                                                    @click="editCourse(record); openForm()">Edit</button><br>
+                                                <router-link
+                                                    :to="'/courseByCourseId/' + record.courseId">Description</router-link>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                     <div class="pagination-buttons">
                         <button class="custom-btn btn-5_2 left-button" @click="changePage(-1)"
@@ -363,12 +367,6 @@ export default {
     z-index: 1000;
 }
 
-.form-buttons {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 20px;
-}
-
 .pagination-buttons {
     display: flex;
     justify-content: space-between;
@@ -431,5 +429,4 @@ textarea.form-control {
     display: flex;
     justify-content: center;
     gap: 1em;
-}
-</style>
+}</style>
