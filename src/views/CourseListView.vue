@@ -363,8 +363,10 @@ export default {
     left: 50%;
     transform: translate(-50%, -50%);
     background-color: #fff;
-    padding: 20px;
     z-index: 1000;
+    padding: 30px;
+    width: 80%;
+    max-width: 600px;
 }
 
 .pagination-buttons {
@@ -403,15 +405,6 @@ export default {
     display: flex;
     justify-content: space-between;
     margin-top: 20px;
-}
-
-
-
-.popup {
-    /* ... (rest of the styles remain unchanged) */
-    padding: 30px;
-    width: 80%;
-    max-width: 600px;
 }
 
 textarea.form-control {

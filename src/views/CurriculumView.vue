@@ -1,245 +1,259 @@
 <template>
-  <div class="home hero-text container">
-    <div v-if="userRole === ROLES.ROLE_ADMIN" class="c-f-p">
-      <router-link to="/faculty"><button class="custom-btn btn-5_2"> Create Faculty</button></router-link>
-      <router-link to="/courseprogram"><button class="custom-btn btn-5_2"> Create Program</button></router-link>
-    </div>
-
-    <h3 class="">Select Faculty:</h3>
-    <select v-model="selectedFaculty" class="form-control">
-      <option value="">-- Select Faculty --</option>
-      <option v-for="faculty in faculties" :value="faculty.name" :key="faculty.facultyId">
-        {{ faculty.name }}
-      </option>
-    </select>
-
-    <h3 v-if="selectedFaculty" class="">Select Program:</h3>
-    <select v-if="selectedFaculty" v-model="selectedProgram" class="form-control">
-      <option value="">-- Select Program --</option>
-      <option v-for="program in filteredPrograms" :value="program.programId" :key="program.programId">
-        {{ program.name }}
-      </option>
-    </select>
-    <hr>
-
-    <div v-if="selectedProgram">
-      <div>
-        <div @click="toggleAccordion(1)" :class="{ 'accordion': true, 'active': isActive(1) }">
-          <h3>Curriculum<i class="fa fa-chevron-down" :class="{ 'fa-rotate-180': isActive(1) }"></i></h3>
+  <div class="home">
+    <section class="hero">
+      <div class=" hero-text container">
+        <div v-if="userRole === ROLES.ROLE_ADMIN" class="c-f-p">
+          <router-link to="/faculty"><button class="custom-btn btn-5_2"> Create Faculty</button></router-link>
+          <router-link to="/courseprogram"><button class="custom-btn btn-5_2"> Create Program</button></router-link>
         </div>
 
+        <h3 class="">Select Faculty:</h3>
+        <select v-model="selectedFaculty" class="form-control">
+          <option value="">-- Select Faculty --</option>
+          <option v-for="faculty in faculties" :value="faculty.name" :key="faculty.facultyId">
+            {{ faculty.name }}
+          </option>
+        </select>
+
+        <h3 v-if="selectedFaculty" class="">Select Program:</h3>
+        <select v-if="selectedFaculty" v-model="selectedProgram" class="form-control">
+          <option value="">-- Select Program --</option>
+          <option v-for="program in filteredPrograms" :value="program.programId" :key="program.programId">
+            {{ program.name }}
+          </option>
+        </select>
+        <hr>
+
+        <div v-if="selectedProgram">
+          <div>
+            <div @click="toggleAccordion(1)" :class="{ 'accordion': true, 'active': isActive(1) }">
+              <h3>Curriculum<i class="fa fa-chevron-down" :class="{ 'fa-rotate-180': isActive(1) }"></i></h3>
+            </div>
 
 
-        <div v-show="isActive(1, index)" class="container">
-          <div class="right-side">
-            <button v-if="userRole === ROLES.ROLE_ADMIN" class="btn btn-primary" @click="openForm">Add Courses To
-              Curriculum</button>
-          </div>
-          <div v-if="showForm">
-            <div class="overlay">
-              <div class="popup">
-                <div class="row">
-                  <div class="col-md-12">
-                    <form @submit.prevent="addCourseToGroupCourse">
-                      <h3>{{ selectedGroupCourse ? 'Edit GroupCourse' : 'Add GroupCourse' }}</h3>
-                      <label for="courseId">Course</label>
-                      <v-select @input="required" class="form-control left-align" v-model="selectedCourse" :options="records.map(record => ({
-                        label: record.courseId + ' - ' + record.name,
-                        value: record.courseId
-                      }))" multiple :reduce="option => option.value" :placeholder="'Select a course'">
-                      </v-select>
 
-                      <label for="groupName">Group Name:</label>
-                      <select v-model="groupName" id="groupName" required>
-                        <option value="">-- Select Group Course --</option>
-                        <option>General Education | Required courses | Learner Person</option>
-                        <option>General Education | Required courses | Innovative Co-creator</option>
-                        <option>General Education | Required courses | Active Citizen</option>
-                        <option>General Education | Elective courses | Learner Person</option>
-                        <option>General Education | Elective courses | Active Citizen</option>
-                        <option>Field of Specialization| Core Courses</option>
-                        <option>Field of Specialization | Major Courses | Required Courses</option>
-                        <option>Field of Specialization | Major Courses | Free Elective</option>
-                        <option>Free Electives</option>
-                      </select><br>
-                      <!-- Add the text and credit fields -->
-                      <label for="text">Description:</label>
-                      <input v-model="text" type="text" id="text">
-                      <br>
-                      <label for="credit">Credit:</label>
-                      <input v-model="credit" type="number" id="credit" required>
-
-                      <button v-if="selectedGroupCourse" class="btn btn-success" @click="updateGroupCourse">
-                        Update
-                      </button>
-                      <button v-else class="btn btn-primary" type="submit">Add Course</button>
-                      <button @click="cancelForm">Cancel</button>
-                    </form>
+            <div v-show="isActive(1, index)" class="container">
+              <div class="right-side">
+                <button v-if="userRole === ROLES.ROLE_ADMIN" class="btn btn-primary" @click="openForm">Add Courses To
+                  Curriculum</button>
+              </div>
+              <div v-if="showForm">
+                <div class="overlay">
+                  <div class="popup">
+                    <div class="row">
+                      <div class="col-md-12">
+                        <h3>{{ selectedGroupCourse ? 'Edit GroupCourse' : 'Add GroupCourse' }}</h3>
+                        <form @submit.prevent="addCourseToGroupCourse">
+                          <div class="form-group">
+                            <label for="courseId">Course</label>
+                            <v-select @input="required" class="form-control left-align" v-model="selectedCourse" :options="records.map(record => ({
+                              label: record.courseId + ' - ' + record.name,
+                              value: record.courseId
+                            }))" multiple :reduce="option => option.value" :placeholder="'Select a course'">
+                            </v-select>
+                          </div>
+                          <br>
+                          <div class="form-group">
+                            <label for="groupName">Group Name:</label>
+                            <select class="form-control" v-model="groupName" id="groupName" required>
+                              <option value="">-- Select Group Course --</option>
+                              <option>General Education | Required courses | Learner Person</option>
+                              <option>General Education | Required courses | Innovative Co-creator</option>
+                              <option>General Education | Required courses | Active Citizen</option>
+                              <option>General Education | Elective courses | Learner Person</option>
+                              <option>General Education | Elective courses | Active Citizen</option>
+                              <option>Field of Specialization| Core Courses</option>
+                              <option>Field of Specialization | Major Courses | Required Courses</option>
+                              <option>Field of Specialization | Major Courses | Free Elective</option>
+                              <option>Free Electives</option>
+                            </select><br>
+                          </div>
+                          <!-- Add the text and credit fields -->
+                          <div class="form-group">
+                            <label for="text">Description:</label>
+                            <input class="form-control" v-model="text" type="text" id="text">
+                          </div>
+                          <br>
+                          <div class="form-group">
+                            <label for="credit">Credit:</label>
+                            <input class="form-control" v-model="credit" type="number" id="credit" required>
+                          </div>
+                          <div class="form-buttons">
+                            <button v-if="selectedGroupCourse" class="btn btn-success" @click="updateGroupCourse">
+                              Update
+                            </button>
+                            <button v-else class="btn btn-primary" type="submit">Add Course</button>
+                            <button class="btn btn-secondary" @click="cancelForm">Cancel</button>
+                          </div>
+                        </form>
+                      </div>
+                    </div>
                   </div>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-12" v-for="(groupCourse, groupCourseIndex) in filteredGroupCourses"
+                  :key="groupCourseIndex">
+
+                  <h4 class="">{{ groupCourse.groupName }}</h4>
+                  <h6 class="">Mininum credit required:{{ groupCourse.credit }}</h6>
+                  <div class="table-responsive">
+                    <table class="table table-striped table-bordered">
+                      <thead>
+                        <tr>
+                          <th>Course ID</th>
+                          <th>Course Name</th>
+                          <th>Course Credit</th>
+                          <th>Course Prerequisite</th>
+                          <th>Action</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr v-for="(course, courseIndex) in groupCourse.courses" :key="courseIndex">
+                          <td>{{ course.courseId }}</td>
+                          <td>{{ course.name }}</td>
+                          <td>{{ course.credit }}</td>
+                          <td>{{ getPrerequisiteInfo(course.prerequisite) }}</td>
+                          <td>
+                            <div class="e-d">
+                              <button v-if="userRole === ROLES.ROLE_ADMIN" class="btn btn-danger"
+                                @click="removeCourseFromGroupCourse(groupCourse, course.courseId)">
+                                Remove
+                              </button>
+                              <router-link :to="'/courseByCourseId/' + course.courseId">Description</router-link>
+                            </div>
+                          </td>
+
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                  <h5 class="">Description: {{ groupCourse.text }}</h5>
+                  <div class="e-d">
+                    <button v-if="userRole === ROLES.ROLE_ADMIN" class="btn btn-info"
+                      @click="editGroupCourse(groupCourse)">
+                      Edit
+                    </button>
+                    <button v-if="userRole === ROLES.ROLE_ADMIN" class="btn btn-danger"
+                      @click="removeGroupCourse(groupCourse.id)">
+                      Delete Group
+                    </button>
+                  </div>
+                  <hr class="">
                 </div>
               </div>
             </div>
           </div>
-
-          <div class="row">
-            <div class="col-md-12" v-for="(groupCourse, groupCourseIndex) in filteredGroupCourses"
-              :key="groupCourseIndex">
-
-              <h4 class="">{{ groupCourse.groupName }}</h4>
-              <h6 class="">Mininum credit required:{{ groupCourse.credit }}</h6>
-              <div class="table-responsive">
-                <table class="table table-striped table-bordered">
-                  <thead>
-                    <tr>
-                      <th>Course ID</th>
-                      <th>Course Name</th>
-                      <th>Course Credit</th>
-                      <th>Course Prerequisite</th>
-                      <th>Action</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr v-for="(course, courseIndex) in groupCourse.courses" :key="courseIndex">
-                      <td>{{ course.courseId }}</td>
-                      <td>{{ course.name }}</td>
-                      <td>{{ course.credit }}</td>
-                      <td>{{ getPrerequisiteInfo(course.prerequisite) }}</td>
-                      <td>
-                        <div class="e-d">
-                          <button v-if="userRole === ROLES.ROLE_ADMIN" class="btn btn-danger"
-                            @click="removeCourseFromGroupCourse(groupCourse, course.courseId)">
-                            Remove
-                          </button>
-                          <router-link :to="'/courseByCourseId/' + course.courseId">Description</router-link>
-                        </div>
-                      </td>
-
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-              <h5 class="">Description: {{ groupCourse.text }}</h5>
-              <div class="e-d">
-                <button v-if="userRole === ROLES.ROLE_ADMIN" class="btn btn-info" @click="editGroupCourse(groupCourse)">
-                  Edit
-                </button>
-                <button v-if="userRole === ROLES.ROLE_ADMIN" class="btn btn-danger"
-                  @click="removeGroupCourse(groupCourse.id)">
-                  Delete Group
-                </button>
-              </div>
-              <hr class="">
+          <div>
+            <div @click="toggleAccordion(3)" :class="{ 'accordion': true, 'active': isActive(3) }">
+              <h3>Standard Study Plan<i class="fa fa-chevron-down" :class="{ 'fa-rotate-180': isActive(3) }"></i></h3>
             </div>
-          </div>
-        </div>
-      </div>
-      <div>
-        <div @click="toggleAccordion(3)" :class="{ 'accordion': true, 'active': isActive(3) }">
-          <h3>Standard Study Plan<i class="fa fa-chevron-down" :class="{ 'fa-rotate-180': isActive(3) }"></i></h3>
-        </div>
-        <div v-show="isActive(3)" class="container">
-          <div class="right-side">
-            <button v-if="userRole === ROLES.ROLE_ADMIN" class="btn btn-primary" @click="openForm2">Add Courses To
-              StudyPlan</button>
-          </div>
-          <div v-if="showForm2">
-            <div class="overlay">
-              <div class="popup">
-                <div class="row">
-                  <div class="col-md-12">
-                    <form @submit.prevent="addCourseToStudyPlan">
-                      <h3>{{ selectedStudyPlan ? 'Edit StudyPlan' : 'Add StudyPlan' }}</h3>
-                      <label for="courseId">Course</label>
-                      <v-select @input="required" class="form-control left-align" v-model="selectedCourse" :options="records.map(record => ({
-                        label: record.courseId + ' - ' + record.name,
-                        value: record.courseId
-                      }))" multiple :reduce="option => option.value" :placeholder="'Select a course'">
-                      </v-select>
+            <div v-show="isActive(3)" class="container">
+              <div class="right-side">
+                <button v-if="userRole === ROLES.ROLE_ADMIN" class="btn btn-primary" @click="openForm2">Add Courses To
+                  StudyPlan</button>
+              </div>
+              <div v-if="showForm2">
+                <div class="overlay">
+                  <div class="popup">
+                    <div class="row">
+                      <div class="col-md-12">
+                        <form @submit.prevent="addCourseToStudyPlan">
+                          <h3>{{ selectedStudyPlan ? 'Edit StudyPlan' : 'Add StudyPlan' }}</h3>
+                          <label for="courseId">Course</label>
+                          <v-select @input="required" class="form-control left-align" v-model="selectedCourse" :options="records.map(record => ({
+                            label: record.courseId + ' - ' + record.name,
+                            value: record.courseId
+                          }))" multiple :reduce="option => option.value" :placeholder="'Select a course'">
+                          </v-select>
 
-                      <label for="yearAndSemester">Group Name:</label>
-                      <select v-model="yearAndSemester" id="yearAndSemester" required>
-                        <option value="">-- Select Year and Semester --</option>
-                        <option>Year 1 Semester 1</option>
-                        <option>Year 1 Semester 2</option>
-                        <option>Year 2 Semester 1</option>
-                        <option>Year 2 Semester 2</option>
-                        <option>Year 3 Semester 1</option>
-                        <option>Year 3 Semester 2</option>
-                        <option>Year 4 Semester 1</option>
-                        <option>Year 4 Semester 2</option>
-                        <option>Year 5 Semester 1</option>
-                        <option>Year 5 Semester 2</option>
-                      </select>
-                      <!-- Add the text and credit fields -->
-                      <label for="text">Text:</label>
-                      <input v-model="text" type="text" id="text">
+                          <label for="yearAndSemester">Group Name:</label>
+                          <select v-model="yearAndSemester" id="yearAndSemester" required>
+                            <option value="">-- Select Year and Semester --</option>
+                            <option>Year 1 Semester 1</option>
+                            <option>Year 1 Semester 2</option>
+                            <option>Year 2 Semester 1</option>
+                            <option>Year 2 Semester 2</option>
+                            <option>Year 3 Semester 1</option>
+                            <option>Year 3 Semester 2</option>
+                            <option>Year 4 Semester 1</option>
+                            <option>Year 4 Semester 2</option>
+                            <option>Year 5 Semester 1</option>
+                            <option>Year 5 Semester 2</option>
+                          </select>
+                          <!-- Add the text and credit fields -->
+                          <label for="text">Text:</label>
+                          <input v-model="text" type="text" id="text">
 
-                      <label for="credit">Credit:</label>
-                      <input v-model="credit" type="number" id="credit" required>
+                          <label for="credit">Credit:</label>
+                          <input v-model="credit" type="number" id="credit" required>
 
-                      <button v-if="selectedStudyPlan" class="btn btn-success" @click="updateStudyPlan">
-                        Update
-                      </button>
-                      <button v-else class="btn btn-primary" type="submit">Add Course</button>
-                      <button @click="cancelForm">Cancel</button>
-                    </form>
+                          <button v-if="selectedStudyPlan" class="btn btn-success" @click="updateStudyPlan">
+                            Update
+                          </button>
+                          <button v-else class="btn btn-primary" type="submit">Add Course</button>
+                          <button @click="cancelForm">Cancel</button>
+                        </form>
+                      </div>
+                    </div>
                   </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-12" v-for="(studyPlan, studyPlanIndex) in filteredStudyPlan" :key="studyPlanIndex">
+
+                  <h4 class="">{{ studyPlan.yearAndSemester }}</h4>
+                  <h6 class="">credit: {{ studyPlan.credit }}</h6>
+                  <div class="table-responsive">
+                    <table class="table table-striped table-bordered">
+                      <thead>
+                        <tr>
+                          <th>Course ID</th>
+                          <th>Course Name</th>
+                          <th>Course Credit</th>
+                          <th>Course Prerequisite</th>
+                          <th>Action</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr v-for="(course, courseIndex) in studyPlan.courses" :key="courseIndex">
+                          <td>{{ course.courseId }}</td>
+                          <td>{{ course.name }}</td>
+                          <td>{{ course.credit }}</td>
+                          <td>{{ getPrerequisiteInfo(course.prerequisite) }}</td>
+                          <td>
+                            <div class="e-d">
+                              <button v-if="userRole === ROLES.ROLE_ADMIN" class="btn btn-danger"
+                                @click="removeCourseFromStudyPlan(studyPlan, course.courseId)">
+                                Remove
+                              </button>
+                              <router-link :to="'/courseByCourseId/' + course.courseId">Description</router-link>
+                            </div>
+                          </td>
+
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                  <h5 class="">Description: {{ studyPlan.text }}</h5>
+                  <button v-if="userRole === ROLES.ROLE_ADMIN" class="btn btn-info" @click="editStudyPlan(studyPlan)">
+                    Edit
+                  </button>
+                  <div class="e-d">
+                    <button v-if="userRole === ROLES.ROLE_ADMIN" class="btn btn-danger"
+                      @click="removeStudyPlan(studyPlan.id)">
+                      Delete Group
+                    </button>
+                  </div>
+                  <hr class="">
                 </div>
               </div>
             </div>
           </div>
-          <div class="row">
-            <div class="col-md-12" v-for="(studyPlan, studyPlanIndex) in filteredStudyPlan" :key="studyPlanIndex">
-
-              <h4 class="">{{ studyPlan.yearAndSemester }}</h4>
-              <h6 class="">credit: {{ studyPlan.credit }}</h6>
-              <div class="table-responsive">
-                <table class="table table-striped table-bordered">
-                  <thead>
-                    <tr>
-                      <th>Course ID</th>
-                      <th>Course Name</th>
-                      <th>Course Credit</th>
-                      <th>Course Prerequisite</th>
-                      <th>Action</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr v-for="(course, courseIndex) in studyPlan.courses" :key="courseIndex">
-                      <td>{{ course.courseId }}</td>
-                      <td>{{ course.name }}</td>
-                      <td>{{ course.credit }}</td>
-                      <td>{{ getPrerequisiteInfo(course.prerequisite) }}</td>
-                      <td>
-                        <div class="e-d">
-                          <button v-if="userRole === ROLES.ROLE_ADMIN" class="btn btn-danger"
-                            @click="removeCourseFromStudyPlan(studyPlan, course.courseId)">
-                            Remove
-                          </button>
-                          <router-link :to="'/courseByCourseId/' + course.courseId">Description</router-link>
-                        </div>
-                      </td>
-
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-              <h5 class="">Description: {{ studyPlan.text }}</h5>
-              <button v-if="userRole === ROLES.ROLE_ADMIN" class="btn btn-info" @click="editStudyPlan(studyPlan)">
-                Edit
-              </button>
-              <div class="e-d">
-                <button v-if="userRole === ROLES.ROLE_ADMIN" class="btn btn-danger"
-                  @click="removeStudyPlan(studyPlan.id)">
-                  Delete Group
-                </button>
-              </div>
-              <hr class="">
-            </div>
-          </div>
         </div>
       </div>
-    </div>
+    </section>
   </div>
 </template>
 
@@ -654,6 +668,27 @@ export default {
   padding-top: 200px; // or whatever value is needed to push the content below the navbar
 }
 
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 999;
+}
+
+.popup {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #fff;
+  z-index: 1000;
+  padding: 30px;
+  width: 80%;
+  max-width: 600px;
+}
 
 .accordion {
   border: 1px solid #ccc;
@@ -665,6 +700,23 @@ export default {
 
 .accordion.active {
   background-color: #ff8800;
+}
+
+.form-buttons {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+textarea.form-control {
+  resize: vertical;
+  min-height: 100px;
+}
+
+.center-side {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 1em;
 }
 
 .accordion h3 {
