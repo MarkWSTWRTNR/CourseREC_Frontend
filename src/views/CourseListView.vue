@@ -47,7 +47,8 @@
                                                 <button v-if="userRole === ROLES.ROLE_ADMIN" class="btn btn-danger"
                                                     @click="deleteCourse(record.id)">Delete</button>
                                                 <button v-if="userRole === ROLES.ROLE_ADMIN" class="btn btn-info"
-                                                    @click="editCourse(record); openForm()">Edit</button><br>
+                                                    @click="editCourse(record);">Edit</button>
+                                                <br>
                                                 <router-link
                                                     :to="'/courseByCourseId/' + record.courseId">Description</router-link>
                                             </div>
@@ -116,7 +117,7 @@
                                                     required></textarea>
                                             </div>
                                             <div class="form-buttons">
-                                                <button v-if="selectedCourse" class="btn btn-success">Update</button>
+                                                <button v-if="selectedCourse" class="btn btn-success" @click="updateCourse">Update</button>
                                                 <button v-else class="btn btn-primary" type="submit">Create</button>
                                                 <button class="btn btn-secondary" @click="cancelForm">Cancel</button>
                                             </div>
@@ -346,6 +347,7 @@ export default {
 .home {
     padding-top: 150px; // or whatever value is needed to push the content below the navbar
 }
+
 .hero {
     position: relative;
     z-index: 1;
@@ -353,6 +355,7 @@ export default {
     align-items: center;
     min-height: 100vh;
 }
+
 .overlay {
     position: fixed;
     top: 0;
@@ -428,4 +431,5 @@ textarea.form-control {
     display: flex;
     justify-content: center;
     gap: 1em;
-}</style>
+}
+</style>
