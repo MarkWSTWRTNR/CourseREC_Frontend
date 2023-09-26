@@ -461,9 +461,15 @@ export default {
 
 <style scoped lang="scss">
 .home {
-  padding-top: 200px;
+  padding-top: 150px;
 }
-
+.hero {
+    position: relative;
+    z-index: 1;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
 .overlay {
   position: fixed;
   top: 0;

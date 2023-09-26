@@ -667,7 +667,13 @@ export default {
 .home {
   padding-top: 200px; // or whatever value is needed to push the content below the navbar
 }
-
+.hero {
+    position: relative;
+    z-index: 1;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
 .overlay {
   position: fixed;
   top: 0;

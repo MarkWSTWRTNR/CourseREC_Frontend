@@ -1,64 +1,69 @@
 <template>
-  <div class="faculty-page">
-    <div class="table-section">
-      <h2>Program List</h2>
-      <div class="back">
-        <button class="btn btn-secondary mb-3" @click="goBack">← Back to previous page</button>
-      </div>
-      <table class="table table-striped table-bordered">
-        <thead>
-          <tr>
-            <th>Program ID</th>
-            <th>Program</th>
-            <th>Faculty</th>
-            <th v-if="userRole === ROLES.ROLE_ADMIN">Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="record in programs" :key="record.id">
-            <td>{{ record.programId }}</td>
-            <td>{{ record.name }}</td>
-            <td>{{ record.faculty ? record.faculty.name : 'N/A' }}</td>
-            <td>
-              <div class="e-d">
-                <button v-if="userRole === ROLES.ROLE_ADMIN" class="btn btn-danger"
-                  @click="deleteProgram(record.id)">Delete</button>
-                <button v-if="userRole === ROLES.ROLE_ADMIN" class="btn btn-info"
-                  @click="editProgram(record); openForm()">Edit</button>
-              </div>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-      <button v-if="userRole === ROLES.ROLE_ADMIN" class="btn btn-primary" @click="openForm">Add Program</button>
-    </div>
+  <div class="home">
 
-    <div v-if="showForm" class="overlay">
-      <div class="popup">
-        <h3>{{ selectedProgram ? 'Edit Program' : 'Create Program' }}</h3>
-        <form @submit.prevent="addProgram">
-          <div class="form-group">
-            <input type="text" v-model="programId" placeholder="Program ID" required class="form-control">
+    <section class="hero">
+      <div class="faculty-page">
+        <div class="table-section">
+          <h2>Program List</h2>
+          <div class="back">
+            <button class="btn btn-secondary mb-3" @click="goBack">← Back to previous page</button>
           </div>
-          <div class="form-group">
-            <input type="text" v-model="name" placeholder="Program Name" required class="form-control">
+          <table class="table table-striped table-bordered">
+            <thead>
+              <tr>
+                <th>Program ID</th>
+                <th>Program</th>
+                <th>Faculty</th>
+                <th v-if="userRole === ROLES.ROLE_ADMIN">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="record in programs" :key="record.id">
+                <td>{{ record.programId }}</td>
+                <td>{{ record.name }}</td>
+                <td>{{ record.faculty ? record.faculty.name : 'N/A' }}</td>
+                <td>
+                  <div class="e-d">
+                    <button v-if="userRole === ROLES.ROLE_ADMIN" class="btn btn-danger"
+                      @click="deleteProgram(record.id)">Delete</button>
+                    <button v-if="userRole === ROLES.ROLE_ADMIN" class="btn btn-info"
+                      @click="editProgram(record); openForm()">Edit</button>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <button v-if="userRole === ROLES.ROLE_ADMIN" class="btn btn-primary" @click="openForm">Add Program</button>
+        </div>
+
+        <div v-if="showForm" class="overlay">
+          <div class="popup">
+            <h3>{{ selectedProgram ? 'Edit Program' : 'Create Program' }}</h3>
+            <form @submit.prevent="addProgram">
+              <div class="form-group">
+                <input type="text" v-model="programId" placeholder="Program ID" required class="form-control">
+              </div>
+              <div class="form-group">
+                <input type="text" v-model="name" placeholder="Program Name" required class="form-control">
+              </div>
+              <div class="form-group">
+                <select v-model="selectedFaculty" required class="form-control">
+                  <option value="" disabled selected>-- Select Faculty --</option>
+                  <option v-for="faculty in faculties" :key="faculty.facultyId" :value="{ facultyId: faculty.facultyId }">
+                    {{ faculty.name }}
+                  </option>
+                </select>
+              </div>
+              <div class="form-actions">
+                <button v-if="selectedProgram" class="btn btn-success" @click="updateProgram">Update</button>
+                <button v-else class="btn btn-primary" type="submit">Create</button>
+                <button @click="cancelForm" class="btn btn-secondary">Cancel</button>
+              </div>
+            </form>
           </div>
-          <div class="form-group">
-            <select v-model="selectedFaculty" required class="form-control">
-              <option value="" disabled selected>-- Select Faculty --</option>
-              <option v-for="faculty in faculties" :key="faculty.facultyId" :value="{ facultyId: faculty.facultyId }">
-                {{ faculty.name }}
-              </option>
-            </select>
-          </div>
-          <div class="form-actions">
-            <button v-if="selectedProgram" class="btn btn-success" @click="updateProgram">Update</button>
-            <button v-else class="btn btn-primary" type="submit">Create</button>
-            <button @click="cancelForm" class="btn btn-secondary">Cancel</button>
-          </div>
-        </form>
+        </div>
       </div>
-    </div>
+    </section>
   </div>
 </template>
 
@@ -205,6 +210,19 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
+.hero {
+  position: relative;
+  z-index: 1;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
+.hero-text {
+  text-align: center;
+
+}
+
 .faculty-page {
   padding: 150px;
 

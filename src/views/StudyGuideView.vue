@@ -1,24 +1,29 @@
 <template>
-  <div class="home hero-text container">
-    <h2 class="white">Study Guide Recommendations by ChatGPT</h2>
-    <button class="btn btn-info" @click="getRecommendation">Get Study Guide Recommendation</button>
+  <div class="home">
 
-    <!-- Loading State -->
-    <div v-if="loading" class="white">Loading...</div>
+    <section class="hero">
+      <div class="hero-text container">
+        <h2 class="white">Study Guide Recommendations by ChatGPT</h2>
+        <button class="btn btn-info" @click="getRecommendation">Get Study Guide Recommendation</button>
 
-    <!-- Display Finished Courses -->
-    <div v-if="finishedCourses && !loading">
-      <h3 class="white">Finished Courses:</h3>
-      <ul>
-        <li v-for="course in finishedCourses" :key="course" class="white">{{ course }}</li>
-      </ul>
-    </div>
+        <!-- Loading State -->
+        <div v-if="loading" class="white">Loading...</div>
 
-    <!-- Display Recommendation -->
-    <div v-if="recommendation && !loading">
-      <h3 class="white">Recommendation:</h3>
-      <p class="white">{{ recommendation }}</p>
-    </div>
+        <!-- Display Finished Courses -->
+        <div v-if="finishedCourses && !loading">
+          <h3 class="white">Finished Courses:</h3>
+          <ul>
+            <li v-for="course in finishedCourses" :key="course" class="white">{{ course }}</li>
+          </ul>
+        </div>
+
+        <!-- Display Recommendation -->
+        <div v-if="recommendation && !loading">
+          <h3 class="white">Recommendation:</h3>
+          <p class="white">{{ recommendation }}</p>
+        </div>
+      </div>
+    </section>
   </div>
 </template>
 
@@ -79,5 +84,18 @@ export default {
 <style lang="scss" scoped>
 .home {
   padding-top: 200px; // or whatever value is needed to push the content below the navbar
+}
+
+.hero {
+  position: relative;
+  z-index: 1;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
+.hero-text {
+  text-align: center;
+
 }
 </style>

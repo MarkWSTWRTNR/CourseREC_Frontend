@@ -1,12 +1,16 @@
 <template>
-    <div class="home hero-text container">
-        <div class="forbidden-page">
-            <!-- <img src="@/assets/forbidden.svg" alt="Forbidden Access" /> -->
-            <h1>403 - Forbidden</h1>
-            <p>Sorry, you don't have access to this page.</p>
-            <p>Please login</p>
-            <router-link to="/" class="home-link">Return to Home Page</router-link>
-        </div>
+    <div class="home">
+        <section class="hero">
+            <div class="hero-text container">
+                <div class="forbidden-page">
+                    <!-- <img src="@/assets/forbidden.svg" alt="Forbidden Access" /> -->
+                    <h1>403 - Forbidden</h1>
+                    <p>Sorry, you don't have access to this page.</p>
+                    <p>Please login</p>
+                    <router-link to="/" class="home-link">Return to Home Page</router-link>
+                </div>
+            </div>
+        </section>
     </div>
 </template>
   
@@ -20,7 +24,17 @@ export default {
 .home {
     padding-top: 200px; // or whatever value is needed to push the content below the navbar
 }
-
+.hero {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+.hero-text {
+    text-align: center;
+}
 .forbidden-page {
     display: flex;
     flex-direction: column;

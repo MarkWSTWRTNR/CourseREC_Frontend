@@ -1,58 +1,62 @@
 <template>
-  <div class="course-detail">
-    <div class="back">
-      <button class="btn btn-secondary mb-3" @click="goBack">← Back to previous page</button>
-    </div>
-    <div class="course-info">
-      <h2>{{ course.name }}</h2>
-      <ul>
-        <li><strong>Course ID:</strong> {{ course.courseId }}</li>
-        <li><strong>Credit:</strong> {{ course.credit }}</li>
-        <li><strong>Grading Type:</strong> {{ course.gradingtype }}</li>
-        <li><strong>Course Prerequisite:</strong>
+  <div class="home">
+    <section class="hero">
+      <div class="course-detail">
+        <div class="back">
+          <button class="btn btn-secondary mb-3" @click="goBack">← Back to previous page</button>
+        </div>
+        <div class="course-info">
+          <h2>{{ course.name }}</h2>
           <ul>
-            <li v-for="prerequisite in course.prereq" :key="prerequisite.courseId">
-              {{ prerequisite.courseId }} - {{ prerequisite.name }}
+            <li><strong>Course ID:</strong> {{ course.courseId }}</li>
+            <li><strong>Credit:</strong> {{ course.credit }}</li>
+            <li><strong>Grading Type:</strong> {{ course.gradingtype }}</li>
+            <li><strong>Course Prerequisite:</strong>
+              <ul>
+                <li v-for="prerequisite in course.prereq" :key="prerequisite.courseId">
+                  {{ prerequisite.courseId }} - {{ prerequisite.name }}
+                </li>
+              </ul>
             </li>
-          </ul>
-        </li>
-        <li><strong>Programs:</strong>
-          <ul>
-            <li v-for="program in course.groupCourses" :key="program.id">
-              {{ program.programs.name }} ({{ program.groupName }})
+            <li><strong>Programs:</strong>
+              <ul>
+                <li v-for="program in course.groupCourses" :key="program.id">
+                  {{ program.programs.name }} ({{ program.groupName }})
+                </li>
+              </ul>
             </li>
+            <li><strong>Description:</strong> {{ course.description }}</li>
           </ul>
-        </li>
-        <li><strong>Description:</strong> {{ course.description }}</li>
-      </ul>
-    </div>
+        </div>
 
-    <div class="comments-section">
-      <h3>Comments</h3>
-      <div class="comment-box" v-for="comment in course.comments" :key="comment.id">
-        <div class="comment-header">
-          <strong>{{ comment.user.username }}</strong>
-          <button v-if="comment.user.username === cmuitaccount_name" type="button" class="btn btn-danger"
-            @click="deleteComment(comment.id)">Delete</button>
-        </div>
-        <div class="comment-content">
-          <p>{{ comment.comment }}</p>
-        </div>
-        <div class="comment-rating star-filled">
-          <span v-html="generateStarIcons(comment.ratingScore)"></span>
+        <div class="comments-section">
+          <h3>Comments</h3>
+          <div class="comment-box" v-for="comment in course.comments" :key="comment.id">
+            <div class="comment-header">
+              <strong>{{ comment.user.username }}</strong>
+              <button v-if="comment.user.username === cmuitaccount_name" type="button" class="btn btn-danger"
+                @click="deleteComment(comment.id)">Delete</button>
+            </div>
+            <div class="comment-content">
+              <p>{{ comment.comment }}</p>
+            </div>
+            <div class="comment-rating star-filled">
+              <span v-html="generateStarIcons(comment.ratingScore)"></span>
+            </div>
+          </div>
+
+          <div class="add-comment">
+            <h3>Add Comment</h3>
+            <textarea v-model="newCommentText" placeholder="Write your comment..."></textarea>
+            <div class="rating-input">
+              <label for="rating">Rating:</label>
+              <input type="number" id="rating" v-model="newRating" min="1" max="5" />
+            </div>
+            <button type="button" class="btn btn-primary" @click="addComment">Add Comment</button>
+          </div>
         </div>
       </div>
-
-      <div class="add-comment">
-        <h3>Add Comment</h3>
-        <textarea v-model="newCommentText" placeholder="Write your comment..."></textarea>
-        <div class="rating-input">
-          <label for="rating">Rating:</label>
-          <input type="number" id="rating" v-model="newRating" min="1" max="5" />
-        </div>
-        <button type="button" class="btn btn-primary" @click="addComment">Add Comment</button>
-      </div>
-    </div>
+    </section>
   </div>
 </template>
   
@@ -142,6 +146,18 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
+.hero {
+    position: relative;
+    z-index: 1;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+.hero-text {
+    text-align: center;
+
+}
 .course-detail {
   padding: 200px 20px; // Added horizontal padding for better spacing on smaller screens
   max-width: 800px; // Limit the width for better readability

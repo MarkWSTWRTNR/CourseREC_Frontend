@@ -1,54 +1,59 @@
 <template>
-  <div class="faculty-page">
-    <div class="table-section">
-      <h2>Faculty List</h2>
-      <div class="back">
-        <button class="btn btn-secondary mb-3" @click="goBack">← Back to previous page</button>
-      </div>
-      <table class="table table-striped table-bordered">
-        <thead>
-          <tr>
-            <th>Faculty ID</th>
-            <th>Faculty Name</th>
-            <th v-if="userRole === ROLES.ROLE_ADMIN">Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="record in faculties" :key="record.facultyId">
-            <td>{{ record.facultyId }}</td>
-            <td>{{ record.name }}</td>
-            <td>
-              <div class="e-d">
-                <button v-if="userRole === ROLES.ROLE_ADMIN" class="btn btn-danger"
-                  @click="deleteFaculty(record.facultyId)">Delete</button>
-                <button v-if="userRole === ROLES.ROLE_ADMIN" class="btn btn-info"
-                  @click="editFaculty(record)">Edit</button>
-              </div>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-      <button v-if="userRole === ROLES.ROLE_ADMIN" class="btn btn-primary" @click="openForm">Add Faculty</button>
-    </div>
+  <div class="home">
 
-    <div v-if="showForm" class="overlay">
-      <div class="popup">
-        <h3>{{ selectedFaculty ? 'Edit Faculty' : 'Create Faculty' }}</h3>
-        <form @submit.prevent="addFaculty">
-          <div class="form-group">
-            <input type="text" v-model="facultyId" placeholder="Faculty ID" required class="form-control">
+    <section class="hero">
+      <div class="faculty-page">
+        <div class="table-section">
+          <h2>Faculty List</h2>
+          <div class="back">
+            <button class="btn btn-secondary mb-3" @click="goBack">← Back to previous page</button>
           </div>
-          <div class="form-group">
-            <input type="text" v-model="name" placeholder="Faculty Name" required class="form-control">
+          <table class="table table-striped table-bordered">
+            <thead>
+              <tr>
+                <th>Faculty ID</th>
+                <th>Faculty Name</th>
+                <th v-if="userRole === ROLES.ROLE_ADMIN">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="record in faculties" :key="record.facultyId">
+                <td>{{ record.facultyId }}</td>
+                <td>{{ record.name }}</td>
+                <td>
+                  <div class="e-d">
+                    <button v-if="userRole === ROLES.ROLE_ADMIN" class="btn btn-danger"
+                      @click="deleteFaculty(record.facultyId)">Delete</button>
+                    <button v-if="userRole === ROLES.ROLE_ADMIN" class="btn btn-info"
+                      @click="editFaculty(record)">Edit</button>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <button v-if="userRole === ROLES.ROLE_ADMIN" class="btn btn-primary" @click="openForm">Add Faculty</button>
+        </div>
+
+        <div v-if="showForm" class="overlay">
+          <div class="popup">
+            <h3>{{ selectedFaculty ? 'Edit Faculty' : 'Create Faculty' }}</h3>
+            <form @submit.prevent="addFaculty">
+              <div class="form-group">
+                <input type="text" v-model="facultyId" placeholder="Faculty ID" required class="form-control">
+              </div>
+              <div class="form-group">
+                <input type="text" v-model="name" placeholder="Faculty Name" required class="form-control">
+              </div>
+              <div class="form-actions">
+                <button v-if="selectedFaculty" class="btn btn-success" @click="updateFaculty">Update</button>
+                <button v-else class="btn btn-primary" type="submit">Create</button>
+                <button @click="cancelForm" class="btn btn-secondary">Cancel</button>
+              </div>
+            </form>
           </div>
-          <div class="form-actions">
-            <button v-if="selectedFaculty" class="btn btn-success" @click="updateFaculty">Update</button>
-            <button v-else class="btn btn-primary" type="submit">Create</button>
-            <button @click="cancelForm" class="btn btn-secondary">Cancel</button>
-          </div>
-        </form>
+        </div>
       </div>
-    </div>
+    </section>
   </div>
 </template>
 
@@ -181,6 +186,19 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
+.hero {
+  position: relative;
+  z-index: 1;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
+.hero-text {
+  text-align: center;
+
+}
+
 .faculty-page {
   padding: 150px;
 
