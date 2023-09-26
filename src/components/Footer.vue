@@ -5,10 +5,10 @@
             <div class="row">
                 <div class="col-sm-12 col-md-6">
                     <h6>CourseREC</h6>
-                    <p class="text-justify">CourseRec System is a web-based decision support tool designed to aid students
-                        in study planning. It provides features like tracking grades and credit scores, offering curriculum
-                        details, suggesting course recommendations, offering a general study guide, and hosting student
-                        reviews.</p>
+                    <p class="text-justify">CourseRec System is an intuitive web-based platform tailored to empower students
+                        in their academic journey. Beyond simply tracking grades and credit scores, it offers a
+                        comprehensive insight into curriculum details, provides personalized course recommendations,
+                        presents curated study guides, and fosters a community through student reviews.</p>
                 </div>
                 <div class="col-xs-6 col-md-3">
                     <h6>Quick Links</h6>
@@ -63,10 +63,14 @@
                     <ul class="social-icons">
                         <div class="wrapper">
                             <p>Follow us:</p>
-                            <li><a class="linkedin" href="https://www.linkedin.com/in/wongsathorn-woratanarat-657852267/"><i class="bi bi-linkedin"></i></a></li>
-                            <li><a class="facebook" href="https://web.facebook.com/Mark3WST"><i class="bi bi-facebook"></i></a></li>
-                            <li><a class="instagram" href="https://www.instagram.com/mark_wst/"><i class="bi bi-instagram"></i></a></li>
-                            <li><a class="youtube" href="https://www.youtube.com/channel/UCwku0LhJ27tbTCDzFANxXqg"><i class="bi bi-youtube"></i></a></li>
+                            <li><a class="linkedin" href="https://www.linkedin.com/in/wongsathorn-woratanarat-657852267/"><i
+                                        class="bi bi-linkedin"></i></a></li>
+                            <li><a class="facebook" href="https://web.facebook.com/Mark3WST"><i
+                                        class="bi bi-facebook"></i></a></li>
+                            <li><a class="instagram" href="https://www.instagram.com/mark_wst/"><i
+                                        class="bi bi-instagram"></i></a></li>
+                            <li><a class="youtube" href="https://www.youtube.com/channel/UCwku0LhJ27tbTCDzFANxXqg"><i
+                                        class="bi bi-youtube"></i></a></li>
                         </div>
                     </ul>
                 </div>
@@ -282,6 +286,5 @@ export default {
         margin-right: 0;
         font-weight: 600;
     }
-}
-</style>
+}</style>
   

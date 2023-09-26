@@ -21,10 +21,9 @@
                 <div class="text-right content">
                     <h4 class="anim">About us</h4>
                     <h1>Make your decision easier</h1>
-                    <p class="anim container">CourseRec System is a web-based decision support tool designed to aid students
-                        in study planning. It provides features like tracking grades and credit scores, offering curriculum
-                        details, suggesting course recommendations, offering a general study guide, and hosting student
-                        reviews.</p>
+                    <p class="anim container">CourseRec System is your digital compass for academic success, seamlessly
+                        tracking grades and credits, detailing curriculum insights, recommending tailored courses, guiding
+                        your study journey, and fostering a community of student reviews.</p>
                 </div>
             </div>
         </section>
@@ -266,13 +265,17 @@ section {
         display: flex;
         flex-direction: column;
         align-items: center;
-        height: auto; /* Set height to auto to adapt to content */
-        max-height: 70vh; /* Set a maximum height for section 3 */
+        height: auto;
+        /* Set height to auto to adapt to content */
+        max-height: 70vh;
+        /* Set a maximum height for section 3 */
         padding-top: 20px;
     }
+
     .hero-text2.container {
         overflow-y: auto;
     }
+
     .hero-text2 h1 {
         font-size: 45px;
     }
@@ -288,5 +291,4 @@ section {
         flex-wrap: wrap;
         z-index: 1;
     }
-}
-</style>
+}</style>
