@@ -1,26 +1,25 @@
 <template>
   <div class="home">
-
     <section class="hero">
-      <div class="hero-text container">
-        <h2 class="white">Study Guide Recommendations by ChatGPT</h2>
-        <button class="btn btn-info" @click="getRecommendation">Get Study Guide Recommendation</button>
+      <div class="hero-content container">
+        <h2 class="title">Study Guide Recommendations by ChatGPT</h2>
+        <button class="btn" @click="getRecommendation">Get Study Guide Recommendation</button>
 
         <!-- Loading State -->
-        <div v-if="loading" class="white">Loading...</div>
+        <div v-if="loading" class="loading-text">Loading...</div>
 
         <!-- Display Finished Courses -->
-        <div v-if="finishedCourses && !loading">
-          <h3 class="white">Finished Courses:</h3>
+        <div v-if="finishedCourses && !loading" class="finished-courses">
+          <h3 class="subtitle">Finished Courses:</h3>
           <ul>
-            <li v-for="course in finishedCourses" :key="course" class="white">{{ course }}</li>
+            <li v-for="course in finishedCourses" :key="course" class="course-item">{{ course }}</li>
           </ul>
         </div>
 
         <!-- Display Recommendation -->
-        <div v-if="recommendation && !loading">
-          <h3 class="white">Recommendation:</h3>
-          <p class="white">{{ recommendation }}</p>
+        <div v-if="recommendation && !loading" class="recommendation">
+          <h3 class="subtitle">Recommendation:</h3>
+          <p>{{ recommendation }}</p>
         </div>
       </div>
     </section>
@@ -81,21 +80,65 @@ export default {
   }
 };
 </script>
+
 <style lang="scss" scoped>
 .home {
-  padding-top: 200px; // or whatever value is needed to push the content below the navbar
+  padding-top: 100px;
 }
 
 .hero {
   position: relative;
   z-index: 1;
+  display: flex;
   justify-content: center;
   align-items: center;
   min-height: 100vh;
 }
 
-.hero-text {
-  text-align: center;
+.hero-content {
+  max-width: 800px;
+  margin: 0 auto;
+}
 
+.title {
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+.btn {
+  background-color: #17A2B8;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  font-size: 18px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.btn:hover {
+  background-color: #138496;
+}
+
+.loading-text {
+  font-size: 18px;
+  margin-top: 20px;
+}
+
+.finished-courses {
+  margin-top: 20px;
+}
+
+.subtitle {
+  font-size: 20px;
+  margin-bottom: 10px;
+}
+
+.course-item {
+  font-size: 16px;
+  margin-bottom: 5px;
+}
+
+.recommendation {
+  margin-top: 20px;
 }
 </style>
