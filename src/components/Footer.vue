@@ -4,51 +4,70 @@
         <div class="container">
             <div class="row">
                 <div class="col-sm-12 col-md-6">
-                    <h6>About</h6>
-                    <p class="text-justify">Scanfcode.com <i>CODE WANTS TO BE SIMPLE </i> is an initiative to help the
-                        upcoming programmers with the code. Scanfcode focuses on providing the most efficient code or
-                        snippets as the code wants to be simple. We will help programmers build up concepts in different
-                        programming languages that include C, C++, Java, HTML, CSS, Bootstrap, JavaScript, PHP, Android,
-                        SQL, and Algorithm.</p>
+                    <h6>CourseREC</h6>
+                    <p class="text-justify">CourseRec System is a web-based decision support tool designed to aid students
+                        in study planning. It provides features like tracking grades and credit scores, offering curriculum
+                        details, suggesting course recommendations, offering a general study guide, and hosting student
+                        reviews.</p>
                 </div>
-
-                <div class="col-xs-6 col-md-3">
-                    <h6>Categories</h6>
-                    <ul class="footer-links">
-                        <li><a href="http://scanfcode.com/category/c-language/">C</a></li>
-                        <li><a href="http://scanfcode.com/category/front-end-development/">UI Design</a></li>
-                        <li><a href="http://scanfcode.com/category/back-end-development/">PHP</a></li>
-                        <li><a href="http://scanfcode.com/category/java-programming-language/">Java</a></li>
-                        <li><a href="http://scanfcode.com/category/android/">Android</a></li>
-                        <li><a href="http://scanfcode.com/category/templates/">Templates</a></li>
-                    </ul>
-                </div>
-
                 <div class="col-xs-6 col-md-3">
                     <h6>Quick Links</h6>
                     <ul class="footer-links">
-                        <li><a href="http://scanfcode.com/about/">About Us</a></li>
-                        <li><a href="http://scanfcode.com/contact/">Contact Us</a></li>
-                        <li><a href="http://scanfcode.com/contribute-at-scanfcode/">Contribute</a></li>
-                        <li><a href="http://scanfcode.com/privacy-policy/">Privacy Policy</a></li>
-                        <li><a href="http://scanfcode.com/sitemap/">Sitemap</a></li>
+                        <!-- Everyone can see -->
+                        <li><router-link class="link " :to="{ name: 'home' }"> Home</router-link></li>
+
+
+                        <!-- only Admin can see -->
+                        <li v-if="isAdmin"><router-link class="link" :to="{ name: 'courselist' }"> Course list</router-link>
+                        </li>
+                        <li v-if="isAdmin"><router-link class="link" :to="{ name: 'curriculum' }"> Curriculum</router-link>
+                        </li>
+
+
+                        <!-- only student can see -->
+
+                        <li v-if="isStudent"><router-link class="link" :to="{ name: 'courselist' }"> Course
+                                List</router-link></li>
+                        <li v-if="isStudent"><router-link class="link" :to="{ name: 'curriculum' }">
+                                Curriculum</router-link></li>
+                        <li v-if="isStudent"><router-link class="link" :to="{ name: 'recommendcourse' }"> Recommend
+                                Course</router-link>
+                        </li>
+                        <li v-if="isStudent"><router-link class="link" :to="{ name: 'finishedcourse' }"> Finished
+                                Course</router-link>
+                        </li>
+                        <li v-if="isStudent"><router-link class="link" :to="{ name: 'studyguide' }"> Study
+                                Guide</router-link></li>
                     </ul>
                 </div>
+                <div class="col-xs-6 col-md-3">
+                    <h6>Contact us</h6>
+                    <ul class="footer-links">
+                        <li>(+66) 84-1145539</li>
+                        <li>Mark3wst@gmail.com</li>
+                        <li>Chaing Mai, Thailand</li>
+                    </ul>
+                </div>
+
+
             </div>
             <hr>
         </div>
         <div class="container">
             <div class="row">
                 <div class="col-md-8 col-sm-6 col-xs-12">
-                    <p class="copyright-text">Copyright &copy; 2017 All Rights Reserved by <a href="#">Scanfcode</a>.</p>
+                    <p class="copyright-text">Copyright &copy; 2023 All Rights Reserved by <a href="#">Scanfcode</a>.</p>
                 </div>
 
                 <div class="col-md-4 col-sm-6 col-xs-12">
                     <ul class="social-icons">
-                        <li><a class="facebook" href="#"><i class="fa fa-facebook"></i></a></li>
-                        <li><a class="twitter" href="#"><i class="fa fa-twitter"></i></a></li>
-                        <li><a class="dribbble" href="#"><i class="fa fa-dribbble"></i></a></li>
-                        <li><a class="linkedin" href="#"><i class="fa fa-linkedin"></i></a></li>
+                        <div class="wrapper">
+                            <p>Follow us:</p>
+                            <li><a class="linkedin" href="https://www.linkedin.com/in/wongsathorn-woratanarat-657852267/"><i class="bi bi-linkedin"></i></a></li>
+                            <li><a class="facebook" href="https://web.facebook.com/Mark3WST"><i class="bi bi-facebook"></i></a></li>
+                            <li><a class="instagram" href="https://www.instagram.com/mark_wst/"><i class="bi bi-instagram"></i></a></li>
+                            <li><a class="youtube" href="https://www.youtube.com/channel/UCwku0LhJ27tbTCDzFANxXqg"><i class="bi bi-youtube"></i></a></li>
+                        </div>
                     </ul>
                 </div>
             </div>
@@ -56,8 +75,28 @@
     </footer>
 </template>
 <script>
+import { userRole, ROLES } from '@/service/roles';
 export default {
-    name: 'Footer'
+    name: 'Footer',
+    data() {
+        return {
+            userInfo: null,
+        }
+    },
+    computed: {
+        isAdmin() {
+            return userRole.value === ROLES.ROLE_ADMIN;
+        },
+        isStudent() {
+            return userRole.value === ROLES.ROLE_STUDENT;
+        },
+        isLoggedIn() {
+            return !!this.accessToken;
+        },
+        isEitherAdminOrStudent() {
+            return this.isAdmin || this.isStudent;
+        },
+    },
 }
 </script>
 <style scoped>
@@ -66,13 +105,27 @@ export default {
     padding: 45px 0 20px;
     font-size: 15px;
     line-height: 24px;
-    color: #737373;
+    color: #ffffffb9;
     position: relative;
     bottom: 0;
     left: 0;
     width: 100%;
     z-index: 1000;
     /* Adjust as needed */
+}
+
+.wrapper {
+    display: flex;
+    gap: 0.2em;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.wrapper p {
+
+    position: center;
+    margin-top: auto;
+
 }
 
 .site-footer hr {
@@ -93,7 +146,7 @@ export default {
 }
 
 .site-footer a {
-    color: #737373;
+    color: #ffffffb9;
 }
 
 .site-footer a:hover {
@@ -111,7 +164,7 @@ export default {
 }
 
 .footer-links a {
-    color: #737373;
+    color: #ffffffb9;
 }
 
 .footer-links a:active,
@@ -211,16 +264,16 @@ export default {
     background-color: #3b5998;
 }
 
-.social-icons a.twitter:hover {
-    background-color: #00aced;
+.social-icons a.instagram:hover {
+    background-color: #ea4c89;
 }
 
 .social-icons a.linkedin:hover {
     background-color: #007bb6;
 }
 
-.social-icons a.dribbble:hover {
-    background-color: #ea4c89;
+.social-icons a.youtube:hover {
+    background-color: #ea4c4c;
 }
 
 @media (max-width: 1140px) {
@@ -229,5 +282,6 @@ export default {
         margin-right: 0;
         font-weight: 600;
     }
-}</style>
+}
+</style>
   
