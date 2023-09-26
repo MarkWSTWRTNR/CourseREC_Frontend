@@ -100,7 +100,7 @@ export default {
 <style scoped>
 .home {
     padding-top: 100px;
-    
+
 }
 
 .hero {
@@ -110,7 +110,6 @@ export default {
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-
 }
 
 .hero-text {
@@ -121,17 +120,19 @@ export default {
 .hero2 {
     position: relative;
     z-index: 1;
-    display: grid;
+    display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     height: 100vh;
-    
+    margin-top: 10%;
+    margin-bottom: 20%;
 }
 
 .hero-text2 {
     text-align: center;
     margin-top: 10%;
+    object-fit: cover;
 }
 
 .a-to-sec2 {
@@ -218,7 +219,6 @@ section {
     justify-content: center;
     flex-wrap: wrap;
     width: 100%;
-    
 }
 
 @keyframes moveup {
@@ -231,7 +231,7 @@ section {
 @media (max-width: 1140px) {
     .home {
         padding-top: 50px;
-        
+
     }
 
     .content h1 {
@@ -261,16 +261,18 @@ section {
 
     }
 
-    .hero2 {
-        height: 250vh;
-    }
 
     .hero-text2 {
         display: flex;
         flex-direction: column;
         align-items: center;
+        height: auto; /* Set height to auto to adapt to content */
+        max-height: 70vh; /* Set a maximum height for section 3 */
+        padding-top: 20px;
     }
-
+    .hero-text2.container {
+        overflow-y: auto;
+    }
     .hero-text2 h1 {
         font-size: 45px;
     }

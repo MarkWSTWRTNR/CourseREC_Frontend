@@ -52,7 +52,7 @@ export default {
     transition: all 0.5s;
     position: absolute;
     width: 100%;
-    z-index: -1;
+    z-index: -1;border-radius: 30px;
 }
 
 .card:hover .wrapper {
@@ -71,6 +71,7 @@ export default {
     transition: all 0.5s;
     position: absolute;
     left: 0;
+    border-radius: 30px;
 }
 
 .wrapper::before {
@@ -80,6 +81,7 @@ export default {
             transparent 46%,
             rgba(12, 13, 19, 0.5) 68%,
             rgba(12, 13, 19) 97%);
+            border: none;
 }
 
 .wrapper::after {

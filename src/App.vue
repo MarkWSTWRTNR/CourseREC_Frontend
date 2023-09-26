@@ -5,18 +5,20 @@
 
 		<Navigation />
 		<router-view />
+		<Footer />
 	</div>
 </template>
 
 <script>
 
 import Navigation from "./components/Navigation.vue";
-
+import Footer from "./components/Footer.vue"
 
 export default {
 	name: 'App',
 	components: {
-		Navigation
+		Navigation,
+		Footer
 	},
 	data() {
 		return {
@@ -33,6 +35,18 @@ export default {
 	font-weight: 400;
 	p{
 		text-align: justify;
+	}
+	body{
+		display: flex;
+		flex-direction: column;
+		height: 100%;
+	}
+	header{
+		flex: 0 0 auto
+	}
+	footer{
+		margin-top: 5%;
+		flex: 0 0 auto
 	}
 
 }
