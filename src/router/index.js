@@ -4,13 +4,13 @@ import CourseListView from "@/views/CourseListView.vue";
 import RecommendCourseView from "../views/RecommendCourseView.vue";
 import StudyGuideView from "../views/StudyGuideView.vue";
 import FinishedCourseView from "../views/FinishedCourseView.vue";
-import CourseDetailView from "../components/CourseDetailView.vue"
-import FacultyView from "../components/FacultyView.vue";
-import CourseProgramView from "../components/CourseProgramView.vue"
-import UserInfo from '../components/UserInfo.vue';
+import CourseDetailView from "../views/CourseDetailView.vue"
+import FacultyView from "../views/FacultyView.vue";
+import CourseProgramView from "../views/CourseProgramView.vue"
+import UserInfo from '../views/UserInfo.vue';
 import LoginService from "@/service/LoginService";
 import HomeListView from "@/views/HomeListView.vue"
-import ForbiddenPage from "../components/ForbiddenPage.vue"
+import ForbiddenPage from "../views/ForbiddenPage.vue"
 import { userRole, ROLES } from "@/service/roles";
 const routes = [
   {
