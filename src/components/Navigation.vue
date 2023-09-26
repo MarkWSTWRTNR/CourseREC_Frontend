@@ -187,6 +187,7 @@ export default {
             localStorage.removeItem('access_token');
             localStorage.removeItem('userInfo');
             localStorage.removeItem('userRole'); // Clear user role
+            localStorage.removeItem('studyGuideData');
             this.accessToken = null;
             this.userInfo = null;
             this.cmuitaccount_name = null;
@@ -202,7 +203,7 @@ export default {
 <style lang="scss" scoped>
 header {
     background-color: rgb(255, 255, 255);
-    z-index: 99;
+    z-index: 2000;
     width: 100%;
     position: fixed;
     transition: .5s ease all;

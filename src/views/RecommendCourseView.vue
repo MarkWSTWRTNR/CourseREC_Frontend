@@ -5,38 +5,45 @@
                 <h1>Recommended Courses: </h1>
                 <div v-if="isLoading">Loading...</div>
                 <div v-else>
-                    <div v-for="(groupedCourses, groupName) in groupedByGroupCourse" :key="groupName">
-                        <h2>{{ groupName }}</h2>
-                        <table class="table table-striped table-bordered">
-                            <thead>
-                                <tr>
-                                    <th>Course ID</th>
-                                    <th>Course Name</th>
-                                    <th>Course Credit</th>
-                                    <th>Grading Type</th>
-                                    <th>Course Prerequisite</th>
-                                    <th>Action</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr v-for="course in groupedCourses" :key="course.id">
-                                    <td>{{ course.courseId }}</td>
-                                    <td>{{ course.name }}</td>
-                                    <td>{{ course.credit }}</td>
-                                    <td>{{ course.gradingtype }}</td>
-                                    <td>
-                                        <ul>
-                                            <li v-for="prerequisite in course.prerequisite" :key="prerequisite.id">
-                                                {{ prerequisite.courseId }} - {{ prerequisite.name }}
-                                            </li>
-                                        </ul>
-                                    </td>
-                                    <td>
-                                        <router-link :to="'/courseByCourseId/' + course.courseId">Description</router-link>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
+                    <div v-if="hasRecommendedCourses">
+                        <div v-for="(groupedCourses, groupName) in groupedByGroupCourse" :key="groupName">
+                            <h2>{{ groupName }}</h2>
+                            <table class="table table-striped table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>Course ID</th>
+                                        <th>Course Name</th>
+                                        <th>Course Credit</th>
+                                        <th>Grading Type</th>
+                                        <th>Course Prerequisite</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr v-for="course in groupedCourses" :key="course.id">
+                                        <td>{{ course.courseId }}</td>
+                                        <td>{{ course.name }}</td>
+                                        <td>{{ course.credit }}</td>
+                                        <td>{{ course.gradingtype }}</td>
+                                        <td>
+                                            <ul>
+                                                <li v-for="prerequisite in course.prerequisite" :key="prerequisite.id">
+                                                    {{ prerequisite.courseId }} - {{ prerequisite.name }}
+                                                </li>
+                                            </ul>
+                                        </td>
+                                        <td>
+                                            <router-link
+                                                :to="'/courseByCourseId/' + course.courseId">Description</router-link>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div v-else class="center-text">
+                        <p>Please set your program by visiting the <router-link to="/UserInfo">UserInfo page</router-link>.
+                        </p>
                     </div>
                 </div>
             </div>
@@ -56,7 +63,16 @@ export default {
         };
     },
     computed: {
+        hasRecommendedCourses() {
+            // Check if recommendedCourses is an array
+            return Array.isArray(this.recommendedCourses);
+        },
         groupedByGroupCourse() {
+            // Check if recommendedCourses is an array
+            if (!Array.isArray(this.recommendedCourses)) {
+                return {};
+            }
+
             return this.recommendedCourses.reduce((acc, course) => {
                 const groupName = course.groupCourses[0]?.groupName || 'Uncategorized';
                 if (!acc[groupName]) {
@@ -67,6 +83,7 @@ export default {
             }, {});
         }
     },
+
     mounted() {
         const storedUserInfo = localStorage.getItem('userInfo');
         if (storedUserInfo) {
@@ -93,6 +110,9 @@ export default {
   
 <style lang="scss" scoped>
 .home {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     padding-top: 200px; // or whatever value is needed to push the content below the navbar
 }
 
@@ -107,6 +127,12 @@ export default {
 .hero-text {
     text-align: center;
 
+}
+
+.center-text {
+    text-align: center;
+    margin-top: 20px;
+    /* Add some margin to center it vertically */
 }
 </style>
   

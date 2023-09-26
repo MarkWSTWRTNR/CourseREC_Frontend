@@ -83,13 +83,12 @@ export default {
 
 <style lang="scss" scoped>
 .home {
-  padding-top: 100px;
+  padding-top: 150px;
 }
 
 .hero {
   position: relative;
   z-index: 1;
-  display: flex;
   justify-content: center;
   align-items: center;
   min-height: 100vh;
