@@ -25,12 +25,12 @@
 
                     <div class="form-group">
                       <label for="year">Year:</label>
-                      <input type="text" class="form-control" id="year" v-model="year" required>
+                      <input type="number" class="form-control" id="year" v-model="year" required>
                     </div>
 
                     <div class="form-group">
                       <label for="semester">Semester:</label>
-                      <input type="text" class="form-control" id="semester" v-model="semester" required>
+                      <input type="number" class="form-control" id="semester" v-model="semester" required>
                     </div>
 
                     <div class="form-bottons">
