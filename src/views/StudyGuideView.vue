@@ -2,15 +2,15 @@
   <div class="home">
     <section class="hero">
       <div class="hero-content container">
-        <h2 class="title">Study Guide Recommendations by ChatGPT</h2>
-        <button class="btn" @click="getRecommendation">Get Study Guide Recommendation</button>
+        <h2 class="title">General Study Guide Recommendation by ChatGPT</h2>
+        <button class="btn" @click="getRecommendation">Get General Study Guide Recommendation</button>
 
         <!-- Loading State -->
         <div v-if="loading" class="loading-text">Loading...</div>
 
         <!-- Display Finished Courses -->
         <div v-if="finishedCourses && !loading" class="finished-courses">
-          <h3 class="subtitle">Finished Courses:</h3>
+          <h3 class="subtitle">Your Finished Courses:</h3>
           <ul>
             <li v-for="course in finishedCourses" :key="course" class="course-item">{{ course }}</li>
           </ul>

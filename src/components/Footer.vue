@@ -8,7 +8,7 @@
                     <p class="text-justify">CourseRec System is an intuitive web-based platform tailored to empower students
                         in their academic journey. Beyond simply tracking grades and credit scores, it offers a
                         comprehensive insight into curriculum details, provides personalized course recommendations,
-                        presents curated study guides, and fosters a community through student reviews.</p>
+                        presents curated study guides, and display student reviews to help you create your ideal study plan.</p>
                 </div>
                 <div class="col-xs-6 col-md-3">
                     <h6>Quick Links</h6>
@@ -45,6 +45,7 @@
                     <ul class="footer-links">
                         <li>(+66) 84-1145539</li>
                         <li>Mark3wst@gmail.com</li>
+                        <li>phonkrit.ct@gmail.com</li>
                         <li>Chaing Mai, Thailand</li>
                     </ul>
                 </div>
@@ -56,7 +57,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-8 col-sm-6 col-xs-12">
-                    <p class="copyright-text">Copyright &copy; 2023 All Rights Reserved by <a href="#">Scanfcode</a>.</p>
+                    <p class="copyright-text">Copyright &copy; 2023 All Rights Reserved by <a href="#">CourseREC</a>.</p>
                 </div>
 
                 <div class="col-md-4 col-sm-6 col-xs-12">

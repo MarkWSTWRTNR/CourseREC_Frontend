@@ -22,8 +22,7 @@
                     <h4 class="anim">About us</h4>
                     <h1>Make your decision easier</h1>
                     <p class="anim container">CourseRec System is your digital compass for academic success, seamlessly
-                        tracking grades and credits, detailing curriculum insights, recommending tailored courses, guiding
-                        your study journey, and fostering a community of student reviews.</p>
+                        tracking grades and credits, providing detailed curriculum information, give tailored course recommendation, help you chart your study plan with General Study Guide powered by ChatGPT and hosting student reviews for courses.</p>
                 </div>
             </div>
         </section>
