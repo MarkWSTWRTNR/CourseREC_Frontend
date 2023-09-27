@@ -129,7 +129,8 @@
                       </tbody>
                     </table>
                   </div>
-                  <h5 class="">Description: {{ groupCourse.text }}</h5>
+                  <h5 class="">Description: </h5>
+                  <p>{{ groupCourse.text }}</p>
                   <div class="e-d">
                     <button v-if="userRole === ROLES.ROLE_ADMIN" class="btn btn-info"
                       @click="editGroupCourse(groupCourse)">
@@ -181,11 +182,11 @@
                             <option>Year 5 Semester 1</option>
                             <option>Year 5 Semester 2</option>
                           </select>
-                          
+
                           <!-- Add the text and credit fields -->
                           <label for="text">Description:</label>
                           <input v-model="text" type="text" id="text" class="form-control">
-                          
+
                           <label for="credit">Credit:</label>
                           <input v-model="credit" type="number" id="credit" required class="form-control">
                           <div class="form-buttons">
@@ -237,7 +238,8 @@
                       </tbody>
                     </table>
                   </div>
-                  <h5 class="">Description: {{ studyPlan.text }}</h5>
+                  <h5 class="">Description:</h5>
+                  <p>{{ studyPlan.text }}</p>
                   <button v-if="userRole === ROLES.ROLE_ADMIN" class="btn btn-info" @click="editStudyPlan(studyPlan)">
                     Edit
                   </button>
