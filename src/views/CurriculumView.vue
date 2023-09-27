@@ -167,9 +167,8 @@
                             value: record.courseId
                           }))" multiple :reduce="option => option.value" :placeholder="'Select a course'">
                           </v-select>
-
                           <label for="yearAndSemester">Group Name:</label>
-                          <select v-model="yearAndSemester" id="yearAndSemester" required>
+                          <select v-model="yearAndSemester" id="yearAndSemester" class="form-control" required>
                             <option value="">-- Select Year and Semester --</option>
                             <option>Year 1 Semester 1</option>
                             <option>Year 1 Semester 2</option>
@@ -182,18 +181,20 @@
                             <option>Year 5 Semester 1</option>
                             <option>Year 5 Semester 2</option>
                           </select>
+                          
                           <!-- Add the text and credit fields -->
-                          <label for="text">Text:</label>
-                          <input v-model="text" type="text" id="text">
-
+                          <label for="text">Description:</label>
+                          <input v-model="text" type="text" id="text" class="form-control">
+                          
                           <label for="credit">Credit:</label>
-                          <input v-model="credit" type="number" id="credit" required>
-
-                          <button v-if="selectedStudyPlan" class="btn btn-success" @click="updateStudyPlan">
-                            Update
-                          </button>
-                          <button v-else class="btn btn-primary" type="submit">Add Course</button>
-                          <button @click="cancelForm">Cancel</button>
+                          <input v-model="credit" type="number" id="credit" required class="form-control">
+                          <div class="form-buttons">
+                            <button v-if="selectedStudyPlan" class="btn btn-success" @click="updateStudyPlan">
+                              Update
+                            </button>
+                            <button v-else class="btn btn-primary" type="submit">Add Course</button>
+                            <button @click="cancelForm" class="btn btn-secondary">Cancel</button>
+                          </div>
                         </form>
                       </div>
                     </div>
@@ -667,13 +668,15 @@ export default {
 .home {
   padding-top: 200px; // or whatever value is needed to push the content below the navbar
 }
+
 .hero {
-    position: relative;
-    z-index: 1;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
+  position: relative;
+  z-index: 1;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
 }
+
 .overlay {
   position: fixed;
   top: 0;

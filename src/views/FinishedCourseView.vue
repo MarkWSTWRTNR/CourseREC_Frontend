@@ -268,7 +268,7 @@ export default {
         grade: grade
       })
         .then(response => {
-          alert('Grade set successfully');
+          
           this.fetchCompletedCourses(this.cmuitaccount_name);
           // Update the userCourseGrades array
           const gradeEntryIndex = this.userCourseGrades.findIndex(entry =>
